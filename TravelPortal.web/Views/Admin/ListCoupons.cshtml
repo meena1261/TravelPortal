@@ -1,0 +1,78 @@
+﻿@{ var objlist = ViewBag.list as List<AddEditCouponsModel>; }
+
+<div class="card">
+    <div class="card-header">
+        <!-- Search -->
+        <div class="row align-items-center">
+            <div class="col-sm-4">
+                <div class="icon-form mb-3 mb-sm-0">
+                    <input type="text" class="form-control" placeholder="Search Coupons">
+                </div>
+            </div>
+            <div class="col-sm-8">
+                <div class="d-flex align-items-center flex-wrap row-gap-2 justify-content-sm-end">
+                    <div class="btn btn-primary">
+                        <i class="ti ti-square-rounded-plus me-2"></i>
+                        @Ajax.ActionLink("Add New Coupons", "AddEditCoupons", "Admin", new { }, new AjaxOptions { UpdateTargetId = "divAddEdit", OnSuccess = "$('#addedit_modal').modal('show');", OnBegin = "fnStartLoader", OnComplete = "fnStopLoader" }, new { @class = "text-white " })
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /Search -->
+    </div>
+
+    <div class="card-body">
+        <div class="table-responsive custom-table">
+            <table class="table">
+                <thead class="thead-light">
+                    <tr>
+                        <th>Sr.no</th>
+                        <th>Coupon Code</th>
+                        <th>Discount Type</th>
+                        <th>Discount</th>
+                        <th>Max Usage</th>
+                        <th>Expiry Date</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (objlist != null)
+                                {
+                                    int i = 1;
+                                    foreach (var item in objlist)
+                                    {
+        <tr class="odd">
+            <td>@i</td>
+            <td>@item.CouponCode</td>
+            <td>@item.DiscountType</td>
+            <td>@item.Discount</td>
+            <td>@item.MaxUsage</td>
+            <td>@item.ExpiryDate</td>
+
+            <td>
+               
+                @if (item.IsActive == true)
+                            {
+                                @Ajax.ActionLink("Published", "DeleteActiveCoupons", "Admin", new { type = "IsActive", hdnId = item.Id }, new AjaxOptions { UpdateTargetId = "divlist", InsertionMode = InsertionMode.Replace }, new { @class = "badge badge-sm bg-success float-end fs-10" }) }
+        else
+        {
+            @Ajax.ActionLink("UnPublished", "DeleteActiveCoupons", "Admin", new { type = "IsActive", hdnId = item.Id }, new AjaxOptions { UpdateTargetId = "divlist", InsertionMode = InsertionMode.Replace }, new { @class = "badge badge-sm bg-danger float-end fs-10" })}
+            </td>
+            <td>
+                @Ajax.ActionLink("Edit", "AddEditCoupons", "Admin", new { id = item.Id }, new AjaxOptions { UpdateTargetId = "divAddEdit", OnSuccess = "$('#addedit_modal').modal('show');", OnBegin = "fnStartLoader", OnComplete = "fnStopLoader" }, new { })
+            </td>
+        </tr>
+        i++;
+}
+}
+
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+

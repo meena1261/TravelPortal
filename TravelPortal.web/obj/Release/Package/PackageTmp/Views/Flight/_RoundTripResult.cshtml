@@ -1,0 +1,79 @@
+﻿@model TravelPortal.web.Models.ViewModel.FlightResults
+<style>
+    .departure .title {
+        font-size: 18px;
+        font-weight: 500;
+    }
+
+    .return .title {
+        font-size: 18px;
+        font-weight: 500;
+    }
+</style>
+@if (Model.data.Count > 0)
+{
+    foreach (var d in Model.data)
+    {
+        int cntItinerary = 1;
+
+        string AirlineLogo = string.Empty;
+        string AirlineName = string.Empty;
+        AirlineLogo = d.Itineraries.FirstOrDefault().AirlineLogo;
+        AirlineName = d.Itineraries.FirstOrDefault().AirlineName;
+        
+        //AirlineLogo += d.Itineraries.LastOrDefault().AirlineLogo;
+        //AirlineName += d.Itineraries.LastOrDefault().AirlineName;
+
+
+        <div class="card">
+            <div class="card-header d-flex justify-content-between">
+                <div class="card-airline">
+                    <img src="@AirlineLogo">
+                    <span class="airline-name me-2">@AirlineName</span>
+                </div>
+                <div class="card-price-btn">
+                    <h5>
+                        @d.Itineraries.Sum(e => Convert.ToDouble(e.Price)).ToString("C", new System.Globalization.CultureInfo("en_IN"))
+
+                    </h5>
+                    <a href="@(RouteConfig.FlightDetails.ToPrefixApplicationURL()+"?offerId="+d.offerId+"&crId="+Model.cacheKey+"&tripType="+TravelPortal.web.Models.Enum.FlightTripTypes.RoundTrip.ToString())" target="_blank" class="btn btn-outline-primary mt-2">Book Now</a>
+
+                </div>
+            </div>
+
+            <div class="card-body">
+                <div class="row">
+                    @foreach (var item in d.Itineraries)
+                    {
+
+                        <div class="col-md-6">
+                            <div class="departure mb-2">
+                                <span class="me-1 title text-dark">@(cntItinerary==1? "Depart": "Return")</span>
+                                <span class="me-1">@item.DepartureDate </span>
+                                <span class="me-1">. @item.AirlineName </span>
+                            </div>
+                            <div class="card">
+                                <div class="card-body d-flex justify-content-between">
+                                    <div>
+                                        <h6>@item.DepartureTime</h6>
+                                        <p>@item.FromCity</p>
+                                    </div>
+                                    <div class="text-center">
+                                        <p class="m-0">@item.Duration</p>
+                                        <div></div>
+                                        <p>@(item.Stops>0? $"{item.Stops} Stop":"") @item.Via</p>
+                                    </div>
+                                    <div>
+                                        <h6>@item.ArrivalTime</h6>
+                                        <p>@item.ToCity</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        cntItinerary++;
+                    }
+                </div>
+            </div>
+        </div>
+    }
+}

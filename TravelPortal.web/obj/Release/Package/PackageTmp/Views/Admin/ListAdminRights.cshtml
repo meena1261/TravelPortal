@@ -1,0 +1,141 @@
+﻿@{
+    var objlist = (List<MenuModel>)ViewBag.list;
+    var objFirstlist = objlist.Where(e => e.ParentID == "0").ToList();
+}
+<div class="card">
+    <div class="card-header justify-content-between">
+        <div class="card-title">
+            Rights
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="accordion accordion-customicon1 accordions-items-seperate" id="accordionParent">
+            @foreach (var item in objFirstlist)
+            {
+                var objSubitem = objlist.Where(e => e.ParentID == item.ID.ToString()).ToList();
+                <div class="accordion-item">
+                    <div class="row">
+                        <div class="col-md-1">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#collapse_@item.ID" aria-expanded="false"
+                                    aria-controls="collapse_@item.ID">
+                            </button>
+                        </div>
+                        <div class="col-md-3 d-flex align-items-center">
+                            <label for="checkbox_@item.ID">
+                                <input type="checkbox" id="checkbox_@item.ID" value="@item.ID" class="chk" onchange="onChangeCheck()" @(item.Ischeck > 0 ? "checked" : "") />
+                                @item.MenuName
+                            </label>
+                        </div>
+                        <div class="col-md-2 d-flex align-items-center">
+                            <label for="addcheckbox_@item.ID">
+                                <input type="checkbox" id="addcheckbox_@item.ID" onchange="onChangeCheck()" @(item.IsAdd > 0 ? "checked" : "") />
+                                Add
+                            </label>
+                        </div>
+                        <div class="col-md-2 d-flex align-items-center">
+                            <label for="editcheckbox_@item.ID">
+                                <input type="checkbox" id="editcheckbox_@item.ID" onchange="onChangeCheck()" @(item.IsEdit > 0 ? "checked" : "") />
+                                Edit
+                            </label>
+                        </div>
+                        <div class="col-md-2 d-flex align-items-center">
+                            <label for="deletecheckbox_@item.ID">
+                                <input type="checkbox" id="deletecheckbox_@item.ID" onchange="onChangeCheck()" @(item.IsDelete > 0 ? "checked" : "") />
+                                Delete
+                            </label>
+                        </div>
+                    </div>
+                    <div id="collapse_@item.ID" class="accordion-collapse collapse"
+                         aria-labelledby="headingParent_@item.ID"
+                         data-bs-parent="#accordionParent">
+                        <div class="accordion-body">
+                            <div class="row">
+                                <div class="col-md-1 p-0"></div>
+                                <div class="col-md-11 p-0">
+                                    @foreach (var subitem in objSubitem)
+                                    {
+                                        <div class="card p-0 m-2">
+                                            <div class="card-body p-2">
+                                                <div class="row">
+                                                    <div class="col-md-3 d-flex align-items-center">
+                                                        <label for="checkbox_@subitem.ID">
+                                                            <input type="checkbox" id="checkbox_@subitem.ID" value="@subitem.ID" class="chk" onchange="onChangeCheck()" @(subitem.Ischeck > 0 ? "checked" : "") />
+                                                            @subitem.MenuName
+                                                        </label>
+                                                    </div>
+                                                    <div class="col-md-2 d-flex align-items-center">
+                                                        <label for="addcheckbox_@subitem.ID">
+                                                            <input type="checkbox" id="addcheckbox_@subitem.ID" onchange="onChangeCheck()" @(subitem.IsAdd > 0 ? "checked" : "") />
+                                                            Add
+                                                        </label>
+                                                    </div>
+                                                    <div class="col-md-2 d-flex align-items-center">
+                                                        <label for="editcheckbox_@subitem.ID">
+                                                            <input type="checkbox" id="editcheckbox_@subitem.ID" onchange="onChangeCheck()" @(subitem.IsEdit > 0 ? "checked" : "")/>
+                                                            Edit
+                                                        </label>
+                                                    </div>
+                                                    <div class="col-md-2 d-flex align-items-center">
+                                                        <label for="deletecheckbox_@subitem.ID">
+                                                            <input type="checkbox" id="deletecheckbox_@subitem.ID" onchange="onChangeCheck()" @(subitem.IsDelete > 0 ? "checked" : "") />
+                                                            Delete
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            }
+
+        </div>
+    </div>
+    <div class="card-footer">
+        <button type="button" class="btn btn-primary" onclick="AddEditMenuRights()">Submit</button>
+    </div>
+</div>
+<script>
+    var selectedItems = [];
+    function onChangeCheck() {
+        selectedItems = $('.chk:checked').map(function () {
+            var id = $(this).val();
+            var ddlvalue = $("#hdnUsrno").val();
+            return {
+                ID: id,
+                Usrno: ddlvalue,
+                IsCheck: $('#checkbox_' + id).is(':checked') ? 1 : 0,
+                IsAdd: $('#addcheckbox_' + id).is(':checked') ? 1 : 0,
+                IsEdit: $('#editcheckbox_' + id).is(':checked') ? 1 : 0,
+                IsDelete: $('#deletecheckbox_' + id).is(':checked') ? 1 : 0
+            };
+        }).get();
+
+
+    }
+
+    function AddEditMenuRights() {
+
+        $.ajax({
+            url: '@Url.Action("SavePermissions", "Admin")',   // ✅ Controller action URL
+            type: 'POST',
+            data: JSON.stringify({ items: selectedItems }), // ✅ Wrap in object if parameter is named 'items'
+            contentType: 'application/json; charset=utf-8',
+            dataType: 'json',
+            beforeSend: fnStartLoader(),
+            complete: fnStopLoader(),
+            success: function (response) {
+                alert('Saved successfully!');
+            },
+            error: function (xhr, status, error) {
+                console.log(error);
+            }
+        });
+    }
+
+</script>

@@ -1,0 +1,136 @@
+﻿@model SearchReportModel
+@{
+    ViewBag.Title = "Manage Admin";
+    dynamic objlist = ViewBag.list;
+}
+<div class="mb-4">
+    <ul class="nav nav-pills">
+        <li class="nav-item">
+            @Ajax.ActionLink("Add New Admin", "AddEditAdmin", "Admin", new { }, new AjaxOptions { UpdateTargetId = "divAddEdit", OnSuccess = "$('#addedit_modal').modal('show');", OnBegin = "fnStartLoader", OnComplete = "fnStopLoader" }, new { @class = "nav-link active" })
+        </li>
+        <li class="nav-item">
+            <a href="@Url.Action("ManageRoles","Admin")" class="btn btn-outline-info">Manage Roles</a>
+        </li>
+        <li class="nav-item">
+            <a href="@Url.Action("AdminRights","Admin")" class="btn btn-outline-primary">Manage Permission</a>
+        </li>
+    </ul>
+</div>
+<div class="card">
+    <div class="card-body pb-1">
+        <form action="@Url.Action("ManageAdmin","Admin")" method="post">
+            <div class="row align-items-end">
+                <div class="col-md-3">
+                    <div class="mb-3">
+                        <label class="form-label">From Date</label>
+                        <div class="input-icon-start position-relative">
+                            @Html.TextBoxFor(m => m.fromDate, new { @class = "form-control flatpickr_date_input", @placeholder = "dd/mm/yyyy" })
+                            <span class="input-icon-left">
+                                <i class="ti ti-calendar"></i>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="mb-3">
+                        <label class="form-label">To Date</label>
+                        <div class="input-icon-start position-relative">
+                            @Html.TextBoxFor(m => m.toDate, new { @class = "form-control flatpickr_date_input", @placeholder = "dd/mm/yyyy" })
+                            <span class="input-icon-left">
+                                <i class="ti ti-calendar"></i>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-2">
+                    <div class="mb-3">
+                        <button class="btn btn-primary w-100" type="submit"><i class="ti ti-search"></i> Search</button>
+                    </div>
+                </div>
+            </div>
+
+        </form>
+    </div>
+</div>
+<!-- /product list -->
+<div class="card no-search">
+
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table datatable">
+                <thead class="thead-light">
+                    <tr>
+                        <th>S. No</th>
+                        <th>Role</th>
+                        <th>Name</th>
+                        <th>Mobile</th>
+                        <th>Email</th>
+                        <th>Status</th>
+                        <th>Last Login</th>
+                        <th>Registration Date</th>
+                        @*<th>Action</th>*@
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (objlist != null && objlist.Count > 0)
+                    {
+                        int i = 1;
+                        foreach (var item in objlist)
+                        {
+                            string status = item.Status.ToString().ToLower() == "active" ? "success" : item.Status.ToString().ToLower() == "pending" ? "warning" : "danger";
+                            <tr>
+                                <td class="expand">
+                                    @i
+                                </td>
+                                <td>
+                                    @item.UserType
+                                </td>
+                                <td>
+                                    <h5>
+                                        @item.Name
+                                    </h5>
+                                    <a href="@Url.Action("UserDetail", "Admin", new {userid = item.Usrno})">
+                                        <i class="ti ti-eye"></i>  <small>[@item.UserID]</small>
+                                    </a>
+                                </td>
+                                <td>
+                                    <h5>
+                                        @item.Mobile
+                                    </h5>
+                                </td>
+                                <td>
+                                    <h5>
+                                        @item.Email
+                                    </h5>
+                                </td>
+                                <td>
+                                    <label class="badge bg-@status"><b> @item.Status </b></label>
+                                </td>
+                                <td>
+                                    @item.LastLoginDate
+                                </td>
+                                <td>
+                                    @item.AddDate
+                                </td>
+                                @*<td>
+                                        <div style="display:flex;justify-content:space-evenly;">
+
+                                            @Ajax.ActionLink("Edit", "AddEditAdmin", "Admin", new { id = item.Usrno }, new AjaxOptions { UpdateTargetId = "divAddEdit", OnSuccess = "$('#addedit_modal').modal('show');", OnBegin = "fnStartLoader", OnComplete = "fnStopLoader" }, new { @class = "text-primary" })
+
+                                            <a href="Javascript:void(0)" class="text-danger" onclick="fn_DeleteItem('@Url.Action("ListMenu","Admin",new {id=item.Usrno })')">
+                                                Delete
+                                            </a>
+                                        </div>
+
+                                    </td>*@
+                            </tr>
+                            i++;
+                        }
+
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<!-- /product list -->

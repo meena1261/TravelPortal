@@ -1,0 +1,414 @@
+﻿@model AgentKycModel
+@using (Ajax.BeginForm("BussinessKYC", "Agent", null, new AjaxOptions { HttpMethod = "POST", OnSuccess = "fn_Success", OnFailure = "fn_Failure", OnBegin = "", OnComplete = "" }, new { enctype = "multipart/form-data", @id = "frmAgentKYC" }))
+{
+    <div class="card">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="text-dark mb-1">Agency Name</label>
+                        @Html.TextBoxFor(m => m.AgencyName, new { @class = "form-control mb-2", @data_val = "true", @data_val_required = "Required" })
+                    </div>
+                    @Html.ValidationMessageFor(model => model.AgencyName, "", new { @class = "text-danger" })
+                </div>
+
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="text-dark mb-1">Pan Number</label>
+                        @Html.TextBoxFor(m => m.PanNumber, new { @class = "form-control mb-2", @data_val = "true", @data_val_required = "Required" })
+                    </div>
+                    @Html.ValidationMessageFor(model => model.PanNumber, "", new { @class = "text-danger" })
+                </div>
+                @if (string.IsNullOrEmpty(Model.PancardImg))
+                {
+                    <div class="col-md-6">
+                        <div class="form-group mt-2">
+                            <h6>Upload PAN Card</h6>
+                            <p>
+                                Please ensure that the uploaded image is not blurry and your
+                                <b>Full Name, PAN, Signature and Photo</b> are clearly visible
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="alert alert-primary mt-2 text-center">
+                            <h6>Upload <b>PAN Card</b> photo</h6>
+                            <label>PDF,JPEG only | Below 10MB</label>
+                            @Html.HiddenFor(m => m.PancardImg)
+
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="alert alert-info mt-3 mb-2 border-dashed text-center">
+
+                            <h6 class="text-center">Upload Preview</h6>
+                            <div id="preview">
+
+                            </div>
+                            <input type="file" id="panFile" name="panFile" class="form-control" accept=".pdf,.jpg,.jpeg" style="display:none;" data-val="true" data-val-required="Required" onchange="previewfile('#panFile','#preview','#pan-alert-msg')" />
+                            <label for="panFile" class="btn btn-primary-light">Select File</label>
+                            <button class="btn btn-primary" type="button" onclick="fnVerifyPancard();" id="btnUpload">Upload</button>
+                            <button class="btn btn-primary" type="button" disabled="" id="btnUploaddisabled" style="display:none;">
+                                <span class="spinner-border spinner-border-sm align-middle" role="status" aria-hidden="true"></span>
+                                Pleas wait ...
+                            </button>
+
+                        </div>
+                        <div id="pan-alert-msg" class="text-danger"></div>
+                        <span class="text-danger field-validation-valid" data-valmsg-for="panFile" data-valmsg-replace="true"></span>
+                    </div>
+                }
+                else
+                {
+                    <div class="col-md-12">
+                        <div class="alert alert-info mt-3 mb-2 border-dashed text-center">
+                            <img src="~/Uploads/@SessionHelper.UserDetail.AspNetID/@Model.PancardImg" style="width:250px;height:150px;" />
+                        </div>
+                    </div>
+                }
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group mt-2">
+                        <label class="text-dark mb-1">GSTIN Number</label>
+                        @Html.TextBoxFor(m => m.GSTNumber, new { @class = "form-control mb-2" })
+                    </div>
+                    @Html.ValidationMessageFor(model => model.GSTNumber, "", new { @class = "text-danger" })
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group mt-2">
+                        <label class="text-dark mt-4"><input type="checkbox" /> Don't have GST Number</label>
+
+                    </div>
+                </div>
+
+                <div class="col-md-12">
+                    <div class="form-group mt-2">
+                        <label class="text-dark mb-1">Business Type</label>
+                        @Html.DropDownListFor(m => m.BusinessTypeID, ViewBag.BusinessTypeList as IEnumerable<SelectListItem>, "Select Business Type", new { @class = "form-control mb-2", @data_val = "true", @data_val_required = "Required" })
+                    </div>
+                    @Html.ValidationMessageFor(model => model.BusinessTypeID, "", new { @class = "text-danger" })
+
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group mt-2">
+                        <label class="text-dark mb-1">Agency Address</label>
+                        @Html.TextAreaFor(m => m.AgencyAddress, new { @class = "form-control mb-2", @data_val = "true", @data_val_required = "Required" })
+                    </div>
+                    @Html.ValidationMessageFor(model => model.AgencyAddress, "", new { @class = "text-danger" })
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group mt-2">
+                        <label class="text-dark mb-1">Pincode</label>
+                        @Html.TextBoxFor(m => m.Pincode, new { @class = "form-control mb-2", @data_val = "true", @data_val_required = "Required" })
+                    </div>
+                    @Html.ValidationMessageFor(model => model.Pincode, "", new { @class = "text-danger" })
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group mt-2">
+                        <label class="text-dark mb-1">City</label>
+                        @Html.TextBoxFor(m => m.City, new { @class = "form-control mb-2", @data_val = "true", @data_val_required = "Required" })
+                    </div>
+                    @Html.ValidationMessageFor(model => model.City, "", new { @class = "text-danger" })
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group mt-2">
+                        <label class="text-dark mb-1">State</label>
+                        @Html.TextBoxFor(m => m.State, new { @class = "form-control mb-2", @data_val = "true", @data_val_required = "Required" })
+                    </div>
+                    @Html.ValidationMessageFor(model => model.State, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <hr />
+            <h6>Upload Documents</h6>
+            <p>We will use these to verify your account.</p>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group mt-2">
+                        <label class="text-dark mb-1">Select KYC Document Type</label>
+                        @Html.DropDownListFor(m => m.KYCDocumentTypeID, ViewBag.KYCDocumentTypeList as IEnumerable<SelectListItem>, "--Select--", new { @class = "form-control mb-2", @data_val = "true", @data_val_required = "Required" })
+                    </div>
+                    @Html.ValidationMessageFor(model => model.KYCDocumentTypeID, "", new { @class = "text-danger" })
+                </div>
+                @if (string.IsNullOrEmpty(Model.DocumentFile))
+                {
+                    <div class="col-md-6">
+                        <div class="alert alert-primary mt-4 text-center">
+                            <h6>Upload <b>KYC  Document</b></h6>
+                            <label>PDF,JPEG only | Below 5MB</label>
+                            @Html.HiddenFor(m => m.DocumentFile)
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="alert alert-info mt-3 mb-2 border-dashed text-center">
+
+                            <h6 class="text-center">Upload Preview</h6>
+                            <div id="kycDoc-preview">
+
+                            </div>
+                            <input type="file" id="kycDocFile" name="kycDocFile" class="form-control" accept=".pdf,.jpg,.jpeg" onchange="previewfile('#kycDocFile','#kycDoc-preview','#kycDoc-alert-msg')" style="display:none;" data-val="true" data-val-required="Required" />
+                            <label for="kycDocFile" class="btn btn-primary-light">Select File</label>
+
+                            <button class="btn btn-primary" type="button" onclick="UploadKycDocument('#kycDocFile','#kycDoc-alert-msg','#DocumentFile');" id="btnkycDocUpload">Upload</button>
+
+                            <button class="btn btn-primary" type="button" disabled="" id="btnkycDocUploaddisabled" style="display:none;">
+                                <span class="spinner-border spinner-border-sm align-middle" role="status" aria-hidden="true"></span>
+                                Pleas wait ...
+                            </button>
+
+                        </div>
+                        <div id="kycDoc-alert-msg" class="text-danger"></div>
+                        <span class="text-danger field-validation-valid" data-valmsg-for="kycDocFile" data-valmsg-replace="true"></span>
+                    </div>
+                }
+                else
+                {
+                    <div class="col-md-12">
+                        <div class="alert alert-info mt-3 mb-2 border-dashed text-center">
+                            <img src="~/Uploads/@SessionHelper.UserDetail.AspNetID/@Model.DocumentFile" style="width:250px;height:150px;" />
+                        </div>
+                    </div>
+                }
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group mt-2">
+                        <label class="text-dark mb-1">Select Supporting Document Type</label>
+                        @Html.DropDownListFor(m => m.SupportingDocumentTypeID, ViewBag.SupportingDocumentTypeList as IEnumerable<SelectListItem>, "--Select--", new { @class = "form-control mb-2", @data_val = "true", @data_val_required = "Required" })
+                    </div>
+                    @Html.ValidationMessageFor(model => model.SupportingDocumentTypeID, "", new { @class = "text-danger" })
+                </div>
+                @if (string.IsNullOrEmpty(Model.SupportingDocumentFile))
+                {
+                    <div class="col-md-6">
+                        <div class="alert alert-primary mt-4 text-center">
+                            <h6>Upload <b>Supporting Document</b></h6>
+                            <label>PDF,JPEG only | Below 10MB</label>
+                            @Html.HiddenFor(m => m.SupportingDocumentFile)
+
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="alert alert-info mt-3 mb-2 border-dashed text-center">
+                            <h6 class="text-center">Upload Preview</h6>
+                            <div id="supportingDoc-preview">
+
+                            </div>
+                            <input type="file" id="supportingDocFile" name="supportingDocFile" class="form-control" accept=".pdf,.jpg,.jpeg" onchange="previewfile('#supportingDocFile','#supportingDoc-preview','#supportingDoc-alert-msg')" style="display:none;" data-val="true" data-val-required="Required" />
+                            <label for="supportingDocFile" class="btn btn-primary-light">Select File</label>
+
+                            <button class="btn btn-primary" type="button" onclick="UploadKycDocument('#supportingDocFile','#supportingDoc-alert-msg','#SupportingDocumentFile');" id="btnUpload">Upload</button>
+
+                            <button class="btn btn-primary" type="button" disabled="" id="btnUploaddisabled" style="display:none;">
+                                <span class="spinner-border spinner-border-sm align-middle" role="status" aria-hidden="true"></span>
+                                Pleas wait ...
+                            </button>
+                        </div>
+                        <div id="supportingDoc-alert-msg" class="text-danger"></div>
+                        <span class="text-danger field-validation-valid" data-valmsg-for="supportingDocFile" data-valmsg-replace="true"></span>
+                    </div>
+                }
+                else
+                {
+                    <div class="col-md-12">
+                        <div class="alert alert-info mt-3 mb-2 border-dashed text-center">
+                            <img src="~/Uploads/@SessionHelper.UserDetail.AspNetID/@Model.SupportingDocumentFile" style="width:250px;height:150px;" />
+                        </div>
+                    </div>
+                }
+            </div>
+
+        </div>
+        <div class="card-footer">
+            <button type="submit" class="btn btn-primary mt-2 w-100">CONTINUE</button>
+        </div>
+    </div>
+}
+
+<script>
+    function fn_Success(d) {
+        if (d.status > 0) {
+            $.toast({
+                heading: 'Success',
+                text: d.message,
+                position: 'top-right',
+                showHideTransition: 'fade',
+                icon: 'success'
+            });
+            location.reload();
+        } else {
+            $.toast({
+                heading: 'Message',
+                text: d.message,
+                position: 'top-right',
+                showHideTransition: 'fade',
+                icon: 'error'
+            });
+        }
+    }
+
+    function fn_Failure(d) {
+        $.toast({
+            heading: 'Message',
+            text: 'failed',
+            position: 'top-right',
+            showHideTransition: 'fade',
+            icon: 'error'
+        });
+    }
+
+    function previewfile(fileElement, previewElement, errorMsg) {
+        var file = $(fileElement)[0].files[0];  // FIXED
+        var preview = $(previewElement);
+        var alertmsg = $(errorMsg);
+
+        preview.empty(); // clear old preview
+        alertmsg.text(""); // clear old error
+
+        if (!file) return;
+
+        // 1. Validate size (10MB = 10 * 1024 * 1024 bytes)
+        if (file.size > 10 * 1024 * 1024) {
+            alertmsg.text('File size must be below 10MB!');
+            $(fileElement).val(""); // reset input
+            return;
+        }
+
+        // 2. Validate type
+        var allowedTypes = ["application/pdf", "image/jpeg"];
+        if ($.inArray(file.type, allowedTypes) === -1) {
+            alertmsg.text('Only PDF and JPEG files are allowed!');
+            $(fileElement).val(""); // reset input
+            return;
+        }
+
+        // 3. Preview file
+        var reader = new FileReader();
+        reader.onload = function (e) {
+            if (file.type === "application/pdf") {
+                // PDF preview (embed inside iframe)
+                preview.html('<iframe src="' + e.target.result + '" width="100%" height="400px"></iframe>');
+            } else if (file.type === "image/jpeg") {
+                // Image preview
+                preview.html('<img src="' + e.target.result + '" class="img-fluid" style="max-height:400px;" />');
+            }
+        };
+        reader.readAsDataURL(file);
+    }
+
+    function fnVerifyPancard() {
+        if (!$("#frmAgentKYC").valid()) {
+            return false;
+        }
+        var AgencyName = $("#AgencyName").val();
+        var panNumber = $("#PanNumber").val();
+        var fileInput = $("#panFile")[0];
+        if (fileInput.files.length === 0) {
+            $("#pan-alert-msg").text('Please select a file first.');
+            return;
+        }
+
+        var formData = new FormData();
+        formData.append("panNumber", panNumber);
+        formData.append("panImage", fileInput.files[0]);
+
+        $.ajax({
+            url: '@Url.Action("VerifyPANCard", "Json")',
+            type: 'POST',
+            data: formData,
+            contentType: false, // must
+            processData: false, // must
+            beforeSend: function () {
+                $("#pan-alert-msg").html("<span style='color:blue'>Uploading...</span>");
+            },
+            success: function (res) {
+                if (res.status > 0) {
+                    $("#pan-alert-msg").text('Verified Successfully !').removeClass('text-danger').addClass('text-success');
+                    $("#PancardImg").val(res.message);
+                    $("#divGstDetail").show();
+                } else {
+                    $("#pan-alert-msg").text(res.message).removeClass('text-success').addClass('text-danger');
+                }
+            },
+            error: function (xhr, status, error) {
+                $("#pan-alert-msg").html("<span style='color:red'>Upload failed: " + error + "</span>");
+            }
+        });
+    }
+
+    function UploadKycDocument(docFile, alertmsg, savefileName) {
+        if (!$("#frmAgentKYC").valid()) {
+            return false;
+        }
+        var fileInput = $(docFile)[0];
+
+        if (fileInput.files.length === 0) {
+                $(alertmsg).text('Please select a file first.');
+                return;
+            }
+
+
+        var formData = new FormData();
+        formData.append("DocFile", fileInput.files[0]);
+
+        $.ajax({
+            url: '@Url.Action("UploadKycDocument", "Json")',
+            type: 'POST',
+            data: formData,
+            contentType: false, // must
+            processData: false, // must
+            beforeSend: function () {
+                $(alertmsg).html("<span style='color:blue'>Uploading...</span>");
+            },
+            success: function (res) {
+                if (res.status > 0) {
+                    $(alertmsg).text('Uploaded Successfully !').removeClass('text-danger').addClass('text-success');
+                    $(savefileName).val(res.message);
+                    $("#divSupportingDocument").show();
+                } else {
+                    $(alertmsg).text(res.message).removeClass('text-success').addClass('text-danger');
+                }
+            },
+            error: function (xhr, status, error) {
+                $(alertmsg).html("<span style='color:red'>Upload failed: " + error + "</span>");
+            }
+        });
+    }
+
+    function SubmitAgentRegister() {
+        if (!$("#frmAgentKYC").valid()) {
+            return false;
+        }
+            if ($("#panFile").val() == "") {
+                $("#pan-alert-msg").text('Please Select Pan card Photo').removeClass('text-success').addClass('text-danger');
+                return false;
+            }
+            else if ($("#PancardImg").val() == "") {
+                $("#PancardImg").focus();
+                $("#pan-alert-msg").text('Upload Verified Pan card Photo').removeClass('text-success').addClass('text-danger');
+                return false;
+            }
+
+            if ($("#kycDocFile").val() == "" || $("#supportingDocFile").val() == "") {
+                if ($("#kycDocFile").val() == "")
+                    $("#kycDoc-alert-msg").text('Please Select Kyc Document file').removeClass('text-success').addClass('text-danger');
+                if ($("#supportingDocFile").val() == "")
+                    $("#supportingDoc-alert-msg").text('Please Select Supporting Document file').removeClass('text-success').addClass('text-danger');
+                return false;
+            }
+            else if ($("#DocumentFile").val() == "" || $("#SupportingDocumentFile").val() == "") {
+                if ($("#DocumentFile").val() == "")
+                    $("#kycDoc-alert-msg").text('Upload KYC Document').removeClass('text-success').addClass('text-danger');
+                if ($("#SupportingDocumentFile").val() == "")
+                    $("#supportingDoc-alert-msg").text('Upload Supporting Document').removeClass('text-success').addClass('text-danger');
+                return false;
+            }
+
+
+        //$("#frmAgentKYC").submit();
+        // ✅ This triggers the Ajax.BeginForm submit correctly
+        $("#frmAgentKYC").trigger("submit");
+    }
+</script>
+

@@ -1,0 +1,15 @@
+[
+  {
+    "Name": "New Profile",
+    "Projects": [
+      {
+        "Path": "Travel.API\\Travel.API.csproj",
+        "Action": "Start"
+      },
+      {
+        "Path": "TravelPortal.Web\\TravelPortal.Web.csproj",
+        "Action": "Start"
+      }
+    ]
+  }
+]

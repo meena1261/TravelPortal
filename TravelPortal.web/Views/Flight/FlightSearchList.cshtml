@@ -1,0 +1,21 @@
+﻿@{
+    var result = ViewBag.flights as TravelPortal.web.Models.ViewModel.FlightResults;
+}
+
+<div class="hotel-list">
+    @if (result.Search.tripType.Equals(TravelPortal.web.Models.Enum.FlightTripTypes.RoundTrip.ToString()))
+    {
+        @Html.Partial("_RoundTripResult", result);
+    }
+    else if (result.Search.tripType.Equals(TravelPortal.web.Models.Enum.FlightTripTypes.MultiCity.ToString()))
+    {
+        @Html.Partial("_MultiCityResult", result);
+    }
+    else
+    {
+        @Html.Partial("_OneWayResult", result);
+    }
+
+</div>
+
+

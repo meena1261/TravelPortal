@@ -1,0 +1,89 @@
+﻿ <!-- Booking Header -->
+<div class="card booking-header border-0">
+    <div class="card-body">
+        <div class="d-flex align-items-center">
+            <div>
+                <h6>Flight Bookings</h6>
+                <p class="fs-14">No of Booking : 0</p>
+            </div>
+        </div>
+        <hr class="border" />
+        <div class="row">
+            <div class="col-md-3">
+                <label class="form-label">Search</label>
+                <input type="text" class="form-control" name="Searchtext" placeholder="Search..." />
+            </div>
+            <div class="col-md-3">
+                <label class="form-label">Arrival City</label>
+                <input type="text" class="form-control" name="ArrivalCity" placeholder="Search by Arrival city" />
+            </div>
+            <div class="col-md-3">
+                <label class="form-label">Origin City</label>
+                <input type="text" class="form-control" name="OriginCity" placeholder="Search by Origin city" />
+            </div>
+            <div class="col-md-3">
+                <label class="form-label">Booking Date</label>
+                <input type="date" class="form-control" name="fromDate" />
+            </div>
+            <div class="col-md-3">
+                <label class="form-label">Travel Date</label>
+                <input type="date" class="form-control" name="toDate" />
+            </div>
+            <div class="col-md-3">
+                <br />
+                <button type="submit" class="btn btn-primary mt-2">Search</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Booking Header -->
+<!-- Flight Booking List -->
+<div class="card hotel-list">
+    <div class="card-body p-0">
+      
+        <!-- Hotel List -->
+        <div class="custom-datatable-filter table-responsive">
+            <table class="table datatable">
+                <thead class="thead-light">
+                    <tr>
+                        <th>PNR</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                        <th>Passenger & Cabin</th>
+                        <th>Mobile</th>
+                        <th>Email</th>
+                        <th>Trip Type</th>
+                        <th>From - To</th>
+                        <th>Departure Date</th>
+                        <th>Arrival Date</th>
+                        <th>Booked on</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><a href="#" class="link-primary fw-medium" data-bs-toggle="modal" data-bs-target="#upcoming">#TR-1245</a></td>
+                        <td>
+                            <span class="badge badge-info rounded-pill d-inline-flex align-items-center fs-10"><i class="fa-solid fa-circle fs-5 me-1"></i>Upcoming</span>
+                        </td>
+                        <td></td>
+                        <td>
+                            <h6 class="fs-14 mb-1">Business Class</h6>
+                            <span class="fs-14 fw-normal text-gray-6">2 Adults, 1 Child</span>
+                        </td>
+                        <td>9999999999</td>
+                        <td>silvi@gmail.com</td>
+                        <td>One way</td>
+                        <td>JAI-BOM</td>
+                        <td>15 May 2025</td>
+                        <td>20 May 2025</td>
+                        <td>10 May 2025</td>
+                    </tr>
+                   
+                </tbody>
+            </table>
+        </div>
+        <!-- /Hotel List -->
+
+    </div>
+</div>
+<!-- /Flight Booking List -->

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="39694f20e08542b1bec2fcf36169b4b7" Name="Diagram1">
+        <EntityTypeShape EntityType="db_silviModel.AgentNote" Width="1.5" PointX="5.75" PointY="9.75" />
+        <EntityTypeShape EntityType="db_silviModel.Airline" Width="1.5" PointX="7.75" PointY="9.75" />
+        <EntityTypeShape EntityType="db_silviModel.AspNetRole" Width="1.5" PointX="0.75" PointY="2" />
+        <EntityTypeShape EntityType="db_silviModel.AspNetUserClaim" Width="1.5" PointX="5.25" PointY="1" />
+        <EntityTypeShape EntityType="db_silviModel.AspNetUserLogin" Width="1.5" PointX="5.25" PointY="3.75" />
+        <EntityTypeShape EntityType="db_silviModel.AspNetUser" Width="1.5" PointX="3" PointY="1.375" />
+        <EntityTypeShape EntityType="db_silviModel.CountryMaster" Width="1.5" PointX="9.75" PointY="9.75" />
+        <EntityTypeShape EntityType="db_silviModel.CreditWallet" Width="1.5" PointX="10.75" PointY="4.75" />
+        <EntityTypeShape EntityType="db_silviModel.CreditWalletStatement" Width="1.5" PointX="11.75" PointY="8.75" />
+        <EntityTypeShape EntityType="db_silviModel.ErrorLog" Width="1.5" PointX="12.75" PointY="0.75" />
+        <EntityTypeShape EntityType="db_silviModel.FlightBookingHistory" Width="1.5" PointX="11.75" PointY="12.75" />
+        <EntityTypeShape EntityType="db_silviModel.SupportchatAttachFile" Width="1.5" PointX="12.75" PointY="4.75" />
+        <EntityTypeShape EntityType="db_silviModel.SupportChat" Width="1.5" PointX="5.75" PointY="13.75" />
+        <EntityTypeShape EntityType="db_silviModel.tblAccount_Main" Width="1.5" PointX="13.75" PointY="7.75" />
+        <EntityTypeShape EntityType="db_silviModel.tblAccount_MainDetails" Width="1.5" PointX="7.75" PointY="13.75" />
+        <EntityTypeShape EntityType="db_silviModel.tblFlight_SearchLog" Width="1.5" PointX="13.75" PointY="11.75" />
+        <EntityTypeShape EntityType="db_silviModel.tblFlightConnectionVia" Width="1.5" PointX="3" PointY="13.125" />
+        <EntityTypeShape EntityType="db_silviModel.tblFlightFare" Width="1.5" PointX="3" PointY="7.375" />
+        <EntityTypeShape EntityType="db_silviModel.tblFlightInventory" Width="1.5" PointX="0.75" PointY="9.125" />
+        <EntityTypeShape EntityType="db_silviModel.tblHistory_FundRequest" Width="1.5" PointX="14.75" PointY="0.75" />
+        <EntityTypeShape EntityType="db_silviModel.tblManage_AgentKYC" Width="1.5" PointX="15.75" PointY="5.75" />
+        <EntityTypeShape EntityType="db_silviModel.tblManage_API" Width="1.5" PointX="7.75" PointY="1" />
+        <EntityTypeShape EntityType="db_silviModel.tblManage_AssignAPI" Width="1.5" PointX="10" PointY="1.875" />
+        <EntityTypeShape EntityType="db_silviModel.tblManage_CityAirport" Width="1.5" PointX="15.75" PointY="11.75" />
+        <EntityTypeShape EntityType="db_silviModel.tblManage_CompanyAccount" Width="1.5" PointX="15.75" PointY="15.75" />
+        <EntityTypeShape EntityType="db_silviModel.tblManage_Coupons" Width="1.5" PointX="16.75" PointY="0.75" />
+        <EntityTypeShape EntityType="db_silviModel.tblManage_CreditLimit" Width="1.5" PointX="17.75" PointY="4.75" />
+        <EntityTypeShape EntityType="db_silviModel.tblManage_Customer" Width="1.5" PointX="5.75" PointY="17.75" />
+        <EntityTypeShape EntityType="db_silviModel.tblManage_Markup" Width="1.5" PointX="7.75" PointY="17.75" />
+        <EntityTypeShape EntityType="db_silviModel.tblManage_MenuRights" Width="1.5" PointX="17.75" PointY="9.75" />
+        <EntityTypeShape EntityType="db_silviModel.tblManage_UserInvited" Width="1.5" PointX="17.75" PointY="12.75" />
+        <EntityTypeShape EntityType="db_silviModel.tblMaster_AgencyType" Width="1.5" PointX="17.75" PointY="16.75" />
+        <EntityTypeShape EntityType="db_silviModel.tblMaster_Bank" Width="1.5" PointX="18.75" PointY="0.75" />
+        <EntityTypeShape EntityType="db_silviModel.tblMaster_BusinessType" Width="1.5" PointX="0.75" PointY="18.75" />
+        <EntityTypeShape EntityType="db_silviModel.tblMaster_City" Width="1.5" PointX="8" PointY="6.875" />
+        <EntityTypeShape EntityType="db_silviModel.tblMaster_CreditType" Width="1.5" PointX="2.75" PointY="18.75" />
+        <EntityTypeShape EntityType="db_silviModel.tblMaster_KYCDocumentType" Width="1.5" PointX="9.75" PointY="18.75" />
+        <EntityTypeShape EntityType="db_silviModel.tblMaster_Menu" Width="1.5" PointX="11.75" PointY="18.75" />
+        <EntityTypeShape EntityType="db_silviModel.tblMaster_State" Width="1.5" PointX="5.75" PointY="6.875" />
+        <EntityTypeShape EntityType="db_silviModel.tblMaster_SupportingDocumentType" Width="1.5" PointX="19.75" PointY="3.75" />
+        <EntityTypeShape EntityType="db_silviModel.tblMaster_User" Width="1.5" PointX="19.75" PointY="6.75" />
+        <EntityTypeShape EntityType="db_silviModel.tblMaster_UserType" Width="1.5" PointX="13.75" PointY="19.75" />
+        <EntityTypeShape EntityType="db_silviModel.tblUser_LevelDownline" Width="1.5" PointX="19.75" PointY="15.75" />
+        <EntityTypeShape EntityType="db_silviModel.tblOTPVerification" Width="1.5" PointX="15.75" PointY="19.75" />
+        <EntityTypeShape EntityType="db_silviModel.View_Users" Width="1.5" PointX="17.75" PointY="19.75" />
+        <AssociationConnector Association="db_silviModel.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" />
+        <AssociationConnector Association="db_silviModel.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" />
+        <AssociationConnector Association="db_silviModel.FK_tblFlightConnectionVia_tblFlightInventory" />
+        <AssociationConnector Association="db_silviModel.FK_tblFlightFares_tblFlightInventory" />
+        <AssociationConnector Association="db_silviModel.FK_tblManage_AssignAPI_tblManage_API" />
+        <AssociationConnector Association="db_silviModel.FK__tblMaster__State__2F10007B" />
+        <AssociationConnector Association="db_silviModel.AspNetUserRoles" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

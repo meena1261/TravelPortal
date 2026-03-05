@@ -1,0 +1,147 @@
+﻿@model AddEditAPISupplierModel
+<div class="modal fade" id="addedit_modal" role="dialog">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">API Supplier</h5>
+                <button class="btn-close custom-btn-close border p-1 me-0 text-dark" data-bs-dismiss="modal"
+                        aria-label="Close">
+                    <i class="ti ti-x"></i>
+                </button>
+            </div>
+            @using (Ajax.BeginForm("AddEditAPISupplier", "Admin", null, new AjaxOptions { HttpMethod = "POST", OnSuccess = "fn_Success", OnFailure = "fn_Failure", OnBegin = "fnStartLoader", OnComplete = "fnStopLoader" }, new { enctype = "multipart/form-data" }))
+            {
+                @Html.HiddenFor(m => m.APIID)
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="text-dark mb-1">Supplier Name</label>
+                                @Html.TextBoxFor(m => m.Supplier, new { @class = "form-control mb-2", @data_val = "true", @data_val_required = "Required" })
+                            </div>
+                            @Html.ValidationMessageFor(model => model.Supplier, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="text-dark mb-1">API Type</label>
+                                @Html.TextBoxFor(m => m.APIType, new { @class = "form-control mb-2", @data_val = "true", @data_val_required = "Required" })
+                            </div>
+                            @Html.ValidationMessageFor(model => model.APIType, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5 class="card-title">Live Credentials </h5>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label class="text-dark mb-1">End Point URL</label>
+                                                @Html.TextBoxFor(m => m.LiveEndPointUrl, new { @class = "form-control mb-2" })
+                                            </div>
+                                            @Html.ValidationMessageFor(model => model.LiveEndPointUrl, "", new { @class = "text-danger" })
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label class="text-dark mb-1">Clinet Id</label>
+                                                @Html.TextBoxFor(m => m.LiveClientId, new { @class = "form-control mb-2" })
+                                            </div>
+                                            @Html.ValidationMessageFor(model => model.LiveClientId, "", new { @class = "text-danger" })
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label class="text-dark mb-1">Client Secret Key</label>
+                                                @Html.TextBoxFor(m => m.LiveClientSecret, new { @class = "form-control mb-2" })
+                                            </div>
+                                            @Html.ValidationMessageFor(model => model.LiveClientSecret, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5 class="card-title">Test Credentials </h5>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label class="text-dark mb-1">End Point URL</label>
+                                                @Html.TextBoxFor(m => m.TestEndPointUrl, new { @class = "form-control mb-2", @data_val = "true", @data_val_required = "Required" })
+                                            </div>
+                                            @Html.ValidationMessageFor(model => model.TestEndPointUrl, "", new { @class = "text-danger" })
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label class="text-dark mb-1">Clinet Id</label>
+                                                @Html.TextBoxFor(m => m.TestClientId, new { @class = "form-control mb-2", @data_val = "true", @data_val_required = "Required" })
+                                            </div>
+                                            @Html.ValidationMessageFor(model => model.TestClientId, "", new { @class = "text-danger" })
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label class="text-dark mb-1">Client Secret Key</label>
+                                                @Html.TextBoxFor(m => m.TestClientSecret, new { @class = "form-control mb-2", @data_val = "true", @data_val_required = "Required" })
+                                            </div>
+                                            @Html.ValidationMessageFor(model => model.TestClientSecret, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <div>
+                        <button type="submit" class="btn btn-success" id="btnContinue">
+                            @(Model.APIID > 0 ?"Update": "Submit")
+                        </button>
+                        <button class="btn btn-success" type="button" disabled="" id="btndisabled" style="display:none;">
+                            <span class="spinner-border spinner-border-sm align-middle" role="status" aria-hidden="true"></span>
+                            Pleas wait ...
+                        </button>
+
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+@Scripts.Render("~/bundles/jqueryval")
+<script>
+    function fn_Success(d) {
+        if (d.status > 0) {
+            $.toast({
+                heading: 'Success',
+                text: d.message,
+                position: 'top-right',
+                showHideTransition: 'fade',
+                icon: 'success'
+            });
+            location.reload();
+        } else {
+            $.toast({
+                heading: 'Message',
+                text: d.message,
+                position: 'top-right',
+                showHideTransition: 'fade',
+                icon: 'error'
+            });
+        }
+    }
+    function fn_Failure(d) {
+        $.toast({
+            heading: 'Message',
+            text: 'failed',
+            position: 'top-right',
+            showHideTransition: 'fade',
+            icon: 'error'
+        });
+    }
+</script>
+

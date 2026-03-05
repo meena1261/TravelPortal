@@ -1,0 +1,12 @@
+D:\Project\TravelPortal\TravelPortal.EDMX\bin\Release\TravelPortal.EDMX.dll.config
+D:\Project\TravelPortal\TravelPortal.EDMX\bin\Release\TravelPortal.EDMX.dll
+D:\Project\TravelPortal\TravelPortal.EDMX\bin\Release\TravelPortal.EDMX.pdb
+D:\Project\TravelPortal\TravelPortal.EDMX\bin\Release\EntityFramework.dll
+D:\Project\TravelPortal\TravelPortal.EDMX\bin\Release\EntityFramework.SqlServer.dll
+D:\Project\TravelPortal\TravelPortal.EDMX\bin\Release\EntityFramework.xml
+D:\Project\TravelPortal\TravelPortal.EDMX\bin\Release\EntityFramework.SqlServer.xml
+D:\Project\TravelPortal\TravelPortal.EDMX\obj\Release\TravelPortal.EDMX.csproj.AssemblyReference.cache
+D:\Project\TravelPortal\TravelPortal.EDMX\obj\Release\TravelPortal.EDMX.csproj.CoreCompileInputs.cache
+D:\Project\TravelPortal\TravelPortal.EDMX\obj\Release\TravelPo.A4E13826.Up2Date
+D:\Project\TravelPortal\TravelPortal.EDMX\obj\Release\TravelPortal.EDMX.dll
+D:\Project\TravelPortal\TravelPortal.EDMX\obj\Release\TravelPortal.EDMX.pdb

@@ -1,0 +1,90 @@
+﻿@{
+   var objlist = ViewBag.list as List<TravelPortal.web.Models.ViewModel.InventoryListViewModel>;
+}
+
+<div class="card hotel-list mb-0">
+    <div class="card-body p-0">
+        <div class="list-header d-flex align-items-center justify-content-between flex-wrap">
+            <h6>Inventory List</h6>
+           
+        </div>
+        <div class="table-responsive">
+            <table class="table">
+                <thead class="thead-light">
+                    <tr>
+                        <th>Block Out</th>
+                        <th>Flight no.</th>
+                        <th>Sector</th>
+                        <th>Dept Time</th>
+                        <th>Arr Time</th>
+                        <th>Eff From</th>
+                        <th>Eff To</th>
+                        <th>Block Out days</th>
+                        <th>Days of Operations</th>
+                        <th>Supplier Name</th>
+                        <th>Economy</th>
+                        <th>First</th>
+                        <th>Bussiness</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (objlist.Count > 0)
+                    {
+                        foreach (var item in objlist)
+                        {
+                            <tr>
+                                <td>
+                                    <a href="#">Black out</a>
+                                </td>
+                                <td>
+                                    @item.FlightNo
+                                </td>
+                                <td>
+                                    @item.Sector
+                                </td>
+                                <td>
+                                    @item.DeptTime
+                                </td>
+                                <td>
+                                    @item.ArrivalTime
+                                </td>
+                                <td>
+                                    @item.From
+                                </td>
+                                <td>
+                                    @item.To
+                                </td>
+                                <td>
+                                    @item.BlackoutDays
+                                </td>
+                                <td>
+                                    @item.DaysofOperations
+                                </td>
+                                <td>
+                                    @item.Supplier
+                                </td>
+                                <td>
+                                    @item.TotalEconomy
+                                </td>
+                                <td>
+                                    @item.TotalFirstClass
+                                </td>
+                                <td>
+                                    @item.TotalBussiness
+                                </td>
+                                <td>
+                                    @item.Status
+                                </td>
+                                <td>
+                                    <a href="#">Action</a>
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,905 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="db_silviModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityContainer Name="db_silviEntities" annotation:LazyLoadingEnabled="true">
+    <FunctionImport Name="ProcMaster_User" ReturnType="Collection(db_silviModel.ProcMaster_User_Result)">
+      <Parameter Name="Action" Mode="In" Type="String" />
+      <Parameter Name="Usrno" Mode="In" Type="Int32" />
+      <Parameter Name="Mobile" Mode="In" Type="String" />
+      <Parameter Name="Name" Mode="In" Type="String" />
+      <Parameter Name="Email" Mode="In" Type="String" />
+      <Parameter Name="AspNetID" Mode="In" Type="String" />
+      <Parameter Name="UserID" Mode="In" Type="String" />
+      <Parameter Name="Password" Mode="In" Type="String" />
+      <Parameter Name="ReferralCode" Mode="In" Type="String" />
+      <Parameter Name="CreatedByUserID" Mode="In" Type="Int32" />
+      <Parameter Name="UserTypeId" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="ProcMaster_MainWallet" ReturnType="Collection(db_silviModel.ProcMaster_MainWallet_Result)">
+      <Parameter Name="UsrNo" Mode="In" Type="Int32" />
+      <Parameter Name="Amount" Mode="In" Type="Decimal" />
+      <Parameter Name="Factor" Mode="In" Type="String" />
+      <Parameter Name="Narration" Mode="In" Type="String" />
+      <Parameter Name="IsReturn" Mode="In" Type="Int32" />
+      <Parameter Name="Remark" Mode="In" Type="String" />
+      <Parameter Name="TransactionId" Mode="In" Type="String" />
+    </FunctionImport>
+    <EntitySet Name="AgentNotes" EntityType="db_silviModel.AgentNote" />
+    <EntitySet Name="Airlines" EntityType="db_silviModel.Airline" />
+    <EntitySet Name="AspNetRoles" EntityType="db_silviModel.AspNetRole" />
+    <EntitySet Name="AspNetUserClaims" EntityType="db_silviModel.AspNetUserClaim" />
+    <EntitySet Name="AspNetUserLogins" EntityType="db_silviModel.AspNetUserLogin" />
+    <EntitySet Name="AspNetUsers" EntityType="db_silviModel.AspNetUser" />
+    <EntitySet Name="CountryMasters" EntityType="db_silviModel.CountryMaster" />
+    <EntitySet Name="CreditWallets" EntityType="db_silviModel.CreditWallet" />
+    <EntitySet Name="CreditWalletStatements" EntityType="db_silviModel.CreditWalletStatement" />
+    <EntitySet Name="ErrorLogs" EntityType="db_silviModel.ErrorLog" />
+    <EntitySet Name="FlightBookingHistories" EntityType="db_silviModel.FlightBookingHistory" />
+    <EntitySet Name="SupportchatAttachFiles" EntityType="db_silviModel.SupportchatAttachFile" />
+    <EntitySet Name="SupportChats" EntityType="db_silviModel.SupportChat" />
+    <EntitySet Name="tblAccount_Main" EntityType="db_silviModel.tblAccount_Main" />
+    <EntitySet Name="tblAccount_MainDetails" EntityType="db_silviModel.tblAccount_MainDetails" />
+    <EntitySet Name="tblFlight_SearchLog" EntityType="db_silviModel.tblFlight_SearchLog" />
+    <EntitySet Name="tblFlightConnectionVias" EntityType="db_silviModel.tblFlightConnectionVia" />
+    <EntitySet Name="tblFlightFares" EntityType="db_silviModel.tblFlightFare" />
+    <EntitySet Name="tblFlightInventories" EntityType="db_silviModel.tblFlightInventory" />
+    <EntitySet Name="tblHistory_FundRequest" EntityType="db_silviModel.tblHistory_FundRequest" />
+    <EntitySet Name="tblManage_AgentKYC" EntityType="db_silviModel.tblManage_AgentKYC" />
+    <EntitySet Name="tblManage_API" EntityType="db_silviModel.tblManage_API" />
+    <EntitySet Name="tblManage_AssignAPI" EntityType="db_silviModel.tblManage_AssignAPI" />
+    <EntitySet Name="tblManage_CityAirport" EntityType="db_silviModel.tblManage_CityAirport" />
+    <EntitySet Name="tblManage_CompanyAccount" EntityType="db_silviModel.tblManage_CompanyAccount" />
+    <EntitySet Name="tblManage_Coupons" EntityType="db_silviModel.tblManage_Coupons" />
+    <EntitySet Name="tblManage_CreditLimit" EntityType="db_silviModel.tblManage_CreditLimit" />
+    <EntitySet Name="tblManage_Customer" EntityType="db_silviModel.tblManage_Customer" />
+    <EntitySet Name="tblManage_Markup" EntityType="db_silviModel.tblManage_Markup" />
+    <EntitySet Name="tblManage_MenuRights" EntityType="db_silviModel.tblManage_MenuRights" />
+    <EntitySet Name="tblManage_UserInvited" EntityType="db_silviModel.tblManage_UserInvited" />
+    <EntitySet Name="tblMaster_AgencyType" EntityType="db_silviModel.tblMaster_AgencyType" />
+    <EntitySet Name="tblMaster_Bank" EntityType="db_silviModel.tblMaster_Bank" />
+    <EntitySet Name="tblMaster_BusinessType" EntityType="db_silviModel.tblMaster_BusinessType" />
+    <EntitySet Name="tblMaster_City" EntityType="db_silviModel.tblMaster_City" />
+    <EntitySet Name="tblMaster_CreditType" EntityType="db_silviModel.tblMaster_CreditType" />
+    <EntitySet Name="tblMaster_KYCDocumentType" EntityType="db_silviModel.tblMaster_KYCDocumentType" />
+    <EntitySet Name="tblMaster_Menu" EntityType="db_silviModel.tblMaster_Menu" />
+    <EntitySet Name="tblMaster_State" EntityType="db_silviModel.tblMaster_State" />
+    <EntitySet Name="tblMaster_SupportingDocumentType" EntityType="db_silviModel.tblMaster_SupportingDocumentType" />
+    <EntitySet Name="tblMaster_User" EntityType="db_silviModel.tblMaster_User" />
+    <EntitySet Name="tblMaster_UserType" EntityType="db_silviModel.tblMaster_UserType" />
+    <EntitySet Name="tblUser_LevelDownline" EntityType="db_silviModel.tblUser_LevelDownline" />
+    <EntitySet Name="tblOTPVerifications" EntityType="db_silviModel.tblOTPVerification" />
+    <EntitySet Name="View_Users" EntityType="db_silviModel.View_Users" />
+    <AssociationSet Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" Association="db_silviModel.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
+      <End Role="AspNetUser" EntitySet="AspNetUsers" />
+      <End Role="AspNetUserClaim" EntitySet="AspNetUserClaims" />
+    </AssociationSet>
+    <AssociationSet Name="FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" Association="db_silviModel.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId">
+      <End Role="AspNetUser" EntitySet="AspNetUsers" />
+      <End Role="AspNetUserLogin" EntitySet="AspNetUserLogins" />
+    </AssociationSet>
+    <AssociationSet Name="FK_tblFlightConnectionVia_tblFlightInventory" Association="db_silviModel.FK_tblFlightConnectionVia_tblFlightInventory">
+      <End Role="tblFlightInventory" EntitySet="tblFlightInventories" />
+      <End Role="tblFlightConnectionVia" EntitySet="tblFlightConnectionVias" />
+    </AssociationSet>
+    <AssociationSet Name="FK_tblFlightFares_tblFlightInventory" Association="db_silviModel.FK_tblFlightFares_tblFlightInventory">
+      <End Role="tblFlightInventory" EntitySet="tblFlightInventories" />
+      <End Role="tblFlightFare" EntitySet="tblFlightFares" />
+    </AssociationSet>
+    <AssociationSet Name="FK_tblManage_AssignAPI_tblManage_API" Association="db_silviModel.FK_tblManage_AssignAPI_tblManage_API">
+      <End Role="tblManage_API" EntitySet="tblManage_API" />
+      <End Role="tblManage_AssignAPI" EntitySet="tblManage_AssignAPI" />
+    </AssociationSet>
+    <AssociationSet Name="FK__tblMaster__State__2F10007B" Association="db_silviModel.FK__tblMaster__State__2F10007B">
+      <End Role="tblMaster_State" EntitySet="tblMaster_State" />
+      <End Role="tblMaster_City" EntitySet="tblMaster_City" />
+    </AssociationSet>
+    <AssociationSet Name="AspNetUserRoles" Association="db_silviModel.AspNetUserRoles">
+      <End Role="AspNetRole" EntitySet="AspNetRoles" />
+      <End Role="AspNetUser" EntitySet="AspNetUsers" />
+    </AssociationSet>
+  </EntityContainer>
+  <ComplexType Name="ProcMaster_User_Result">
+    <Property Type="Int32" Name="Status" Nullable="false" />
+    <Property Type="String" Name="Message" Nullable="false" MaxLength="21" />
+  </ComplexType>
+  <ComplexType Name="ProcMaster_MainWallet_Result">
+    <Property Type="Int32" Name="Status" Nullable="false" />
+    <Property Type="String" Name="Message" Nullable="false" MaxLength="34" />
+  </ComplexType>
+  <EntityType Name="AgentNote">
+    <Key>
+      <PropertyRef Name="NotesID" />
+    </Key>
+    <Property Name="NotesID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Usrno" Type="Int32" />
+    <Property Name="NotesTitle" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="Tag" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="Priority" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="Descriptions" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="IsImportant" Type="Boolean" />
+    <Property Name="IsDelete" Type="Boolean" />
+    <Property Name="AddDate" Type="DateTime" Precision="3" />
+  </EntityType>
+  <EntityType Name="Airline">
+    <Key>
+      <PropertyRef Name="AirlineID" />
+    </Key>
+    <Property Name="AirlineID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="IATA_Code" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="ICAO_Code" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="Country" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="IsActive" Type="Boolean" />
+  </EntityType>
+  <EntityType Name="AspNetRole">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+    <Property Name="Name" Type="String" Nullable="false" MaxLength="256" FixedLength="false" Unicode="true" />
+    <Property Name="IsActive" Type="Boolean" />
+    <Property Name="NormalizedName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="ConcurrencyStamp" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="RoleNameNormalized" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="RoleName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="AspNetUsers" Relationship="db_silviModel.AspNetUserRoles" FromRole="AspNetRole" ToRole="AspNetUser" />
+  </EntityType>
+  <EntityType Name="AspNetUserClaim">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="UserId" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+    <Property Name="ClaimType" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="ClaimValue" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="AspNetUser" Relationship="db_silviModel.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" FromRole="AspNetUserClaim" ToRole="AspNetUser" />
+  </EntityType>
+  <EntityType Name="AspNetUserLogin">
+    <Key>
+      <PropertyRef Name="LoginProvider" />
+      <PropertyRef Name="ProviderKey" />
+      <PropertyRef Name="UserId" />
+    </Key>
+    <Property Name="LoginProvider" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+    <Property Name="ProviderKey" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+    <Property Name="UserId" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="AspNetUser" Relationship="db_silviModel.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" FromRole="AspNetUserLogin" ToRole="AspNetUser" />
+  </EntityType>
+  <EntityType Name="AspNetUser">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+    <Property Name="Email" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+    <Property Name="EmailConfirmed" Type="Boolean" Nullable="false" />
+    <Property Name="PasswordHash" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="SecurityStamp" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="PhoneNumber" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="PhoneNumberConfirmed" Type="Boolean" Nullable="false" />
+    <Property Name="TwoFactorEnabled" Type="Boolean" Nullable="false" />
+    <Property Name="LockoutEndDateUtc" Type="DateTime" Precision="3" />
+    <Property Name="LockoutEnabled" Type="Boolean" Nullable="false" />
+    <Property Name="AccessFailedCount" Type="Int32" Nullable="false" />
+    <Property Name="UserName" Type="String" Nullable="false" MaxLength="256" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="AspNetUserClaims" Relationship="db_silviModel.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" FromRole="AspNetUser" ToRole="AspNetUserClaim" />
+    <NavigationProperty Name="AspNetUserLogins" Relationship="db_silviModel.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" FromRole="AspNetUser" ToRole="AspNetUserLogin" />
+    <NavigationProperty Name="AspNetRoles" Relationship="db_silviModel.AspNetUserRoles" FromRole="AspNetUser" ToRole="AspNetRole" />
+  </EntityType>
+  <EntityType Name="CountryMaster">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="CountryName" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+    <Property Name="ISO2" Type="String" MaxLength="2" FixedLength="true" Unicode="false" />
+    <Property Name="ISO3" Type="String" MaxLength="3" FixedLength="true" Unicode="false" />
+    <Property Name="PhoneCode" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="CurrencyName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="CurrencyCode" Type="String" MaxLength="3" FixedLength="true" Unicode="false" />
+    <Property Name="CurrencySymbol" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="CreditWallet">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="UsrNo" Type="Int32" />
+    <Property Name="Debit" Type="Decimal" Precision="18" Scale="2" />
+    <Property Name="Credit" Type="Decimal" Precision="18" Scale="2" />
+    <Property Name="Balance" Type="Decimal" Precision="19" Scale="2" annotation:StoreGeneratedPattern="Computed" />
+    <Property Name="IsDelete" Type="Boolean" />
+    <Property Name="IsActive" Type="Boolean" />
+    <Property Name="AddDate" Type="DateTime" Precision="3" />
+  </EntityType>
+  <EntityType Name="CreditWalletStatement">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="UsrNo" Type="Int32" />
+    <Property Name="Amount" Type="Decimal" Precision="18" Scale="2" />
+    <Property Name="Balance" Type="Decimal" Precision="18" Scale="2" />
+    <Property Name="Factor" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="Narration" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="AddDate" Type="DateTime" Precision="3" />
+    <Property Name="Remark" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="TransactionId" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <EntityType Name="ErrorLog">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Message" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="StackTrace" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Url" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="HttpMethod" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="UserHostAddress" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="CreatedAt" Type="DateTime" Precision="3" />
+  </EntityType>
+  <EntityType Name="FlightBookingHistory">
+    <Key>
+      <PropertyRef Name="BookHistoryID" />
+    </Key>
+    <Property Name="BookHistoryID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Usrno" Type="Int32" Nullable="false" />
+    <Property Name="TripType" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="Sector" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="DepartureDates" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="ArrivalDates" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Adults" Type="Int32" Nullable="false" />
+    <Property Name="Childs" Type="Int32" Nullable="false" />
+    <Property Name="Infants" Type="Int32" Nullable="false" />
+    <Property Name="CabinClass" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="FlightOrderID" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="QueuingOfficeId" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="PaymentMode" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="TotalAmount" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+    <Property Name="DiscountAmount" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+    <Property Name="PaybleAmount" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+    <Property Name="PaymentStatus" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="PaymentOrderID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="BookingStatus" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="BookingDescription" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="3" />
+  </EntityType>
+  <EntityType Name="SupportchatAttachFile">
+    <Key>
+      <PropertyRef Name="AttachFileID" />
+    </Key>
+    <Property Name="AttachFileID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="SupportChatID" Type="Int32" />
+    <Property Name="Path" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="FileName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="AddDate" Type="DateTime" Precision="3" />
+  </EntityType>
+  <EntityType Name="SupportChat">
+    <Key>
+      <PropertyRef Name="SupportChatID" />
+    </Key>
+    <Property Name="SupportChatID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="SenderUsrno" Type="Int32" />
+    <Property Name="ReceiverUsrno" Type="Int32" />
+    <Property Name="Message" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Attachfile" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="IsRead" Type="Boolean" />
+    <Property Name="IsDelete" Type="Boolean" />
+    <Property Name="IsBlock" Type="Boolean" />
+    <Property Name="AddDate" Type="DateTime" Precision="3" />
+  </EntityType>
+  <EntityType Name="tblAccount_Main">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="UsrNo" Type="Int32" />
+    <Property Name="Debit" Type="Decimal" Precision="18" Scale="2" />
+    <Property Name="Credit" Type="Decimal" Precision="18" Scale="2" />
+    <Property Name="Balance" Type="Decimal" Precision="19" Scale="2" annotation:StoreGeneratedPattern="Computed" />
+    <Property Name="IsDelete" Type="Boolean" />
+    <Property Name="IsActive" Type="Boolean" />
+    <Property Name="AddDate" Type="DateTime" Precision="3" />
+  </EntityType>
+  <EntityType Name="tblAccount_MainDetails">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="UsrNo" Type="Int32" />
+    <Property Name="Amount" Type="Decimal" Precision="18" Scale="2" />
+    <Property Name="Balance" Type="Decimal" Precision="18" Scale="2" />
+    <Property Name="Factor" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="Narration" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="AddDate" Type="DateTime" Precision="3" />
+    <Property Name="Remark" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="TransactionId" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <EntityType Name="tblFlight_SearchLog">
+    <Key>
+      <PropertyRef Name="SearchLogID" />
+    </Key>
+    <Property Name="SearchLogID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Usrno" Type="Int32" />
+    <Property Name="TripType" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="Origin" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Destination" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="DepartureDate" Type="DateTime" Precision="3" />
+    <Property Name="ReturnDate" Type="DateTime" Precision="3" />
+    <Property Name="AdultCount" Type="Int32" />
+    <Property Name="ChildCount" Type="Int32" />
+    <Property Name="InfantCount" Type="Int32" />
+    <Property Name="TravelClass" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="IsBook" Type="Boolean" />
+    <Property Name="IPAddress" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="AddDate" Type="DateTime" Precision="3" />
+  </EntityType>
+  <EntityType Name="tblFlightConnectionVia">
+    <Key>
+      <PropertyRef Name="FlightConnectionViaID" />
+    </Key>
+    <Property Name="FlightConnectionViaID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="FlightInventoryID" Type="Int32" Nullable="false" />
+    <Property Name="Operator" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="Flight" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="FlightNo" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="OriginCode" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="DepatureTime" Type="Time" Precision="7" />
+    <Property Name="DepatureTerminal" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="DestinationCode" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="ArrivalTime" Type="Time" Precision="7" />
+    <Property Name="ArrivalTerminal" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="IsNextDay" Type="Boolean" />
+    <Property Name="DepatureOnNextDay" Type="Boolean" />
+    <Property Name="IsActive" Type="Boolean" />
+    <Property Name="IsDelete" Type="Boolean" />
+    <Property Name="AddDate" Type="DateTime" Precision="3" />
+    <NavigationProperty Name="tblFlightInventory" Relationship="db_silviModel.FK_tblFlightConnectionVia_tblFlightInventory" FromRole="tblFlightConnectionVia" ToRole="tblFlightInventory" />
+  </EntityType>
+  <EntityType Name="tblFlightFare">
+    <Key>
+      <PropertyRef Name="FlightFareID" />
+    </Key>
+    <Property Name="FlightFareID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="FlightInventoryID" Type="Int32" Nullable="false" />
+    <Property Name="ClassType" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+    <Property Name="RBD" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Seats" Type="Int32" />
+    <Property Name="AdultFare" Type="Int32" />
+    <Property Name="AdultFareBreakup" Type="Decimal" Precision="18" Scale="2" />
+    <Property Name="ChildFare" Type="Int32" />
+    <Property Name="ChildFareBreakup" Type="Decimal" Precision="18" Scale="2" />
+    <Property Name="InfantFare" Type="Int32" />
+    <Property Name="InfantFareBreakup" Type="Decimal" Precision="18" Scale="2" />
+    <Property Name="IsBaggage" Type="Boolean" />
+    <Property Name="AdultBaggage" Type="Int32" />
+    <Property Name="ChildBaggage" Type="Int32" />
+    <Property Name="InfantBaggage" Type="Int32" />
+    <Property Name="Unit" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="IsRefund" Type="Boolean" />
+    <Property Name="PNR" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="IsActive" Type="Boolean" />
+    <Property Name="AddDate" Type="DateTime" Precision="3" />
+    <NavigationProperty Name="tblFlightInventory" Relationship="db_silviModel.FK_tblFlightFares_tblFlightInventory" FromRole="tblFlightFare" ToRole="tblFlightInventory" />
+  </EntityType>
+  <EntityType Name="tblFlightInventory">
+    <Key>
+      <PropertyRef Name="FlightInventoryID" />
+    </Key>
+    <Property Name="FlightInventoryID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Usrno" Type="Int32" Nullable="false" />
+    <Property Name="AirlineCode" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="FlightNumber" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="FromDate" Type="DateTime" Nullable="false" Precision="0" />
+    <Property Name="Todate" Type="DateTime" Nullable="false" Precision="0" />
+    <Property Name="OriginCode" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="DepartureTime" Type="Time" Nullable="false" Precision="7" />
+    <Property Name="DepartureTerminal" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="DestinationCode" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="ArrivalTime" Type="Time" Nullable="false" Precision="7" />
+    <Property Name="ArrivalTerminal" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="FareRules" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="FareDisplayType" Type="Int32" />
+    <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Mobile" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+    <Property Name="StopTicketingDays" Type="Int32" />
+    <Property Name="StopTicketingTime" Type="Time" Precision="7" />
+    <Property Name="AvailableDays" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="ConnectionType" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="Stops" Type="Int32" />
+    <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="IsActive" Type="Boolean" />
+    <Property Name="IsDelete" Type="Boolean" />
+    <Property Name="IsApproved" Type="Boolean" />
+    <Property Name="IsRejected" Type="Boolean" />
+    <Property Name="Remark" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="tblFlightConnectionVias" Relationship="db_silviModel.FK_tblFlightConnectionVia_tblFlightInventory" FromRole="tblFlightInventory" ToRole="tblFlightConnectionVia" />
+    <NavigationProperty Name="tblFlightFares" Relationship="db_silviModel.FK_tblFlightFares_tblFlightInventory" FromRole="tblFlightInventory" ToRole="tblFlightFare" />
+  </EntityType>
+  <EntityType Name="tblHistory_FundRequest">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Usrno" Type="Int32" />
+    <Property Name="Amount" Type="Decimal" Precision="18" Scale="2" />
+    <Property Name="UTRNo" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+    <Property Name="TransactionDate" Type="DateTime" Precision="3" />
+    <Property Name="PaymentMode" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="BankName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="TransactionProof" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="AddDate" Type="DateTime" Precision="3" />
+    <Property Name="IsApproved" Type="Boolean" />
+    <Property Name="IsRejected" Type="Boolean" />
+    <Property Name="Remark" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="ActionDate" Type="DateTime" Precision="3" />
+  </EntityType>
+  <EntityType Name="tblManage_AgentKYC">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Usrno" Type="Int32" Nullable="false" />
+    <Property Name="AgencyTypeID" Type="Int32" />
+    <Property Name="AgencyName" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="PanNumber" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+    <Property Name="PancardImg" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="GstNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="BusinessTypeId" Type="Int32" />
+    <Property Name="AgencyAddress" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="Pincode" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="City" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="State" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="KycDocumentTypeId" Type="Int32" />
+    <Property Name="DocumentFile" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="SupportingDocumentTypeId" Type="Int32" />
+    <Property Name="SupportingDocumentFile" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="IsApproved" Type="Boolean" Nullable="false" />
+    <Property Name="IsRejected" Type="Boolean" Nullable="false" />
+    <Property Name="Remark" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="CreatedByUsrno" Type="Int32" />
+  </EntityType>
+  <EntityType Name="tblManage_API">
+    <Key>
+      <PropertyRef Name="APIID" />
+    </Key>
+    <Property Name="APIID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Supplier" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="APIType" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="LiveEndPointUrl" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="LiveClientId" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="LiveClientSecret" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="TestEndPointUrl" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="TestClientId" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="TestClientSecret" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="IsLive" Type="Boolean" />
+    <Property Name="IsActive" Type="Boolean" />
+    <Property Name="Priority" Type="Int32" />
+    <Property Name="AddDate" Type="DateTime" Precision="3" />
+    <NavigationProperty Name="tblManage_AssignAPI" Relationship="db_silviModel.FK_tblManage_AssignAPI_tblManage_API" FromRole="tblManage_API" ToRole="tblManage_AssignAPI" />
+  </EntityType>
+  <EntityType Name="tblManage_AssignAPI">
+    <Key>
+      <PropertyRef Name="AssignId" />
+    </Key>
+    <Property Name="AssignId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Usrno" Type="Int32" Nullable="false" />
+    <Property Name="APIID" Type="Int32" Nullable="false" />
+    <Property Name="IsActive" Type="Boolean" />
+    <NavigationProperty Name="tblManage_API" Relationship="db_silviModel.FK_tblManage_AssignAPI_tblManage_API" FromRole="tblManage_AssignAPI" ToRole="tblManage_API" />
+  </EntityType>
+  <EntityType Name="tblManage_CityAirport">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="Code" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+    <Property Name="Description" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+    <Property Name="IsActive" Type="Boolean" />
+    <Property Name="AddDate" Type="DateTime" Precision="3" />
+    <Property Name="City" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Country" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="ICAOCode" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <EntityType Name="tblManage_CompanyAccount">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="AccountNo" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+    <Property Name="HolderName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="IFSCCode" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+    <Property Name="BankName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="AccountType" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+    <Property Name="Branch" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+    <Property Name="BranchLocation" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="IsActive" Type="Boolean" />
+    <Property Name="AddDate" Type="DateTime" Precision="3" />
+  </EntityType>
+  <EntityType Name="tblManage_Coupons">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="CouponCode" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="DiscountType" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+    <Property Name="Discount" Type="Decimal" Precision="18" Scale="2" />
+    <Property Name="MaxUsage" Type="Int32" />
+    <Property Name="ExpiryDate" Type="DateTime" Precision="3" />
+    <Property Name="IsActive" Type="Boolean" />
+    <Property Name="AddDate" Type="DateTime" Precision="3" />
+    <Property Name="Description" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="tblManage_CreditLimit">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Usrno" Type="Int32" />
+    <Property Name="CreditTypeID" Type="Int32" />
+    <Property Name="Amount" Type="Decimal" Precision="18" Scale="2" />
+    <Property Name="RequestedAmount" Type="Decimal" Precision="18" Scale="2" />
+    <Property Name="UsedAmount" Type="Decimal" Precision="18" Scale="2" />
+    <Property Name="AvailableAmount" Type="Decimal" Precision="18" Scale="2" />
+    <Property Name="Days" Type="Int32" />
+    <Property Name="Remark" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="AdminRemark" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="AttachFile" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+    <Property Name="IsApproved" Type="Boolean" />
+    <Property Name="IsRejected" Type="Boolean" />
+    <Property Name="ActionDate" Type="DateTime" Precision="3" />
+    <Property Name="ActionByUsrno" Type="Int32" />
+    <Property Name="AddDate" Type="DateTime" Precision="3" />
+  </EntityType>
+  <EntityType Name="tblManage_Customer">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="Mobile" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+    <Property Name="Email" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="UserID" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="Password" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+    <Property Name="AddDate" Type="DateTime" Precision="3" />
+    <Property Name="OTP" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <EntityType Name="tblManage_Markup">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="MarkupTypeID" Type="Int32" />
+    <Property Name="Value" Type="Decimal" Precision="18" Scale="2" />
+    <Property Name="CurrencyID" Type="Int32" />
+    <Property Name="MethodID" Type="Int32" />
+    <Property Name="StartDate" Type="DateTime" Precision="3" />
+    <Property Name="EndDate" Type="DateTime" Precision="3" />
+    <Property Name="MarkupCategoryId" Type="Int32" />
+    <Property Name="Usrno" Type="Int32" />
+    <Property Name="AirlineCode" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="CreatedByUsrno" Type="Int32" />
+    <Property Name="IsUniversal" Type="Boolean" />
+    <Property Name="IsUniversalOverride" Type="Boolean" />
+    <Property Name="IsActive" Type="Boolean" />
+    <Property Name="AddDate" Type="DateTime" Precision="3" />
+  </EntityType>
+  <EntityType Name="tblManage_MenuRights">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Usrno" Type="Int32" />
+    <Property Name="MenuID" Type="Int32" />
+    <Property Name="IsAdd" Type="Boolean" />
+    <Property Name="IsEdit" Type="Boolean" />
+    <Property Name="IsDelete" Type="Boolean" />
+  </EntityType>
+  <EntityType Name="tblManage_UserInvited">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="RoleId" Type="Int32" />
+    <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="Email" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+    <Property Name="Mobile" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+    <Property Name="InvitedUsrno" Type="Int32" />
+    <Property Name="IsActive" Type="Boolean" />
+    <Property Name="AddDate" Type="DateTime" Precision="3" />
+  </EntityType>
+  <EntityType Name="tblMaster_AgencyType">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="AgencyType" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="IsActive" Type="Boolean" />
+  </EntityType>
+  <EntityType Name="tblMaster_Bank">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="BankName" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+    <Property Name="AddDate" Type="DateTime" Precision="3" />
+    <Property Name="IsActive" Type="Boolean" />
+  </EntityType>
+  <EntityType Name="tblMaster_BusinessType">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="BusinessType" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="IsActive" Type="Boolean" />
+  </EntityType>
+  <EntityType Name="tblMaster_City">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="StateID" Type="Int32" />
+    <NavigationProperty Name="tblMaster_State" Relationship="db_silviModel.FK__tblMaster__State__2F10007B" FromRole="tblMaster_City" ToRole="tblMaster_State" />
+  </EntityType>
+  <EntityType Name="tblMaster_CreditType">
+    <Key>
+      <PropertyRef Name="CreditTypeId" />
+    </Key>
+    <Property Name="CreditTypeId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="CreditType" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="IsActive" Type="Boolean" />
+  </EntityType>
+  <EntityType Name="tblMaster_KYCDocumentType">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="KYCDocumentType" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="IsActive" Type="Boolean" />
+  </EntityType>
+  <EntityType Name="tblMaster_Menu">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="MenuName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="URL" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="PageName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="Icon" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="ControllerName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="ActionName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="MenuLevel" Type="Int32" />
+    <Property Name="ParentID" Type="Int32" />
+    <Property Name="SubParentID" Type="Int32" />
+    <Property Name="Position" Type="Int32" />
+    <Property Name="IsActive" Type="Boolean" />
+    <Property Name="AddDate" Type="DateTime" Precision="3" />
+  </EntityType>
+  <EntityType Name="tblMaster_State">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="StateName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="IsActive" Type="Boolean" />
+    <NavigationProperty Name="tblMaster_City" Relationship="db_silviModel.FK__tblMaster__State__2F10007B" FromRole="tblMaster_State" ToRole="tblMaster_City" />
+  </EntityType>
+  <EntityType Name="tblMaster_SupportingDocumentType">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="SupportingDocumentType" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="IsActive" Type="Boolean" />
+  </EntityType>
+  <EntityType Name="tblMaster_User">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Usrno" Type="Int32" />
+    <Property Name="AspNetID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Name" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="Email" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="Mobile" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="UserID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Password" Type="String" MaxLength="256" FixedLength="false" Unicode="false" />
+    <Property Name="Address" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="City" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="State" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Pincode" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Country" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="PackageID" Type="Int32" />
+    <Property Name="IntroUsrno" Type="Int32" />
+    <Property Name="IntroStr" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="IsActive" Type="Boolean" Nullable="false" />
+    <Property Name="DOA" Type="DateTime" Precision="3" />
+    <Property Name="IsDelete" Type="Boolean" Nullable="false" />
+    <Property Name="IsBlock" Type="Boolean" Nullable="false" />
+    <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="Photo" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="CreatedByUserID" Type="Int32" Nullable="false" />
+    <Property Name="IsSales" Type="Boolean" />
+    <Property Name="IsPaymentByCC" Type="Boolean" />
+    <Property Name="IsPaymentByAccount" Type="Boolean" />
+    <Property Name="IsUseLogo" Type="Boolean" />
+    <Property Name="IsKycCompleted" Type="Boolean" />
+    <Property Name="UserTypeID" Type="Int32" />
+    <Property Name="RegisterOTP" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="IsContract" Type="Boolean" />
+    <Property Name="IsToken" Type="Boolean" />
+    <Property Name="LookLimitPeriodType" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="FlightLookLimit" Type="Int32" />
+    <Property Name="IsSupplier" Type="Boolean" />
+    <Property Name="SupplierAgreement" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="AgreementRemark" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="tblMaster_UserType">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="UserType" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="CreatedByUsrno" Type="Int32" />
+    <Property Name="IsActive" Type="Boolean" />
+    <Property Name="IsDelete" Type="Boolean" />
+    <Property Name="AddDate" Type="DateTime" Precision="3" />
+    <Property Name="ModifyByUsrno" Type="Int32" />
+    <Property Name="ModifyDate" Type="DateTime" Precision="3" />
+  </EntityType>
+  <EntityType Name="tblUser_LevelDownline">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Usrno" Type="Int32" />
+    <Property Name="DownlineUsrno" Type="Int32" />
+    <Property Name="LevelNo" Type="Int32" />
+    <Property Name="IsActive" Type="Boolean" />
+    <Property Name="AddDate" Type="DateTime" Precision="3" />
+    <Property Name="DOA" Type="DateTime" Precision="3" />
+  </EntityType>
+  <EntityType Name="tblOTPVerification">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Mobile" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+    <Property Name="OTP" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="AddDate" Type="DateTime" Precision="3" />
+    <Property Name="IsVerified" Type="Boolean" />
+  </EntityType>
+  <EntityType Name="View_Users">
+    <Key>
+      <PropertyRef Name="RoleId" />
+      <PropertyRef Name="ID" />
+      <PropertyRef Name="IsActive" />
+      <PropertyRef Name="IsDelete" />
+      <PropertyRef Name="IsBlock" />
+      <PropertyRef Name="AddDate" />
+      <PropertyRef Name="CreatedByUserID" />
+      <PropertyRef Name="Status" />
+    </Key>
+    <Property Name="RoleId" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+    <Property Name="UserType" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="ID" Type="Int32" Nullable="false" />
+    <Property Name="Usrno" Type="Int32" />
+    <Property Name="AspNetID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Name" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="Email" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="Mobile" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="UserID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Password" Type="String" MaxLength="256" FixedLength="false" Unicode="false" />
+    <Property Name="Address" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="City" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="State" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Pincode" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Country" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="PackageID" Type="Int32" />
+    <Property Name="IntroUsrno" Type="Int32" />
+    <Property Name="IntroStr" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="IsActive" Type="Boolean" Nullable="false" />
+    <Property Name="DOA" Type="DateTime" Precision="3" />
+    <Property Name="IsDelete" Type="Boolean" Nullable="false" />
+    <Property Name="IsBlock" Type="Boolean" Nullable="false" />
+    <Property Name="AddDate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="Photo" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="CreatedByUserID" Type="Int32" Nullable="false" />
+    <Property Name="IsSales" Type="Boolean" />
+    <Property Name="IsPaymentByCC" Type="Boolean" />
+    <Property Name="IsPaymentByAccount" Type="Boolean" />
+    <Property Name="IsUseLogo" Type="Boolean" />
+    <Property Name="IsKycCompleted" Type="Boolean" />
+    <Property Name="UserTypeID" Type="Int32" />
+    <Property Name="RegisterOTP" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="IsContract" Type="Boolean" />
+    <Property Name="IsToken" Type="Boolean" />
+    <Property Name="LookLimitPeriodType" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="FlightLookLimit" Type="Int32" />
+    <Property Name="IsSupplier" Type="Boolean" />
+    <Property Name="SupplierAgreement" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="AgreementRemark" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="Status" Type="String" Nullable="false" MaxLength="8" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <Association Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
+    <End Type="db_silviModel.AspNetUser" Role="AspNetUser" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Type="db_silviModel.AspNetUserClaim" Role="AspNetUserClaim" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="AspNetUser">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="AspNetUserClaim">
+        <PropertyRef Name="UserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId">
+    <End Type="db_silviModel.AspNetUser" Role="AspNetUser" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Type="db_silviModel.AspNetUserLogin" Role="AspNetUserLogin" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="AspNetUser">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="AspNetUserLogin">
+        <PropertyRef Name="UserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_tblFlightConnectionVia_tblFlightInventory">
+    <End Type="db_silviModel.tblFlightInventory" Role="tblFlightInventory" Multiplicity="1" />
+    <End Type="db_silviModel.tblFlightConnectionVia" Role="tblFlightConnectionVia" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tblFlightInventory">
+        <PropertyRef Name="FlightInventoryID" />
+      </Principal>
+      <Dependent Role="tblFlightConnectionVia">
+        <PropertyRef Name="FlightInventoryID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_tblFlightFares_tblFlightInventory">
+    <End Type="db_silviModel.tblFlightInventory" Role="tblFlightInventory" Multiplicity="1" />
+    <End Type="db_silviModel.tblFlightFare" Role="tblFlightFare" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tblFlightInventory">
+        <PropertyRef Name="FlightInventoryID" />
+      </Principal>
+      <Dependent Role="tblFlightFare">
+        <PropertyRef Name="FlightInventoryID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_tblManage_AssignAPI_tblManage_API">
+    <End Type="db_silviModel.tblManage_API" Role="tblManage_API" Multiplicity="1" />
+    <End Type="db_silviModel.tblManage_AssignAPI" Role="tblManage_AssignAPI" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tblManage_API">
+        <PropertyRef Name="APIID" />
+      </Principal>
+      <Dependent Role="tblManage_AssignAPI">
+        <PropertyRef Name="APIID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__tblMaster__State__2F10007B">
+    <End Type="db_silviModel.tblMaster_State" Role="tblMaster_State" Multiplicity="0..1" />
+    <End Type="db_silviModel.tblMaster_City" Role="tblMaster_City" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tblMaster_State">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="tblMaster_City">
+        <PropertyRef Name="StateID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="AspNetUserRoles">
+    <End Type="db_silviModel.AspNetRole" Role="AspNetRole" Multiplicity="*" />
+    <End Type="db_silviModel.AspNetUser" Role="AspNetUser" Multiplicity="*" />
+  </Association>
+</Schema>

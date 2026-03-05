@@ -1,0 +1,57 @@
+﻿@using TravelPortal.web.Models
+@{ 
+    var objlist = ViewBag.list as List<TravelPortal.web.Models.ViewModel.FundRequestListViewModel>;
+}
+
+<div class="card hotel-list mb-0">
+    <div class="card-body p-0">
+        <div class="list-header d-flex align-items-center justify-content-between flex-wrap">
+            <h6>Transactions List</h6>
+            <div class="d-flex align-items-center flex-wrap">
+                <div class="input-icon-start  me-2 position-relative">
+                    <span class="icon-addon">
+                        <i class="isax isax-search-normal-1 fs-14"></i>
+                    </span>
+                    <input type="text" class="form-control" placeholder="Search">
+                </div>
+            </div>
+        </div>
+        <div class="table-responsive">
+            <table class="table">
+                <thead class="thead-light">
+                    <tr>
+                        <th>Status</th>
+                        <th>Amount</th>
+                        <th>UTRNo</th>
+                        <th>Transaction Date</th>
+                        <th>Payment Mode</th>
+                        <th>Request Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (objlist != null && objlist.Count > 0)
+                    {
+                        foreach (var item in objlist)
+                        {
+                            string status = item.Status;
+                            <tr>
+                                <td>
+                                    <label class="badge badge-@(status.Equals(TravelPortal.web.Models.Common. CommanString.Approved)?"success":status.Equals(TravelPortal.web.Models.Common.CommanString.Rejected)?"danger":"primary")">
+                                        @item.Status
+                                    </label>
+                                </td>
+
+                                <td>@item.Amount </td>
+                                <td>@item.UTRNo </td>
+                                <td>@item.TransactionDate </td>
+                                <td>@item.PaymentMode </td>
+                                <td>@item.RequestDate </td>
+
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

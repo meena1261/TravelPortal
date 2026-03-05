@@ -1,0 +1,78 @@
+﻿@{
+    dynamic objlist = ViewBag.list;
+}
+
+<div class="card">
+   
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table datatable">
+                <thead class="thead-light">
+                    <tr>
+                        <th>S. No</th>
+                        <th>Name</th>
+                        <th>Contact</th>
+                        <th>Status</th>
+                        <th>Sales on/off</th>
+                       
+                        <th>Token</th>
+                        <th>Creation Date</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (objlist != null && objlist.Count > 0)
+                    {
+                        int i = 1;
+                        foreach (var item in objlist)
+                        {
+
+                            <tr>
+                                <td class="expand">
+                                    @i
+                                </td>
+                                <td>
+                                    <h5>
+                                        @item.Name
+                                    </h5>
+                                    <small>[@item.UserID]</small>
+                                </td>
+                                <td>
+                                    <h5>
+                                        @item.Mobile
+                                    </h5>
+                                    <small>@item.Email</small>
+                                </td>
+                               
+                                <td>
+                                    <input type="checkbox" />
+                                </td>
+                                <td>
+                                    <input type="checkbox" />
+                                </td>
+                                <td>
+                                    <input type="checkbox" />
+                                </td>
+                                <td>
+                                </td>
+                                <td>
+                                    <div style="display:flex;justify-content:space-evenly;">
+
+                                        @Ajax.ActionLink("Edit", "AddEditAgent", "Admin", new { id = item.Usrno }, new AjaxOptions { UpdateTargetId = "divAddEdit", OnSuccess = "$('#addedit_modal').modal('show');", OnBegin = "fnStartLoader", OnComplete = "fnStopLoader" }, new { @class = "text-primary" })
+
+                                        <a href="Javascript:void(0)" class="text-danger" onclick="fn_DeleteItem('@Url.Action("ListMenu","Admin",new {id=item.Usrno })')">
+                                            Delete
+                                        </a>
+                                    </div>
+
+                                </td>
+                            </tr>
+                            i++;
+                        }
+
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

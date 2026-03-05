@@ -1,0 +1,50 @@
+﻿@{
+    ViewBag.Title = "Manage Roles";
+    var objlist = (List<UserTypeModel>)ViewBag.list;
+}
+
+<div class="card">
+    <div class="card-header d-flex align-items-center justify-content-between flex-wrap row-gap-3">
+
+        <div class="d-flex table-dropdown my-xl-auto right-content align-items-center flex-wrap row-gap-3">
+            @Ajax.ActionLink("Add New Role", "AddEditRoles", "Admin", new { }, new AjaxOptions { UpdateTargetId = "divAddEdit", OnSuccess = "$('#addedit_modal').modal('show');", OnBegin = "fnStartLoader", OnComplete = "fnStopLoader" }, new { @class = "btn btn-outline-success" })
+
+        </div>
+    </div>
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table datatable">
+                <thead class="thead-light">
+                    <tr>
+                        <th>S. No</th>
+                        <th>Role</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (objlist != null && objlist.Count > 0)
+                    {
+                        int i = 1;
+                        foreach (var item in objlist)
+                        {
+
+                            <tr>
+                                <td class="expand">
+                                    @i
+                                </td>
+                                <td>
+                                    @item.UserType
+                                </td>
+                                <td>
+                                    @Ajax.ActionLink("Edit", "AddEditRoles", "Admin", new {id=item.ID }, new AjaxOptions { UpdateTargetId = "divAddEdit", OnSuccess = "$('#addedit_modal').modal('show');", OnBegin = "fnStartLoader", OnComplete = "fnStopLoader" }, new { @class = "btn btn-sm btn-outline-success" })
+                                </td>
+                            </tr>
+                            i++;
+                        }
+
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

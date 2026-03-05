@@ -1,0 +1,12 @@
+D:\Project\TravelPortal\Travel.API.Data\bin\Release\net8.0\Travel.API.Data.deps.json
+D:\Project\TravelPortal\Travel.API.Data\bin\Release\net8.0\Travel.API.Data.dll
+D:\Project\TravelPortal\Travel.API.Data\bin\Release\net8.0\Travel.API.Data.pdb
+D:\Project\TravelPortal\Travel.API.Data\obj\Release\net8.0\Travel.API.Data.csproj.AssemblyReference.cache
+D:\Project\TravelPortal\Travel.API.Data\obj\Release\net8.0\Travel.API.Data.GeneratedMSBuildEditorConfig.editorconfig
+D:\Project\TravelPortal\Travel.API.Data\obj\Release\net8.0\Travel.API.Data.AssemblyInfoInputs.cache
+D:\Project\TravelPortal\Travel.API.Data\obj\Release\net8.0\Travel.API.Data.AssemblyInfo.cs
+D:\Project\TravelPortal\Travel.API.Data\obj\Release\net8.0\Travel.API.Data.csproj.CoreCompileInputs.cache
+D:\Project\TravelPortal\Travel.API.Data\obj\Release\net8.0\Travel.API.Data.dll
+D:\Project\TravelPortal\Travel.API.Data\obj\Release\net8.0\refint\Travel.API.Data.dll
+D:\Project\TravelPortal\Travel.API.Data\obj\Release\net8.0\Travel.API.Data.pdb
+D:\Project\TravelPortal\Travel.API.Data\obj\Release\net8.0\ref\Travel.API.Data.dll

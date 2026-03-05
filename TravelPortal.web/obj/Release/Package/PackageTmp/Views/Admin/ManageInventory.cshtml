@@ -1,0 +1,252 @@
+﻿@{
+    var db = new TravelPortal.EDMX.db_silviEntities();
+    var objlist = db.tblFlightInventories.ToList();
+    var objPendingList = objlist.Where(e => (e.IsApproved == null || e.IsApproved == false) && (e.IsRejected == null || e.IsRejected == false)).ToList();
+    var objSupplierList = objlist.Where(e => e.IsApproved == true || e.IsRejected == true).ToList();
+}
+
+<div class="card">
+    <div class="card-header">
+        <nav>
+            <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                <button class="nav-link active" id="nav-inventory-request-tab" data-bs-toggle="tab" data-bs-target="#nav-inventory-request" type="button" role="tab" aria-controls="nav-inventory-request" aria-selected="true">Inventory Requests</button>
+                <button class="nav-link" id="nav-supplier-inventory-tab" data-bs-toggle="tab" data-bs-target="#nav-supplier-inventory" type="button" role="tab" aria-controls="nav-supplier-inventory" aria-selected="true">Supplier Inventory</button>
+                <button class="nav-link" id="nav-booking-tab" data-bs-toggle="tab" data-bs-target="#nav-booking" type="button" role="tab" aria-controls="nav-booking" aria-selected="true">Booking</button>
+                <button class="nav-link" id="nav-reports-tab" data-bs-toggle="tab" data-bs-target="#nav-reports" type="button" role="tab" aria-controls="nav-reports" aria-selected="true">Reports</button>
+            </div>
+        </nav>
+    </div>
+    <div class="card-body">
+        <div class="tab-content" id="nav-tabContent">
+            <div class="tab-pane fade show active" id="nav-inventory-request" role="tabpanel" aria-labelledby="nav-inventory-request-tab">
+                <div class="card">
+                    <div class="card-header">
+                        <h4>Inventory Add Requests</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Supplier</th>
+                                        <th>Route</th>
+                                        <th>Fare</th>
+                                        <th>Seats</th>
+                                        <th>Submited</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if (objPendingList.Count > 0)
+                                    {
+                                        foreach (var item in objPendingList)
+                                        {
+                                            string AirlineName = string.Empty;
+                                            var objAirlines = db.Airlines.FirstOrDefault(e => e.IATA_Code == item.AirlineCode);
+                                            if (objAirlines != null)
+                                            {
+                                                AirlineName = objAirlines.Name;
+                                            }
+                                            var objUser = db.tblMaster_User.FirstOrDefault(e => e.Usrno == item.Usrno);
+                                            <tr>
+                                                <td>
+                                                    @objUser.Name
+
+                                                </td>
+                                                <td>
+                                                    <h6>@AirlineName - @item.AirlineCode</h6>
+                                                    <small>@item.OriginCode -> @item.DestinationCode</small>
+                                                </td>
+                                                <td>
+                                                    0
+                                                </td>
+                                                <td>
+                                                    0
+                                                </td>
+                                                <td>
+                                                    @item.AddDate
+                                                </td>
+                                                <td>
+                                                    <a data-bs-toggle="modal" data-bs-target="#confirmation-modal" class="btn btn-sm btn-success" href="javascript:void(0);" onclick="ConfirmationModel('Approved','@item.FlightInventoryID');">
+                                                        Approve
+                                                    </a>
+                                                    <a data-bs-toggle="modal" data-bs-target="#confirmation-modal" class="btn btn-sm btn-danger" href="javascript:void(0);" onclick="ConfirmationModel('Rejected','@item.FlightInventoryID');">
+                                                        Decline
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        }
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane fade" id="nav-supplier-inventory" role="tabpanel" aria-labelledby="nav-supplier-inventory-tab">
+                <div class="card">
+                    <div class="card-header">
+                        <h4>Supplier Inventory</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Supplier</th>
+                                        <th>Route</th>
+                                        <th>Fare</th>
+                                        <th>Seats</th>
+                                        <th>Submited</th>
+                                        <th>Status</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if (objSupplierList.Count > 0)
+                                    {
+                                        foreach (var item in objSupplierList)
+                                        {
+                                            string AirlineName = string.Empty;
+                                            var objAirlines = db.Airlines.FirstOrDefault(e => e.IATA_Code == item.AirlineCode);
+                                            if (objAirlines != null)
+                                            {
+                                                AirlineName = objAirlines.Name;
+                                            }
+                                            var objUser = db.tblMaster_User.FirstOrDefault(e => e.Usrno == item.Usrno);
+                                            <tr>
+                                                <td>
+                                                    @objUser.Name
+
+                                                </td>
+                                                <td>
+                                                    <h6>@AirlineName - @item.AirlineCode</h6>
+                                                    <small>@item.OriginCode -> @item.DestinationCode</small>
+                                                </td>
+                                                <td>
+                                                    0
+                                                </td>
+                                                <td>
+                                                    0
+                                                </td>
+                                                <td>
+                                                    @if (item.IsApproved == true)
+                                                    {
+                                                        <label class="badge bg-success text-white">Approved</label>
+                                                    }
+                                                    else if (item.IsRejected == true)
+                                                    {
+                                                        <label class="badge bg-danger text-white">Decline</label>
+                                                    }
+                                                    else
+                                                    {
+                                                        <label class="badge bg-primary text-white">Pending</label>
+
+                                                    }
+                                                </td>
+                                                <td>
+                                                    @item.AddDate
+                                                </td>
+                                                <td>
+                                                </td>
+                                            </tr>
+                                        }
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane fade" id="nav-booking" role="tabpanel" aria-labelledby="nav-booking-tab">
+                <div class="card">
+                    <div class="card-header">
+                        <h4>Bookings</h4>
+                    </div>
+                    <div class="card-body">
+
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane fade" id="nav-reports" role="tabpanel" aria-labelledby="nav-reports-tab">
+                <div class="card">
+                    <div class="card-header">
+                        <h4>Reports</h4>
+                    </div>
+                    <div class="card-body">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--Confirmation Modal-->
+<div class="modal fade" id="confirmation-modal">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="page-wrapper-new p-0">
+                @using (Ajax.BeginForm("InventoryRequestApproveReject", "Admin", null, new AjaxOptions { HttpMethod = "POST", OnBegin = "fnStartLoader", OnComplete = "fnStopLoader", OnSuccess = "fn_Success", OnFailure = "fn_Failure" }, new { enctype = "multipart/form-data" }))
+                {
+                    <input type="hidden" name="Id" id="hdnid" value="0" />
+                    <input type="hidden" name="Action" id="hdntype" value="" />
+                    <div class="p-5 px-3 text-center">
+                        <h4 class="fs-20 fw-bold mb-2 mt-1">
+                            Are you sure you want to <span id="spntxt">Approve</span> this ?
+                        </h4>
+                        <div id="divremark" style="display:none;">
+                            <textarea class="form-control" rows="5" placeholder="Enter same remark" id="reason" name="Reason" data-val="true" data-val-required="Required"></textarea>
+                        </div>
+                        <span class="field-validation-valid text-danger" data-valmsg-for="reason" data-valmsg-replace="true"></span>
+                        <div class="modal-footer-btn mt-3 d-flex justify-content-center">
+                            <button type="submit" class="btn me-2 btn-primary fs-13 fw-medium p-2 px-3">Yes, sure</button>
+                            <button type="button" class="btn me-2 btn-secondary fs-13 fw-medium p-2 px-3 shadow-none" data-bs-dismiss="modal">Cancel</button>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+<!--End Confirmation Modal-->
+<script>
+    function ConfirmationModel(txt, id) {
+        $("#hdnid").val(id);
+        $("#spntxt").text(txt);
+        $("#hdntype").val(txt);
+        if (txt == 'Rejected') {
+            $("#divremark").show();
+        } else {
+            $("#divremark").hide();
+        }
+    }
+    function fn_Success(d) {
+        if (d.status > 0) {
+            $.toast({
+                heading: 'Success',
+                text: d.message,
+                position: 'top-right',
+                showHideTransition: 'fade',
+                icon: 'success'
+            });
+            location.reload();
+        } else {
+            $.toast({
+                heading: 'Message',
+                text: d.message,
+                position: 'top-right',
+                showHideTransition: 'fade',
+                icon: 'error'
+            });
+        }
+    }
+    function fn_Failure(d) {
+        $.toast({
+            heading: 'Message',
+            text: 'failed',
+            position: 'top-right',
+            showHideTransition: 'fade',
+            icon: 'error'
+        });
+    }
+</script>

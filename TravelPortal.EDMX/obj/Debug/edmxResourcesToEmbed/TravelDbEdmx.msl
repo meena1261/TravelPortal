@@ -1,0 +1,768 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="db_silviModelStoreContainer" CdmEntityContainer="db_silviEntities">
+    <FunctionImportMapping FunctionImportName="ProcMaster_User" FunctionName="db_silviModel.Store.ProcMaster_User">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="db_silviModel.ProcMaster_User_Result">
+          <ScalarProperty Name="Status" ColumnName="Status" />
+          <ScalarProperty Name="Message" ColumnName="Message" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="ProcMaster_MainWallet" FunctionName="db_silviModel.Store.ProcMaster_MainWallet">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="db_silviModel.ProcMaster_MainWallet_Result">
+          <ScalarProperty Name="Status" ColumnName="Status" />
+          <ScalarProperty Name="Message" ColumnName="Message" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <EntitySetMapping Name="AgentNotes">
+      <EntityTypeMapping TypeName="db_silviModel.AgentNote">
+        <MappingFragment StoreEntitySet="AgentNotes">
+          <ScalarProperty Name="AddDate" ColumnName="AddDate" />
+          <ScalarProperty Name="IsDelete" ColumnName="IsDelete" />
+          <ScalarProperty Name="IsImportant" ColumnName="IsImportant" />
+          <ScalarProperty Name="Descriptions" ColumnName="Descriptions" />
+          <ScalarProperty Name="Priority" ColumnName="Priority" />
+          <ScalarProperty Name="Tag" ColumnName="Tag" />
+          <ScalarProperty Name="NotesTitle" ColumnName="NotesTitle" />
+          <ScalarProperty Name="Usrno" ColumnName="Usrno" />
+          <ScalarProperty Name="NotesID" ColumnName="NotesID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Airlines">
+      <EntityTypeMapping TypeName="db_silviModel.Airline">
+        <MappingFragment StoreEntitySet="Airlines">
+          <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+          <ScalarProperty Name="Country" ColumnName="Country" />
+          <ScalarProperty Name="ICAO_Code" ColumnName="ICAO_Code" />
+          <ScalarProperty Name="IATA_Code" ColumnName="IATA_Code" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="AirlineID" ColumnName="AirlineID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="AspNetRoles">
+      <EntityTypeMapping TypeName="db_silviModel.AspNetRole">
+        <MappingFragment StoreEntitySet="AspNetRoles">
+          <ScalarProperty Name="RoleName" ColumnName="RoleName" />
+          <ScalarProperty Name="RoleNameNormalized" ColumnName="RoleNameNormalized" />
+          <ScalarProperty Name="ConcurrencyStamp" ColumnName="ConcurrencyStamp" />
+          <ScalarProperty Name="NormalizedName" ColumnName="NormalizedName" />
+          <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="AspNetUserClaims">
+      <EntityTypeMapping TypeName="db_silviModel.AspNetUserClaim">
+        <MappingFragment StoreEntitySet="AspNetUserClaims">
+          <ScalarProperty Name="ClaimValue" ColumnName="ClaimValue" />
+          <ScalarProperty Name="ClaimType" ColumnName="ClaimType" />
+          <ScalarProperty Name="UserId" ColumnName="UserId" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="AspNetUserLogins">
+      <EntityTypeMapping TypeName="db_silviModel.AspNetUserLogin">
+        <MappingFragment StoreEntitySet="AspNetUserLogins">
+          <ScalarProperty Name="UserId" ColumnName="UserId" />
+          <ScalarProperty Name="ProviderKey" ColumnName="ProviderKey" />
+          <ScalarProperty Name="LoginProvider" ColumnName="LoginProvider" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="AspNetUsers">
+      <EntityTypeMapping TypeName="db_silviModel.AspNetUser">
+        <MappingFragment StoreEntitySet="AspNetUsers">
+          <ScalarProperty Name="UserName" ColumnName="UserName" />
+          <ScalarProperty Name="AccessFailedCount" ColumnName="AccessFailedCount" />
+          <ScalarProperty Name="LockoutEnabled" ColumnName="LockoutEnabled" />
+          <ScalarProperty Name="LockoutEndDateUtc" ColumnName="LockoutEndDateUtc" />
+          <ScalarProperty Name="TwoFactorEnabled" ColumnName="TwoFactorEnabled" />
+          <ScalarProperty Name="PhoneNumberConfirmed" ColumnName="PhoneNumberConfirmed" />
+          <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
+          <ScalarProperty Name="SecurityStamp" ColumnName="SecurityStamp" />
+          <ScalarProperty Name="PasswordHash" ColumnName="PasswordHash" />
+          <ScalarProperty Name="EmailConfirmed" ColumnName="EmailConfirmed" />
+          <ScalarProperty Name="Email" ColumnName="Email" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="CountryMasters">
+      <EntityTypeMapping TypeName="db_silviModel.CountryMaster">
+        <MappingFragment StoreEntitySet="CountryMaster">
+          <ScalarProperty Name="CurrencySymbol" ColumnName="CurrencySymbol" />
+          <ScalarProperty Name="CurrencyCode" ColumnName="CurrencyCode" />
+          <ScalarProperty Name="CurrencyName" ColumnName="CurrencyName" />
+          <ScalarProperty Name="PhoneCode" ColumnName="PhoneCode" />
+          <ScalarProperty Name="ISO3" ColumnName="ISO3" />
+          <ScalarProperty Name="ISO2" ColumnName="ISO2" />
+          <ScalarProperty Name="CountryName" ColumnName="CountryName" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="CreditWallets">
+      <EntityTypeMapping TypeName="db_silviModel.CreditWallet">
+        <MappingFragment StoreEntitySet="CreditWallet">
+          <ScalarProperty Name="AddDate" ColumnName="AddDate" />
+          <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+          <ScalarProperty Name="IsDelete" ColumnName="IsDelete" />
+          <ScalarProperty Name="Balance" ColumnName="Balance" />
+          <ScalarProperty Name="Credit" ColumnName="Credit" />
+          <ScalarProperty Name="Debit" ColumnName="Debit" />
+          <ScalarProperty Name="UsrNo" ColumnName="UsrNo" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="CreditWalletStatements">
+      <EntityTypeMapping TypeName="db_silviModel.CreditWalletStatement">
+        <MappingFragment StoreEntitySet="CreditWalletStatement">
+          <ScalarProperty Name="TransactionId" ColumnName="TransactionId" />
+          <ScalarProperty Name="Remark" ColumnName="Remark" />
+          <ScalarProperty Name="AddDate" ColumnName="AddDate" />
+          <ScalarProperty Name="Narration" ColumnName="Narration" />
+          <ScalarProperty Name="Factor" ColumnName="Factor" />
+          <ScalarProperty Name="Balance" ColumnName="Balance" />
+          <ScalarProperty Name="Amount" ColumnName="Amount" />
+          <ScalarProperty Name="UsrNo" ColumnName="UsrNo" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ErrorLogs">
+      <EntityTypeMapping TypeName="db_silviModel.ErrorLog">
+        <MappingFragment StoreEntitySet="ErrorLogs">
+          <ScalarProperty Name="CreatedAt" ColumnName="CreatedAt" />
+          <ScalarProperty Name="UserHostAddress" ColumnName="UserHostAddress" />
+          <ScalarProperty Name="HttpMethod" ColumnName="HttpMethod" />
+          <ScalarProperty Name="Url" ColumnName="Url" />
+          <ScalarProperty Name="StackTrace" ColumnName="StackTrace" />
+          <ScalarProperty Name="Message" ColumnName="Message" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="FlightBookingHistories">
+      <EntityTypeMapping TypeName="db_silviModel.FlightBookingHistory">
+        <MappingFragment StoreEntitySet="FlightBookingHistory">
+          <ScalarProperty Name="AddDate" ColumnName="AddDate" />
+          <ScalarProperty Name="BookingDescription" ColumnName="BookingDescription" />
+          <ScalarProperty Name="BookingStatus" ColumnName="BookingStatus" />
+          <ScalarProperty Name="PaymentOrderID" ColumnName="PaymentOrderID" />
+          <ScalarProperty Name="PaymentStatus" ColumnName="PaymentStatus" />
+          <ScalarProperty Name="PaybleAmount" ColumnName="PaybleAmount" />
+          <ScalarProperty Name="DiscountAmount" ColumnName="DiscountAmount" />
+          <ScalarProperty Name="TotalAmount" ColumnName="TotalAmount" />
+          <ScalarProperty Name="PaymentMode" ColumnName="PaymentMode" />
+          <ScalarProperty Name="QueuingOfficeId" ColumnName="QueuingOfficeId" />
+          <ScalarProperty Name="FlightOrderID" ColumnName="FlightOrderID" />
+          <ScalarProperty Name="CabinClass" ColumnName="CabinClass" />
+          <ScalarProperty Name="Infants" ColumnName="Infants" />
+          <ScalarProperty Name="Childs" ColumnName="Childs" />
+          <ScalarProperty Name="Adults" ColumnName="Adults" />
+          <ScalarProperty Name="ArrivalDates" ColumnName="ArrivalDates" />
+          <ScalarProperty Name="DepartureDates" ColumnName="DepartureDates" />
+          <ScalarProperty Name="Sector" ColumnName="Sector" />
+          <ScalarProperty Name="TripType" ColumnName="TripType" />
+          <ScalarProperty Name="Usrno" ColumnName="Usrno" />
+          <ScalarProperty Name="BookHistoryID" ColumnName="BookHistoryID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="SupportchatAttachFiles">
+      <EntityTypeMapping TypeName="db_silviModel.SupportchatAttachFile">
+        <MappingFragment StoreEntitySet="SupportchatAttachFiles">
+          <ScalarProperty Name="AddDate" ColumnName="AddDate" />
+          <ScalarProperty Name="FileName" ColumnName="FileName" />
+          <ScalarProperty Name="Path" ColumnName="Path" />
+          <ScalarProperty Name="SupportChatID" ColumnName="SupportChatID" />
+          <ScalarProperty Name="AttachFileID" ColumnName="AttachFileID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="SupportChats">
+      <EntityTypeMapping TypeName="db_silviModel.SupportChat">
+        <MappingFragment StoreEntitySet="SupportChats">
+          <ScalarProperty Name="AddDate" ColumnName="AddDate" />
+          <ScalarProperty Name="IsBlock" ColumnName="IsBlock" />
+          <ScalarProperty Name="IsDelete" ColumnName="IsDelete" />
+          <ScalarProperty Name="IsRead" ColumnName="IsRead" />
+          <ScalarProperty Name="Attachfile" ColumnName="Attachfile" />
+          <ScalarProperty Name="Message" ColumnName="Message" />
+          <ScalarProperty Name="ReceiverUsrno" ColumnName="ReceiverUsrno" />
+          <ScalarProperty Name="SenderUsrno" ColumnName="SenderUsrno" />
+          <ScalarProperty Name="SupportChatID" ColumnName="SupportChatID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblAccount_Main">
+      <EntityTypeMapping TypeName="db_silviModel.tblAccount_Main">
+        <MappingFragment StoreEntitySet="tblAccount_Main">
+          <ScalarProperty Name="AddDate" ColumnName="AddDate" />
+          <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+          <ScalarProperty Name="IsDelete" ColumnName="IsDelete" />
+          <ScalarProperty Name="Balance" ColumnName="Balance" />
+          <ScalarProperty Name="Credit" ColumnName="Credit" />
+          <ScalarProperty Name="Debit" ColumnName="Debit" />
+          <ScalarProperty Name="UsrNo" ColumnName="UsrNo" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblAccount_MainDetails">
+      <EntityTypeMapping TypeName="db_silviModel.tblAccount_MainDetails">
+        <MappingFragment StoreEntitySet="tblAccount_MainDetails">
+          <ScalarProperty Name="TransactionId" ColumnName="TransactionId" />
+          <ScalarProperty Name="Remark" ColumnName="Remark" />
+          <ScalarProperty Name="AddDate" ColumnName="AddDate" />
+          <ScalarProperty Name="Narration" ColumnName="Narration" />
+          <ScalarProperty Name="Factor" ColumnName="Factor" />
+          <ScalarProperty Name="Balance" ColumnName="Balance" />
+          <ScalarProperty Name="Amount" ColumnName="Amount" />
+          <ScalarProperty Name="UsrNo" ColumnName="UsrNo" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblFlight_SearchLog">
+      <EntityTypeMapping TypeName="db_silviModel.tblFlight_SearchLog">
+        <MappingFragment StoreEntitySet="tblFlight_SearchLog">
+          <ScalarProperty Name="AddDate" ColumnName="AddDate" />
+          <ScalarProperty Name="IPAddress" ColumnName="IPAddress" />
+          <ScalarProperty Name="IsBook" ColumnName="IsBook" />
+          <ScalarProperty Name="TravelClass" ColumnName="TravelClass" />
+          <ScalarProperty Name="InfantCount" ColumnName="InfantCount" />
+          <ScalarProperty Name="ChildCount" ColumnName="ChildCount" />
+          <ScalarProperty Name="AdultCount" ColumnName="AdultCount" />
+          <ScalarProperty Name="ReturnDate" ColumnName="ReturnDate" />
+          <ScalarProperty Name="DepartureDate" ColumnName="DepartureDate" />
+          <ScalarProperty Name="Destination" ColumnName="Destination" />
+          <ScalarProperty Name="Origin" ColumnName="Origin" />
+          <ScalarProperty Name="TripType" ColumnName="TripType" />
+          <ScalarProperty Name="Usrno" ColumnName="Usrno" />
+          <ScalarProperty Name="SearchLogID" ColumnName="SearchLogID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblFlightConnectionVias">
+      <EntityTypeMapping TypeName="db_silviModel.tblFlightConnectionVia">
+        <MappingFragment StoreEntitySet="tblFlightConnectionVia">
+          <ScalarProperty Name="AddDate" ColumnName="AddDate" />
+          <ScalarProperty Name="IsDelete" ColumnName="IsDelete" />
+          <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+          <ScalarProperty Name="DepatureOnNextDay" ColumnName="DepatureOnNextDay" />
+          <ScalarProperty Name="IsNextDay" ColumnName="IsNextDay" />
+          <ScalarProperty Name="ArrivalTerminal" ColumnName="ArrivalTerminal" />
+          <ScalarProperty Name="ArrivalTime" ColumnName="ArrivalTime" />
+          <ScalarProperty Name="DestinationCode" ColumnName="DestinationCode" />
+          <ScalarProperty Name="DepatureTerminal" ColumnName="DepatureTerminal" />
+          <ScalarProperty Name="DepatureTime" ColumnName="DepatureTime" />
+          <ScalarProperty Name="OriginCode" ColumnName="OriginCode" />
+          <ScalarProperty Name="FlightNo" ColumnName="FlightNo" />
+          <ScalarProperty Name="Flight" ColumnName="Flight" />
+          <ScalarProperty Name="Operator" ColumnName="Operator" />
+          <ScalarProperty Name="FlightInventoryID" ColumnName="FlightInventoryID" />
+          <ScalarProperty Name="FlightConnectionViaID" ColumnName="FlightConnectionViaID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblFlightFares">
+      <EntityTypeMapping TypeName="db_silviModel.tblFlightFare">
+        <MappingFragment StoreEntitySet="tblFlightFares">
+          <ScalarProperty Name="AddDate" ColumnName="AddDate" />
+          <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+          <ScalarProperty Name="PNR" ColumnName="PNR" />
+          <ScalarProperty Name="IsRefund" ColumnName="IsRefund" />
+          <ScalarProperty Name="Unit" ColumnName="Unit" />
+          <ScalarProperty Name="InfantBaggage" ColumnName="InfantBaggage" />
+          <ScalarProperty Name="ChildBaggage" ColumnName="ChildBaggage" />
+          <ScalarProperty Name="AdultBaggage" ColumnName="AdultBaggage" />
+          <ScalarProperty Name="IsBaggage" ColumnName="IsBaggage" />
+          <ScalarProperty Name="InfantFareBreakup" ColumnName="InfantFareBreakup" />
+          <ScalarProperty Name="InfantFare" ColumnName="InfantFare" />
+          <ScalarProperty Name="ChildFareBreakup" ColumnName="ChildFareBreakup" />
+          <ScalarProperty Name="ChildFare" ColumnName="ChildFare" />
+          <ScalarProperty Name="AdultFareBreakup" ColumnName="AdultFareBreakup" />
+          <ScalarProperty Name="AdultFare" ColumnName="AdultFare" />
+          <ScalarProperty Name="Seats" ColumnName="Seats" />
+          <ScalarProperty Name="RBD" ColumnName="RBD" />
+          <ScalarProperty Name="ClassType" ColumnName="ClassType" />
+          <ScalarProperty Name="FlightInventoryID" ColumnName="FlightInventoryID" />
+          <ScalarProperty Name="FlightFareID" ColumnName="FlightFareID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblFlightInventories">
+      <EntityTypeMapping TypeName="db_silviModel.tblFlightInventory">
+        <MappingFragment StoreEntitySet="tblFlightInventory">
+          <ScalarProperty Name="Remark" ColumnName="Remark" />
+          <ScalarProperty Name="IsRejected" ColumnName="IsRejected" />
+          <ScalarProperty Name="IsApproved" ColumnName="IsApproved" />
+          <ScalarProperty Name="IsDelete" ColumnName="IsDelete" />
+          <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+          <ScalarProperty Name="AddDate" ColumnName="AddDate" />
+          <ScalarProperty Name="Stops" ColumnName="Stops" />
+          <ScalarProperty Name="ConnectionType" ColumnName="ConnectionType" />
+          <ScalarProperty Name="AvailableDays" ColumnName="AvailableDays" />
+          <ScalarProperty Name="StopTicketingTime" ColumnName="StopTicketingTime" />
+          <ScalarProperty Name="StopTicketingDays" ColumnName="StopTicketingDays" />
+          <ScalarProperty Name="Mobile" ColumnName="Mobile" />
+          <ScalarProperty Name="Email" ColumnName="Email" />
+          <ScalarProperty Name="FareDisplayType" ColumnName="FareDisplayType" />
+          <ScalarProperty Name="FareRules" ColumnName="FareRules" />
+          <ScalarProperty Name="ArrivalTerminal" ColumnName="ArrivalTerminal" />
+          <ScalarProperty Name="ArrivalTime" ColumnName="ArrivalTime" />
+          <ScalarProperty Name="DestinationCode" ColumnName="DestinationCode" />
+          <ScalarProperty Name="DepartureTerminal" ColumnName="DepartureTerminal" />
+          <ScalarProperty Name="DepartureTime" ColumnName="DepartureTime" />
+          <ScalarProperty Name="OriginCode" ColumnName="OriginCode" />
+          <ScalarProperty Name="Todate" ColumnName="Todate" />
+          <ScalarProperty Name="FromDate" ColumnName="FromDate" />
+          <ScalarProperty Name="FlightNumber" ColumnName="FlightNumber" />
+          <ScalarProperty Name="AirlineCode" ColumnName="AirlineCode" />
+          <ScalarProperty Name="Usrno" ColumnName="Usrno" />
+          <ScalarProperty Name="FlightInventoryID" ColumnName="FlightInventoryID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblHistory_FundRequest">
+      <EntityTypeMapping TypeName="db_silviModel.tblHistory_FundRequest">
+        <MappingFragment StoreEntitySet="tblHistory_FundRequest">
+          <ScalarProperty Name="ActionDate" ColumnName="ActionDate" />
+          <ScalarProperty Name="Remark" ColumnName="Remark" />
+          <ScalarProperty Name="IsRejected" ColumnName="IsRejected" />
+          <ScalarProperty Name="IsApproved" ColumnName="IsApproved" />
+          <ScalarProperty Name="AddDate" ColumnName="AddDate" />
+          <ScalarProperty Name="TransactionProof" ColumnName="TransactionProof" />
+          <ScalarProperty Name="BankName" ColumnName="BankName" />
+          <ScalarProperty Name="PaymentMode" ColumnName="PaymentMode" />
+          <ScalarProperty Name="TransactionDate" ColumnName="TransactionDate" />
+          <ScalarProperty Name="UTRNo" ColumnName="UTRNo" />
+          <ScalarProperty Name="Amount" ColumnName="Amount" />
+          <ScalarProperty Name="Usrno" ColumnName="Usrno" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblManage_AgentKYC">
+      <EntityTypeMapping TypeName="db_silviModel.tblManage_AgentKYC">
+        <MappingFragment StoreEntitySet="tblManage_AgentKYC">
+          <ScalarProperty Name="CreatedByUsrno" ColumnName="CreatedByUsrno" />
+          <ScalarProperty Name="AddDate" ColumnName="AddDate" />
+          <ScalarProperty Name="Remark" ColumnName="Remark" />
+          <ScalarProperty Name="IsRejected" ColumnName="IsRejected" />
+          <ScalarProperty Name="IsApproved" ColumnName="IsApproved" />
+          <ScalarProperty Name="SupportingDocumentFile" ColumnName="SupportingDocumentFile" />
+          <ScalarProperty Name="SupportingDocumentTypeId" ColumnName="SupportingDocumentTypeId" />
+          <ScalarProperty Name="DocumentFile" ColumnName="DocumentFile" />
+          <ScalarProperty Name="KycDocumentTypeId" ColumnName="KycDocumentTypeId" />
+          <ScalarProperty Name="State" ColumnName="State" />
+          <ScalarProperty Name="City" ColumnName="City" />
+          <ScalarProperty Name="Pincode" ColumnName="Pincode" />
+          <ScalarProperty Name="AgencyAddress" ColumnName="AgencyAddress" />
+          <ScalarProperty Name="BusinessTypeId" ColumnName="BusinessTypeId" />
+          <ScalarProperty Name="GstNumber" ColumnName="GstNumber" />
+          <ScalarProperty Name="PancardImg" ColumnName="PancardImg" />
+          <ScalarProperty Name="PanNumber" ColumnName="PanNumber" />
+          <ScalarProperty Name="AgencyName" ColumnName="AgencyName" />
+          <ScalarProperty Name="AgencyTypeID" ColumnName="AgencyTypeID" />
+          <ScalarProperty Name="Usrno" ColumnName="Usrno" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblManage_API">
+      <EntityTypeMapping TypeName="db_silviModel.tblManage_API">
+        <MappingFragment StoreEntitySet="tblManage_API">
+          <ScalarProperty Name="AddDate" ColumnName="AddDate" />
+          <ScalarProperty Name="Priority" ColumnName="Priority" />
+          <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+          <ScalarProperty Name="IsLive" ColumnName="IsLive" />
+          <ScalarProperty Name="TestClientSecret" ColumnName="TestClientSecret" />
+          <ScalarProperty Name="TestClientId" ColumnName="TestClientId" />
+          <ScalarProperty Name="TestEndPointUrl" ColumnName="TestEndPointUrl" />
+          <ScalarProperty Name="LiveClientSecret" ColumnName="LiveClientSecret" />
+          <ScalarProperty Name="LiveClientId" ColumnName="LiveClientId" />
+          <ScalarProperty Name="LiveEndPointUrl" ColumnName="LiveEndPointUrl" />
+          <ScalarProperty Name="APIType" ColumnName="APIType" />
+          <ScalarProperty Name="Supplier" ColumnName="Supplier" />
+          <ScalarProperty Name="APIID" ColumnName="APIID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblManage_AssignAPI">
+      <EntityTypeMapping TypeName="db_silviModel.tblManage_AssignAPI">
+        <MappingFragment StoreEntitySet="tblManage_AssignAPI">
+          <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+          <ScalarProperty Name="APIID" ColumnName="APIID" />
+          <ScalarProperty Name="Usrno" ColumnName="Usrno" />
+          <ScalarProperty Name="AssignId" ColumnName="AssignId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblManage_CityAirport">
+      <EntityTypeMapping TypeName="db_silviModel.tblManage_CityAirport">
+        <MappingFragment StoreEntitySet="tblManage_CityAirport">
+          <ScalarProperty Name="ICAOCode" ColumnName="ICAOCode" />
+          <ScalarProperty Name="Country" ColumnName="Country" />
+          <ScalarProperty Name="City" ColumnName="City" />
+          <ScalarProperty Name="AddDate" ColumnName="AddDate" />
+          <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="Code" ColumnName="Code" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblManage_CompanyAccount">
+      <EntityTypeMapping TypeName="db_silviModel.tblManage_CompanyAccount">
+        <MappingFragment StoreEntitySet="tblManage_CompanyAccount">
+          <ScalarProperty Name="AddDate" ColumnName="AddDate" />
+          <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+          <ScalarProperty Name="BranchLocation" ColumnName="BranchLocation" />
+          <ScalarProperty Name="Branch" ColumnName="Branch" />
+          <ScalarProperty Name="AccountType" ColumnName="AccountType" />
+          <ScalarProperty Name="BankName" ColumnName="BankName" />
+          <ScalarProperty Name="IFSCCode" ColumnName="IFSCCode" />
+          <ScalarProperty Name="HolderName" ColumnName="HolderName" />
+          <ScalarProperty Name="AccountNo" ColumnName="AccountNo" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblManage_Coupons">
+      <EntityTypeMapping TypeName="db_silviModel.tblManage_Coupons">
+        <MappingFragment StoreEntitySet="tblManage_Coupons">
+          <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="AddDate" ColumnName="AddDate" />
+          <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+          <ScalarProperty Name="ExpiryDate" ColumnName="ExpiryDate" />
+          <ScalarProperty Name="MaxUsage" ColumnName="MaxUsage" />
+          <ScalarProperty Name="Discount" ColumnName="Discount" />
+          <ScalarProperty Name="DiscountType" ColumnName="DiscountType" />
+          <ScalarProperty Name="CouponCode" ColumnName="CouponCode" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblManage_CreditLimit">
+      <EntityTypeMapping TypeName="db_silviModel.tblManage_CreditLimit">
+        <MappingFragment StoreEntitySet="tblManage_CreditLimit">
+          <ScalarProperty Name="AddDate" ColumnName="AddDate" />
+          <ScalarProperty Name="ActionByUsrno" ColumnName="ActionByUsrno" />
+          <ScalarProperty Name="ActionDate" ColumnName="ActionDate" />
+          <ScalarProperty Name="IsRejected" ColumnName="IsRejected" />
+          <ScalarProperty Name="IsApproved" ColumnName="IsApproved" />
+          <ScalarProperty Name="AttachFile" ColumnName="AttachFile" />
+          <ScalarProperty Name="AdminRemark" ColumnName="AdminRemark" />
+          <ScalarProperty Name="Remark" ColumnName="Remark" />
+          <ScalarProperty Name="Days" ColumnName="Days" />
+          <ScalarProperty Name="AvailableAmount" ColumnName="AvailableAmount" />
+          <ScalarProperty Name="UsedAmount" ColumnName="UsedAmount" />
+          <ScalarProperty Name="RequestedAmount" ColumnName="RequestedAmount" />
+          <ScalarProperty Name="Amount" ColumnName="Amount" />
+          <ScalarProperty Name="CreditTypeID" ColumnName="CreditTypeID" />
+          <ScalarProperty Name="Usrno" ColumnName="Usrno" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblManage_Customer">
+      <EntityTypeMapping TypeName="db_silviModel.tblManage_Customer">
+        <MappingFragment StoreEntitySet="tblManage_Customer">
+          <ScalarProperty Name="OTP" ColumnName="OTP" />
+          <ScalarProperty Name="AddDate" ColumnName="AddDate" />
+          <ScalarProperty Name="Password" ColumnName="Password" />
+          <ScalarProperty Name="UserID" ColumnName="UserID" />
+          <ScalarProperty Name="Email" ColumnName="Email" />
+          <ScalarProperty Name="Mobile" ColumnName="Mobile" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblManage_Markup">
+      <EntityTypeMapping TypeName="db_silviModel.tblManage_Markup">
+        <MappingFragment StoreEntitySet="tblManage_Markup">
+          <ScalarProperty Name="AddDate" ColumnName="AddDate" />
+          <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+          <ScalarProperty Name="IsUniversalOverride" ColumnName="IsUniversalOverride" />
+          <ScalarProperty Name="IsUniversal" ColumnName="IsUniversal" />
+          <ScalarProperty Name="CreatedByUsrno" ColumnName="CreatedByUsrno" />
+          <ScalarProperty Name="AirlineCode" ColumnName="AirlineCode" />
+          <ScalarProperty Name="Usrno" ColumnName="Usrno" />
+          <ScalarProperty Name="MarkupCategoryId" ColumnName="MarkupCategoryId" />
+          <ScalarProperty Name="EndDate" ColumnName="EndDate" />
+          <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+          <ScalarProperty Name="MethodID" ColumnName="MethodID" />
+          <ScalarProperty Name="CurrencyID" ColumnName="CurrencyID" />
+          <ScalarProperty Name="Value" ColumnName="Value" />
+          <ScalarProperty Name="MarkupTypeID" ColumnName="MarkupTypeID" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblManage_MenuRights">
+      <EntityTypeMapping TypeName="db_silviModel.tblManage_MenuRights">
+        <MappingFragment StoreEntitySet="tblManage_MenuRights">
+          <ScalarProperty Name="IsDelete" ColumnName="IsDelete" />
+          <ScalarProperty Name="IsEdit" ColumnName="IsEdit" />
+          <ScalarProperty Name="IsAdd" ColumnName="IsAdd" />
+          <ScalarProperty Name="MenuID" ColumnName="MenuID" />
+          <ScalarProperty Name="Usrno" ColumnName="Usrno" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblManage_UserInvited">
+      <EntityTypeMapping TypeName="db_silviModel.tblManage_UserInvited">
+        <MappingFragment StoreEntitySet="tblManage_UserInvited">
+          <ScalarProperty Name="AddDate" ColumnName="AddDate" />
+          <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+          <ScalarProperty Name="InvitedUsrno" ColumnName="InvitedUsrno" />
+          <ScalarProperty Name="Mobile" ColumnName="Mobile" />
+          <ScalarProperty Name="Email" ColumnName="Email" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="RoleId" ColumnName="RoleId" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblMaster_AgencyType">
+      <EntityTypeMapping TypeName="db_silviModel.tblMaster_AgencyType">
+        <MappingFragment StoreEntitySet="tblMaster_AgencyType">
+          <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+          <ScalarProperty Name="AgencyType" ColumnName="AgencyType" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblMaster_Bank">
+      <EntityTypeMapping TypeName="db_silviModel.tblMaster_Bank">
+        <MappingFragment StoreEntitySet="tblMaster_Bank">
+          <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+          <ScalarProperty Name="AddDate" ColumnName="AddDate" />
+          <ScalarProperty Name="BankName" ColumnName="BankName" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblMaster_BusinessType">
+      <EntityTypeMapping TypeName="db_silviModel.tblMaster_BusinessType">
+        <MappingFragment StoreEntitySet="tblMaster_BusinessType">
+          <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+          <ScalarProperty Name="BusinessType" ColumnName="BusinessType" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblMaster_City">
+      <EntityTypeMapping TypeName="db_silviModel.tblMaster_City">
+        <MappingFragment StoreEntitySet="tblMaster_City">
+          <ScalarProperty Name="StateID" ColumnName="StateID" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblMaster_CreditType">
+      <EntityTypeMapping TypeName="db_silviModel.tblMaster_CreditType">
+        <MappingFragment StoreEntitySet="tblMaster_CreditType">
+          <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+          <ScalarProperty Name="CreditType" ColumnName="CreditType" />
+          <ScalarProperty Name="CreditTypeId" ColumnName="CreditTypeId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblMaster_KYCDocumentType">
+      <EntityTypeMapping TypeName="db_silviModel.tblMaster_KYCDocumentType">
+        <MappingFragment StoreEntitySet="tblMaster_KYCDocumentType">
+          <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+          <ScalarProperty Name="KYCDocumentType" ColumnName="KYCDocumentType" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblMaster_Menu">
+      <EntityTypeMapping TypeName="db_silviModel.tblMaster_Menu">
+        <MappingFragment StoreEntitySet="tblMaster_Menu">
+          <ScalarProperty Name="AddDate" ColumnName="AddDate" />
+          <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+          <ScalarProperty Name="Position" ColumnName="Position" />
+          <ScalarProperty Name="SubParentID" ColumnName="SubParentID" />
+          <ScalarProperty Name="ParentID" ColumnName="ParentID" />
+          <ScalarProperty Name="MenuLevel" ColumnName="MenuLevel" />
+          <ScalarProperty Name="ActionName" ColumnName="ActionName" />
+          <ScalarProperty Name="ControllerName" ColumnName="ControllerName" />
+          <ScalarProperty Name="Icon" ColumnName="Icon" />
+          <ScalarProperty Name="PageName" ColumnName="PageName" />
+          <ScalarProperty Name="URL" ColumnName="URL" />
+          <ScalarProperty Name="MenuName" ColumnName="MenuName" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblMaster_State">
+      <EntityTypeMapping TypeName="db_silviModel.tblMaster_State">
+        <MappingFragment StoreEntitySet="tblMaster_State">
+          <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+          <ScalarProperty Name="StateName" ColumnName="StateName" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblMaster_SupportingDocumentType">
+      <EntityTypeMapping TypeName="db_silviModel.tblMaster_SupportingDocumentType">
+        <MappingFragment StoreEntitySet="tblMaster_SupportingDocumentType">
+          <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+          <ScalarProperty Name="SupportingDocumentType" ColumnName="SupportingDocumentType" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblMaster_User">
+      <EntityTypeMapping TypeName="db_silviModel.tblMaster_User">
+        <MappingFragment StoreEntitySet="tblMaster_User">
+          <ScalarProperty Name="AgreementRemark" ColumnName="AgreementRemark" />
+          <ScalarProperty Name="SupplierAgreement" ColumnName="SupplierAgreement" />
+          <ScalarProperty Name="IsSupplier" ColumnName="IsSupplier" />
+          <ScalarProperty Name="FlightLookLimit" ColumnName="FlightLookLimit" />
+          <ScalarProperty Name="LookLimitPeriodType" ColumnName="LookLimitPeriodType" />
+          <ScalarProperty Name="IsToken" ColumnName="IsToken" />
+          <ScalarProperty Name="IsContract" ColumnName="IsContract" />
+          <ScalarProperty Name="RegisterOTP" ColumnName="RegisterOTP" />
+          <ScalarProperty Name="UserTypeID" ColumnName="UserTypeID" />
+          <ScalarProperty Name="IsKycCompleted" ColumnName="IsKycCompleted" />
+          <ScalarProperty Name="IsUseLogo" ColumnName="IsUseLogo" />
+          <ScalarProperty Name="IsPaymentByAccount" ColumnName="IsPaymentByAccount" />
+          <ScalarProperty Name="IsPaymentByCC" ColumnName="IsPaymentByCC" />
+          <ScalarProperty Name="IsSales" ColumnName="IsSales" />
+          <ScalarProperty Name="CreatedByUserID" ColumnName="CreatedByUserID" />
+          <ScalarProperty Name="Photo" ColumnName="Photo" />
+          <ScalarProperty Name="AddDate" ColumnName="AddDate" />
+          <ScalarProperty Name="IsBlock" ColumnName="IsBlock" />
+          <ScalarProperty Name="IsDelete" ColumnName="IsDelete" />
+          <ScalarProperty Name="DOA" ColumnName="DOA" />
+          <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+          <ScalarProperty Name="IntroStr" ColumnName="IntroStr" />
+          <ScalarProperty Name="IntroUsrno" ColumnName="IntroUsrno" />
+          <ScalarProperty Name="PackageID" ColumnName="PackageID" />
+          <ScalarProperty Name="Country" ColumnName="Country" />
+          <ScalarProperty Name="Pincode" ColumnName="Pincode" />
+          <ScalarProperty Name="State" ColumnName="State" />
+          <ScalarProperty Name="City" ColumnName="City" />
+          <ScalarProperty Name="Address" ColumnName="Address" />
+          <ScalarProperty Name="Password" ColumnName="Password" />
+          <ScalarProperty Name="UserID" ColumnName="UserID" />
+          <ScalarProperty Name="Mobile" ColumnName="Mobile" />
+          <ScalarProperty Name="Email" ColumnName="Email" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="AspNetID" ColumnName="AspNetID" />
+          <ScalarProperty Name="Usrno" ColumnName="Usrno" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblMaster_UserType">
+      <EntityTypeMapping TypeName="db_silviModel.tblMaster_UserType">
+        <MappingFragment StoreEntitySet="tblMaster_UserType">
+          <ScalarProperty Name="ModifyDate" ColumnName="ModifyDate" />
+          <ScalarProperty Name="ModifyByUsrno" ColumnName="ModifyByUsrno" />
+          <ScalarProperty Name="AddDate" ColumnName="AddDate" />
+          <ScalarProperty Name="IsDelete" ColumnName="IsDelete" />
+          <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+          <ScalarProperty Name="CreatedByUsrno" ColumnName="CreatedByUsrno" />
+          <ScalarProperty Name="UserType" ColumnName="UserType" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblUser_LevelDownline">
+      <EntityTypeMapping TypeName="db_silviModel.tblUser_LevelDownline">
+        <MappingFragment StoreEntitySet="tblUser_LevelDownline">
+          <ScalarProperty Name="DOA" ColumnName="DOA" />
+          <ScalarProperty Name="AddDate" ColumnName="AddDate" />
+          <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+          <ScalarProperty Name="LevelNo" ColumnName="LevelNo" />
+          <ScalarProperty Name="DownlineUsrno" ColumnName="DownlineUsrno" />
+          <ScalarProperty Name="Usrno" ColumnName="Usrno" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tblOTPVerifications">
+      <EntityTypeMapping TypeName="db_silviModel.tblOTPVerification">
+        <MappingFragment StoreEntitySet="tblOTPVerification">
+          <ScalarProperty Name="IsVerified" ColumnName="IsVerified" />
+          <ScalarProperty Name="AddDate" ColumnName="AddDate" />
+          <ScalarProperty Name="OTP" ColumnName="OTP" />
+          <ScalarProperty Name="Mobile" ColumnName="Mobile" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="View_Users">
+      <EntityTypeMapping TypeName="db_silviModel.View_Users">
+        <MappingFragment StoreEntitySet="View_Users">
+          <ScalarProperty Name="Status" ColumnName="Status" />
+          <ScalarProperty Name="AgreementRemark" ColumnName="AgreementRemark" />
+          <ScalarProperty Name="SupplierAgreement" ColumnName="SupplierAgreement" />
+          <ScalarProperty Name="IsSupplier" ColumnName="IsSupplier" />
+          <ScalarProperty Name="FlightLookLimit" ColumnName="FlightLookLimit" />
+          <ScalarProperty Name="LookLimitPeriodType" ColumnName="LookLimitPeriodType" />
+          <ScalarProperty Name="IsToken" ColumnName="IsToken" />
+          <ScalarProperty Name="IsContract" ColumnName="IsContract" />
+          <ScalarProperty Name="RegisterOTP" ColumnName="RegisterOTP" />
+          <ScalarProperty Name="UserTypeID" ColumnName="UserTypeID" />
+          <ScalarProperty Name="IsKycCompleted" ColumnName="IsKycCompleted" />
+          <ScalarProperty Name="IsUseLogo" ColumnName="IsUseLogo" />
+          <ScalarProperty Name="IsPaymentByAccount" ColumnName="IsPaymentByAccount" />
+          <ScalarProperty Name="IsPaymentByCC" ColumnName="IsPaymentByCC" />
+          <ScalarProperty Name="IsSales" ColumnName="IsSales" />
+          <ScalarProperty Name="CreatedByUserID" ColumnName="CreatedByUserID" />
+          <ScalarProperty Name="Photo" ColumnName="Photo" />
+          <ScalarProperty Name="AddDate" ColumnName="AddDate" />
+          <ScalarProperty Name="IsBlock" ColumnName="IsBlock" />
+          <ScalarProperty Name="IsDelete" ColumnName="IsDelete" />
+          <ScalarProperty Name="DOA" ColumnName="DOA" />
+          <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+          <ScalarProperty Name="IntroStr" ColumnName="IntroStr" />
+          <ScalarProperty Name="IntroUsrno" ColumnName="IntroUsrno" />
+          <ScalarProperty Name="PackageID" ColumnName="PackageID" />
+          <ScalarProperty Name="Country" ColumnName="Country" />
+          <ScalarProperty Name="Pincode" ColumnName="Pincode" />
+          <ScalarProperty Name="State" ColumnName="State" />
+          <ScalarProperty Name="City" ColumnName="City" />
+          <ScalarProperty Name="Address" ColumnName="Address" />
+          <ScalarProperty Name="Password" ColumnName="Password" />
+          <ScalarProperty Name="UserID" ColumnName="UserID" />
+          <ScalarProperty Name="Mobile" ColumnName="Mobile" />
+          <ScalarProperty Name="Email" ColumnName="Email" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="AspNetID" ColumnName="AspNetID" />
+          <ScalarProperty Name="Usrno" ColumnName="Usrno" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="UserType" ColumnName="UserType" />
+          <ScalarProperty Name="RoleId" ColumnName="RoleId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <AssociationSetMapping Name="AspNetUserRoles" TypeName="db_silviModel.AspNetUserRoles" StoreEntitySet="AspNetUserRoles">
+      <EndProperty Name="AspNetUser">
+        <ScalarProperty Name="Id" ColumnName="UserId" />
+      </EndProperty>
+      <EndProperty Name="AspNetRole">
+        <ScalarProperty Name="Id" ColumnName="RoleId" />
+      </EndProperty>
+    </AssociationSetMapping>
+  </EntityContainerMapping>
+</Mapping>

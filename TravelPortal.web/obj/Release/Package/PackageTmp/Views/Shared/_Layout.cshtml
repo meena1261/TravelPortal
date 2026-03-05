@@ -1,0 +1,353 @@
+﻿
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Meta Tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Silvi Global</title>
+
+    <meta name="description" content="DreamsTour - A premium Bootstrap 5 template crafted for travel and tour booking. Tailored for travel agencies and booking platforms, it features flight, hotel, and tour reservations, and holiday packages.">
+    <meta name="keywords" content="travel booking template, tour booking, Bootstrap 5 travel template, DreamsTour, hotel booking, flights booking, holiday packages, tour agency website, travel agency template, travel HTML template, booking system, responsive travel template, Bootstrap travel website">
+    <meta name="author" content="Dreams Technologies">
+    <meta name="robots" content="index, follow">
+
+    <!-- Theme Settings Js -->
+    <script src="~/Scripts/agent/js/theme-script.js" type="text/javascript"></script>
+
+    <link rel="stylesheet" href="~/Content/agent/css/animate.css">
+    <link rel="stylesheet" href="~/Content/agent/css/bootstrap.min.css">
+
+    <!-- Main.css -->
+    <link rel="stylesheet" href="~/Content/agent/css/meanmenu.css">
+
+    <!-- Tabler Icon CSS -->
+    <link rel="stylesheet" href="~/Content/agent/plugins/tabler-icons/tabler-icons.css">
+
+    <!-- Fontawesome Icon CSS -->
+    <link rel="stylesheet" href="~/Content/agent/plugins/fontawesome/css/fontawesome.min.css">
+    <link rel="stylesheet" href="~/Content/agent/plugins/fontawesome/css/all.min.css">
+
+    <!-- Fancybox CSS -->
+    <link rel="stylesheet" href="~/Content/agent/plugins/fancybox/jquery.fancybox.min.css">
+
+    <!-- Owlcarousel CSS -->
+    <link rel="stylesheet" href="~/Content/agent/plugins/owlcarousel/owl.carousel.min.css">
+
+    <!-- Rangeslider CSS -->
+    <link rel="stylesheet" href="~/Content/agent/plugins/ion-rangeslider/css/ion.rangeSlider.css">
+    <link rel="stylesheet" href="~/Content/agent/plugins/ion-rangeslider/css/ion.rangeSlider.min.css">
+
+    <!-- Iconsax CSS -->
+    <link rel="stylesheet" href="~/Content/agent/css/iconsax.css">
+
+    <!-- Datepicker CSS -->
+    <link rel="stylesheet" href="~/Content/agent/css/bootstrap-datetimepicker.min.css">
+
+    <!-- Style CSS -->
+    <link rel="stylesheet" href="~/Content/agent/css/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link href="~/Content/agent/plugins/jquery-ui/jquery-ui.css" rel="stylesheet" />
+    <link href="~/Content/agent/css/loader.css" rel="stylesheet" />
+    @Scripts.Render("~/bundles/jquery")
+</head>
+
+<body>
+    <!-- Loader -->
+    @*<div id="loader-wrapper">
+            <div id="loader">
+                <span class="loader-line"></span>
+            </div>
+        </div>*@
+    <!-- /Loader -->
+    <!-- MakeMyTrip Style Loader -->
+    <div id="mmtLoader" style="display:none;">
+        <div class="mmt-box">
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <p class="loading-text">Loading your trip...</p>
+        </div>
+    </div>
+
+
+    <div class="main-header main-header-four">
+        <!-- Header Topbar-->
+        <div class="header-topbar topbar-four text-center bg-transparent">
+            <div class="container-fluid">
+                <div class="d-flex align-items-center justify-content-between flex-wrap">
+                    <div class="d-flex align-items-center flex-wrap">
+                        <p class="d-flex align-items-center fs-14 mb-2 me-3 "><i class="isax isax-call5 me-2"></i>Toll Free : +1 56565 56594</p>
+                        <p class="mb-2 d-flex align-items-center fs-14">
+                            <i class="isax isax-message-text-15 me-2"></i>Email :
+                            <a href="#" class="__cf_email__">silvi@gmail.com</a>
+                        </p>
+                    </div>
+                    <div class="d-flex align-items-center">
+                        <div class="dropdown flag-dropdown mb-2 me-3">
+                            <a href="#" class="dropdown-toggle d-inline-flex align-items-center" data-bs-toggle="dropdown" aria-expanded="false">
+                                <img src="~/Content/agent/img/flags/us-flag.svg" class="me-2" alt="flag">ENG
+                            </a>
+                            <ul class="dropdown-menu p-2 mt-2">
+                                <li>
+                                    <a class="dropdown-item rounded d-flex align-items-center" href="#">
+                                        <img src="~/Content/agent/img/flags/us-flag.svg" class="me-2" alt="flag">ENG
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item rounded d-flex align-items-center" href="#">
+                                        <img src="~/Content/agent/img/flags/arab-flag.svg" class="me-2" alt="flag">ARA
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item rounded d-flex align-items-center" href="#">
+                                        <img src="~/Content/agent/img/flags/france-flag.svg" class="me-2" alt="flag">FRA
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="dropdown mb-2">
+                            <a href="#" class="dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                                USD
+                            </a>
+                            <ul class="dropdown-menu p-2 mt-2">
+                                <li><a class="dropdown-item rounded" href="#">USD</a></li>
+                                <li><a class="dropdown-item rounded" href="#">YEN</a></li>
+                                <li><a class="dropdown-item rounded" href="#">EURO</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /Header Topbar-->
+        <!-- Header -->
+        <header class="header-four">
+            <div class="container">
+                <div class="offcanvas-info">
+                    <div class="offcanvas-wrap">
+                        <div class="offcanvas-detail">
+                            <div class="offcanvas-head">
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <a href="@Url.Action("Home","Agent")" class="black-logo-responsive">
+                                        <img src="~/Content/logo/logo.png" alt="logo-img" class="w-25">
+                                    </a>
+                                    <a href="@Url.Action("Home","Agent")" class="white-logo-responsive">
+                                        <img src="~/Content/logo/logo.png" alt="logo-img" class="w-25">
+                                    </a>
+                                    <div class="offcanvas-close">
+                                        <i class="ti ti-x"></i>
+                                    </div>
+                                </div>
+                                <div class="wishlist-info d-flex justify-content-between align-items-center">
+                                    <h6 class="fs-16 fw-medium">Wishlist</h6>
+                                    <div class="d-flex align-items-center">
+                                        <div class="fav-dropdown">
+                                            <a href="wishlist.html" class="position-relative">
+                                                <i class="isax isax-heart"></i><span class="count-icon bg-secondary text-gray-9">0</span>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mobile-menu fix mb-3"></div>
+                            <div class="offcanvas__contact">
+                                <div class="mt-4">
+                                    <a href="@RouteConfig.Wallet.ToPrefixApplicationURL()" class="btn btn-primary w-100">
+                                        Balance : <span class="fa fa-wallet"></span>@Html.Action("WalletBalance", "Agent")
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="offcanvas-overlay"></div>
+                <div class="header-nav">
+                    <div class="main-menu-wrapper">
+                        <div class="navbar-logo">
+                            <a class="logo-white header-logo" href="@Url.Action("Home","Agent")">
+                                <img src="~/Content/agent/img/logo.png" class="logo w-25" alt="Logo">
+                            </a>
+                            <a class="logo-dark header-logo" href="@Url.Action("Home","Agent")">
+                                <img src="~/Content/agent/img/logo-dark.png" class="logo w-25" alt="Logo">
+                            </a>
+                        </div>
+                        <nav id="mobile-menu">
+                            <ul class="main-nav">
+                                <li>
+                                    <a href="@Url.Action("Home","Agent")" class="nav-link">
+                                        <i class="isax isax-airplane5 me-2"></i>Flights
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#" class="nav-link" data-bs-toggle="tab" data-bs-target="#Hotels">
+                                        <i class="isax isax-buildings5 me-2"></i>Hotels
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#" class="nav-link" data-bs-toggle="tab" data-bs-target="#Cars">
+                                        <i class="isax isax-car5 me-2"></i>Cars
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#" class="nav-link" data-bs-toggle="tab" data-bs-target="#Cruise">
+                                        <i class="isax isax-ship5 me-2"></i>Cruise
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#" class="nav-link" data-bs-toggle="tab" data-bs-target="#Tour">
+                                        <i class="isax isax-camera5 me-2"></i>Tour
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#" class="nav-link" data-bs-toggle="tab" data-bs-target="#Bus">
+                                        <i class="isax isax-bus5 me-2"></i>Bus
+                                    </a>
+                                </li>
+                            </ul>
+                        </nav>
+                        <div class="header-btn d-flex align-items-center">
+                            <div class="me-3">
+                                <a href="#" id="dark-mode-toggle" class="theme-toggle">
+                                    <i class="isax isax-moon"></i>
+                                </a>
+                                <a href="#" id="light-mode-toggle" class="theme-toggle">
+                                    <i class="isax isax-sun-1"></i>
+                                </a>
+                            </div>
+                            <div class="dropdown profile-dropdown">
+                                <a href="#" class="d-flex align-items-center" data-bs-toggle="dropdown">
+                                    <span class="avatar avatar-md">
+                                        <img src="~/Uploads/Profile/@SessionHelper.UserDetail.ProfilePhoto" alt="Img" class="img-fluid rounded-circle border border-white border-4">
+                                    </span>
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-end p-3">
+                                    <li>
+                                        <a class="dropdown-item d-inline-flex align-items-center rounded fw-medium p-2" href="@RouteConfig.AgentDashboard.ToPrefixApplicationURL()">Dashboard</a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item d-inline-flex align-items-center rounded fw-medium p-2" href="@RouteConfig.MyBooking.ToPrefixApplicationURL()">My Booking</a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item d-inline-flex align-items-center rounded fw-medium p-2" href="@RouteConfig.ManageInventory.ToPrefixApplicationURL()">Inventory </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item d-inline-flex align-items-center rounded fw-medium p-2" href="@RouteConfig.ManageSubUsers.ToPrefixApplicationURL()">Manage Users </a>
+                                    </li>
+                                    <li>
+                                        <hr class="dropdown-divider my-2">
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item d-inline-flex align-items-center rounded fw-medium p-2" href="@RouteConfig.MyProfile.ToPrefixApplicationURL()">Profile</a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item d-inline-flex align-items-center rounded fw-medium p-2" href="@Url.Action("Logout","Account")">Logout</a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <a href="@RouteConfig.Wallet.ToPrefixApplicationURL()" class="btn btn-primary me-0">
+                                Balance : <span class="fa fa-wallet"></span> <span>@Html.Action("WalletBalance", "Agent")</span>
+                            </a>
+                            <div class="header__hamburger d-xl-none my-auto">
+                                <div class="sidebar-menu">
+                                    <i class="isax isax-menu5"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <!-- /Header -->
+    </div>
+    @RenderBody()
+
+    <!-- Cursor -->
+    <div class="xb-cursor tx-js-cursor">
+        <div class="xb-cursor-wrapper">
+            <div class="xb-cursor--follower xb-js-follower"></div>
+        </div>
+    </div>
+    <!-- /Cursor -->
+
+    <div class="back-to-top">
+        <a class="back-to-top-icon align-items-center justify-content-center d-flex" href="#top"><i class="fa-solid fa-arrow-up"></i></a>
+    </div>
+
+    <!-- Jquery JS -->
+    <script src="~/Scripts/agent/js/jquery-3.7.1.min.js" type="text/javascript"></script>
+
+    <!-- Bootstrap JS -->
+    <script src="~/Scripts/agent/js/bootstrap.bundle.min.js" type="text/javascript"></script>
+
+    <!-- Wow JS -->
+    <script src="~/Scripts/agent/js/wow.min.js" type="text/javascript"></script>
+
+    <!-- Apex JS -->
+    <script src="~/Content/agent/plugins/apexchart/apexcharts.min.js" type="text/javascript"></script>
+    <script src="~/Content/agent/plugins/apexchart/chart-data.js" type="text/javascript"></script>
+
+    <!-- MeanMenu Js -->
+    <script src="~/Scripts/agent/js/jquery.meanmenu.min.js" type="text/javascript"></script>
+
+    <!-- Swiper Js -->
+    <script src="~/Content/agent/plugins/owlcarousel/owl.carousel.min.js" type="text/javascript"></script>
+
+    <!-- Fancybox JS -->
+    <script src="~/Content/agent/plugins/fancybox/jquery.fancybox.min.js" type="text/javascript"></script>
+
+    <!-- Counter JS -->
+    <script src="~/Scripts/agent/js/jquery.counterup.min.js" type="text/javascript"></script>
+    <script src="~/Scripts/agent/js/jquery.waypoints.min.js" type="text/javascript"></script>
+
+    <!-- Sticky Sidebar JS -->
+    <script src="~/Content/agent/plugins/theia-sticky-sidebar/ResizeSensor.js" type="text/javascript"></script>
+    <script src="~/Content/agent/plugins/theia-sticky-sidebar/theia-sticky-sidebar.js" type="text/javascript"></script>
+
+
+    <!-- Rangeslider JS -->
+    <script src="~/Content/agent/plugins/ion-rangeslider/js/ion.rangeSlider.js" type="text/javascript"></script>
+    <script src="~/Content/agent/plugins/ion-rangeslider/js/custom-rangeslider.js" type="text/javascript"></script>
+    <script src="~/Content/agent/plugins/ion-rangeslider/js/ion.rangeSlider.min.js" type="text/javascript"></script>
+
+    <!-- Datepicker Core JS -->
+    <script src="~/Content/agent/plugins/moment/moment.js" type="text/javascript"></script>
+    <script src="~/Scripts/agent/js/bootstrap-datetimepicker.min.js" type="text/javascript"></script>
+
+    <!-- Daterangepikcer JS -->
+    <script src="~/Scripts/agent/js/moment.js" type="text/javascript"></script>
+    <script src="~/Content/agent/plugins/daterangepicker/daterangepicker.js" type="text/javascript"></script>
+    <script src="~/Scripts/agent/js/bootstrap-datetimepicker.min.js" type="text/javascript"></script>
+
+    <!-- cursor JS -->
+    <script src="~/Scripts/agent/js/cursor.js" type="text/javascript"></script>
+
+    <!-- Script JS -->
+    <script src="~/Scripts/agent/js/script.js" type="text/javascript"></script>
+
+    @*<script src="~/Scripts/agent/js/rocket-loader.min.js"></script>*@
+    <script src="~/Content/agent/plugins/jquery-ui/jquery-ui.js"></script>
+    <script src="~/Scripts/agent/custom.js"></script>
+    @Scripts.Render("~/bundles/jqueryval")
+    @RenderSection("Scripts", required: false)
+
+    <script>
+        window.addEventListener("load", function () {
+            var loader = document.getElementById("mmtLoader");
+            loader.style.display = "block";
+            loader.style.opacity = "0";
+
+            setTimeout(function () {
+                loader.style.display = "none";
+            }, 400);
+        });
+
+        $(document).ajaxStart(function () {
+            $("#mmtLoader").show();
+        }).ajaxStop(function () {
+            $("#mmtLoader").hide();
+        });
+
+    </script>
+</body>
+</html>

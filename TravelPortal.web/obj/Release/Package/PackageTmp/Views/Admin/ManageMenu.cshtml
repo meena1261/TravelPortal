@@ -1,0 +1,72 @@
+﻿@{
+    ViewBag.Title = "Manage Menu";
+    var objlist = (List<MenuModel>)ViewBag.list;
+}
+
+<div class="card">
+    <div class="card-header d-flex align-items-center justify-content-between flex-wrap row-gap-3">
+
+        <div class="d-flex table-dropdown my-xl-auto right-content align-items-center flex-wrap row-gap-3">
+            @Ajax.ActionLink("Add New Menu", "AddEditMenu", "Admin", new { }, new AjaxOptions { UpdateTargetId = "divAddEdit", OnSuccess = "$('#addedit_modal').modal('show');", OnBegin = "fnStartLoader", OnComplete = "fnStopLoader" }, new { @class = "btn btn-outline-success" })
+
+        </div>
+    </div>
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table datatable">
+                <thead class="thead-light">
+                    <tr>
+                        <th>S. No</th>
+                        <th>Menu Name</th>
+                        <th>URL</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (objlist.Count > 0)
+                    {
+                        int i = 1;
+                        foreach (var item in objlist.OrderBy(e=>e.Position).ToList())
+                        {
+
+                            <tr>
+                                <td class="expand">
+                                    @i
+                                </td>
+                                <td>
+                                    <h5>
+                                        @item.MenuName
+                                    </h5>
+                                    @if (!string.IsNullOrEmpty(item.ParentMenuName))
+                                    {
+                                        <p style="margin:0;">>> @item.ParentMenuName</p>
+                                    }
+                                </td>
+                                <td>
+                                    <h5>
+                                        @item.URL
+                                    </h5>
+                                    <small>@item.ControllerName</small>/<small>@item.ActionName</small>
+                                </td>
+
+                                <td>
+                                    <div style="display:flex;justify-content:space-evenly;">
+
+                                        @Ajax.ActionLink("Edit", "AddEditMenu", "Admin", new { id = item.ID }, new AjaxOptions { UpdateTargetId = "divAddEdit", OnSuccess = "$('#addedit_modal').modal('show');", OnBegin = "fnStartLoader", OnComplete = "fnStopLoader" }, new { @class = "text-primary" })
+
+                                        <a href="Javascript:void(0)" class="text-danger" onclick="fn_DeleteItem('@Url.Action("DeleteMenu","Admin",new {id=item.ID })')">
+                                            Delete
+                                        </a>
+                                    </div>
+
+                                </td>
+                            </tr>
+                            i++;
+                        }
+
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

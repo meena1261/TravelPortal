@@ -1,0 +1,278 @@
+﻿@{
+    ViewBag.Title = "Look To Book Dashboard";
+    var db = new TravelPortal.EDMX.db_silviEntities();
+    var objAgentList = db.View_Users.Where(u => u.RoleId == "2").ToList();
+    var objFlightSearchLog = db.tblFlight_SearchLog.ToList();
+    int totalLooks = objFlightSearchLog.Count();
+    int totalBookings = objFlightSearchLog.Where(e => e.IsBook == true).Count();
+    int convertedLooks = totalBookings;
+    int notConvertedLooks = totalLooks - totalBookings;
+    double lookToBookPercentage = totalLooks > 0 ? (double)totalBookings / totalLooks * 100 : 0.0;
+
+    var objPeriodType = DropdownLists.PeriodType();
+}
+
+<div class="card">
+    <div class="card-header">
+        <h4>Overall look -> Book Dashboard</h4>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card flex-fill">
+                    <div class="card-header d-flex justify-content-between align-items-center flex-wrap gap-3">
+                        <div class="d-inline-flex align-items-center">
+                            <span class="title-icon bg-soft-orange fs-16 me-2"><i class="ti ti-eye"></i></span>
+                            <h5 class="card-title mb-0">Look To Book</h5>
+                        </div>
+                        <div class="dropdown">
+                            <a href="javascript:void(0);" class="dropdown-toggle btn btn-sm btn-white d-flex align-items-center" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="ti ti-calendar me-1"></i>Monthly
+                            </a>
+                            <ul class="dropdown-menu p-3">
+                                @*<li>
+                                    <a href="javascript:void(0);" class="dropdown-item">Today</a>
+                                </li>
+                                <li>
+                                    <a href="javascript:void(0);" class="dropdown-item">Weekly</a>
+                                </li>*@
+                                <li>
+                                    <a href="javascript:void(0);" class="dropdown-item">Monthly</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="d-flex align-items-center justify-content-between flex-wrap gap-4 mb-4">
+                            <div>
+                                <canvas id="top-category" height="287" width="250" style="display: block; box-sizing: border-box; height: 230px; width: 200px;"></canvas>
+                            </div>
+                            <div>
+                                <div class="category-item category-primary">
+                                    <p class="fs-13 mb-1">Converted</p>
+                                    <h2 class="d-flex align-items-center">@convertedLooks</h2>
+                                </div>
+                                <div class="category-item category-orange">
+                                    <p class="fs-13 mb-1">Not Converted</p>
+                                    <h2 class="d-flex align-items-center">@notConvertedLooks</h2>
+                                </div>
+                            </div>
+                        </div>
+                        <h6 class="mb-2">Category Statistics</h6>
+                        <div class="border br-8">
+                            <div class="d-flex align-items-center justify-content-between border-bottom p-2">
+                                <p class="d-inline-flex align-items-center mb-0"><i class="ti ti-square-rounded-filled text-indigo fs-8 me-2"></i>Total Looks</p>
+                                <h5>@totalLooks</h5>
+                            </div>
+                            <div class="d-flex align-items-center justify-content-between border-bottom p-2">
+                                <p class="d-inline-flex align-items-center mb-0"><i class="ti ti-square-rounded-filled text-orange fs-8 me-2"></i>Total Booking</p>
+                                <h5>@totalBookings</h5>
+                            </div>
+                            <div class="d-flex align-items-center justify-content-between p-2">
+                                <p class="d-inline-flex align-items-center mb-0"><i class="ti ti-square-rounded-filled text-orange fs-8 me-2"></i>Look <span class="ti ti-arrow-right"></span> Book %</p>
+                                <h5>@lookToBookPercentage %</h5>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title mb-0">Agent - Look-to-Book Management</h5>
+                    </div>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-warning">
+                        <thead>
+                            <tr>
+                                <th>
+                                    <input type="checkbox" />
+                                </th>
+                                <th>Agent</th>
+                                <th>Status</th>
+                                <th>Views <small> (30D) </small></th>
+                                <th>Bookings <small> (30D) </small></th>
+                                <th>Conversion %</th>
+                                <th>Manager</th>
+                                <th>Look Usage</th>
+                                <th>Look Limit</th>
+                                <th>Limit Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var agent in objAgentList)
+                            {
+                                int agentLooks = objFlightSearchLog.Where(e => e.Usrno == agent.Usrno).Count();
+                                double BookPercentage = agentLooks > 0 ? (double)objFlightSearchLog.Where(e => e.Usrno == agent.Usrno && e.IsBook == true).Count() / agentLooks * 100 : 0.0;
+
+                                double LookPercentage = agentLooks > 0 ? (double)objFlightSearchLog.Where(e => e.Usrno == agent.Usrno).Count() / (int)agent.FlightLookLimit * 100 : 0.0;
+
+                                DateTime fromDate = DateTime.Now.AddDays(-30);
+
+                                int lookedin30D = objFlightSearchLog.Count(e =>
+                                    e.Usrno == agent.Usrno &&
+                                    e.AddDate >= fromDate
+                                );
+                                int bookedin30D = objFlightSearchLog.Count(e =>
+                                    e.Usrno == agent.Usrno &&
+                                    e.IsBook == true &&
+                                    e.AddDate >= fromDate
+                                );
+                                <tr>
+                                    <td>
+                                        <input type="checkbox" />
+                                    </td>
+                                    <td>
+                                        <h5>@agent.Name</h5>
+                                        <small>@agent.UserID</small>
+                                    </td>
+                                    <td><span class="badge bg-success">Active</span></td>
+                                    <td>@lookedin30D</td>
+                                    <td>@bookedin30D</td>
+                                    <td>@BookPercentage %</td>
+                                    <td>N/A</td>
+                                    <td>
+                                        <small>@agentLooks/@agent.FlightLookLimit</small>
+                                        <br />
+                                        <div class="progress" style="height: 6px;">
+                                            <div class="progress-bar bg-success" role="progressbar" style="width: @($"{LookPercentage}%");" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                                        </div>
+                                    </td>
+                                    <td> <b> <i class="ti ti-edit" onclick="UpdateAgentFlightLookLimit(@agent.Usrno,'@agent.FlightLookLimit','@agent.Name','@agent.LookLimitPeriodType')"></i> @agent.FlightLookLimit</b> / <small>@agent.LookLimitPeriodType</small> </td>
+                                    <td><span class="badge bg-success">normal</span></td>
+                                    <td>
+                                        @Ajax.ActionLink("View", "FlightSearchLogs", "Flight", new { usrno=agent.Usrno }, new AjaxOptions { UpdateTargetId = "divSearchlog", OnBegin = "fnStartLoader", OnComplete = "fnStopLoader" }, new { @class = "btn btn-sm btn-primary" })
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="divSearchlog"></div>
+<!--Confirmation Modal-->
+<div class="modal fade" id="update-looklimit-modal">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="page-wrapper-new p-0">
+                @using (Ajax.BeginForm("UpdateAgentFlightLookLimit", "Admin", null, new AjaxOptions { HttpMethod = "POST", OnBegin = "fnStartLoader", OnComplete = "fnStopLoader", OnSuccess = "fn_Success", OnFailure = "fn_Failure" }, new { enctype = "multipart/form-data" }))
+                {
+                    <div class="card">
+                        <div class="card-header">
+                            <h4>
+                                Update Look Limit - [<span id="spnname"></span>]
+                            </h4>
+                        </div>
+                        <div class="card-body">
+                            @Html.Hidden("hdnUsrno")
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label class="text-dark mb-1">Period Type</label>
+                                        @Html.DropDownList("PeriodType", (IEnumerable<SelectListItem>)objPeriodType, "-- Select --", new { @class = "form-control" })
+                                    </div>
+                                    @Html.ValidationMessage("PeriodType", "", new { @class = "text-danger" })
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label class="text-dark mb-1">Look Limit</label>
+                                        @Html.TextBox("LookLimit", "", new { @class = "form-control mb-2", @data_val = "true", @data_val_required = "Required" })
+
+                                    </div>
+                                    @Html.ValidationMessage("LookLimit", "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <div class="modal-footer-btn mt-3 d-flex justify-content-center">
+                                <button type="submit" class="btn me-2 btn-primary fs-13 fw-medium p-2 px-3">Update</button>
+                                <button type="button" class="btn me-2 btn-secondary fs-13 fw-medium p-2 px-3 shadow-none" data-bs-dismiss="modal">Cancel</button>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+<!--End Confirmation Modal-->
+<script>
+    $(document).ready(function () {
+        if ($('#top-category').length > 0) {
+            var ctx = document.getElementById('top-category').getContext('2d');
+            var mySemiDonutChart = new Chart(ctx, {
+                type: 'doughnut', // Chart type
+                data: {
+                    labels: ['Converted', 'Not Converted'],
+                    datasets: [{
+                        label: 'Semi Donut',
+                        data: [@convertedLooks, @notConvertedLooks],
+                        backgroundColor: ['#E04F16', '#092C4C'],
+                        borderWidth: 5,
+                        borderRadius: 10,
+                        borderColor: '#fff', // Border between segments
+                        hoverBorderWidth: 0,   // Border radius for curved edges
+                        cutout: '50%',
+                    }]
+                },
+                options: {
+                    layout: {
+                        padding: {
+                            top: -20,    // Set to 0 to remove top padding
+                            bottom: -20, // Set to 0 to remove bottom padding
+                        }
+                    },
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false // Hide the legend
+                        }
+                    },
+                }
+            });
+        }
+    });
+    function UpdateAgentFlightLookLimit(usrno, limit, name,type) {
+        $("#hdnUsrno").val(usrno);
+        $("#PeriodType").val(type);
+        $("#LookLimit").val(limit);
+        $("#spnname").text(name);
+        $("#update-looklimit-modal").modal('show');
+    }
+    function fn_Success(d) {
+        if (d.status > 0) {
+            $.toast({
+                heading: 'Success',
+                text: d.message,
+                position: 'top-right',
+                showHideTransition: 'fade',
+                icon: 'success'
+            });
+            location.reload();
+        } else {
+            $.toast({
+                heading: 'Message',
+                text: d.message,
+                position: 'top-right',
+                showHideTransition: 'fade',
+                icon: 'error'
+            });
+        }
+    }
+    function fn_Failure(d) {
+        $.toast({
+            heading: 'Message',
+            text: 'failed',
+            position: 'top-right',
+            showHideTransition: 'fade',
+            icon: 'error'
+        });
+    }
+</script>
+

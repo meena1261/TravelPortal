@@ -1,0 +1,10 @@
+﻿@{
+    if (SessionHelper.Islogin)
+    {
+        Layout = "~/Views/Shared/_Layout.cshtml";
+    }
+    else
+    {
+        Layout = null;
+    }
+}

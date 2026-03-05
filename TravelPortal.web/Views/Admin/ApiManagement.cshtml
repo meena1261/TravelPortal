@@ -1,0 +1,157 @@
+﻿@{
+    ViewData["Title"] = "API Management";
+    var db = new TravelPortal.EDMX.db_silviEntities();
+    var objAgents = db.View_Users.Where(u => u.RoleId == "2").ToList();
+    var objAPIList = db.tblManage_API.ToList();
+}
+
+<div class="row">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between">
+                <h4>Global Supplier API Management</h4>
+                @Ajax.ActionLink("Add New", "AddEditAPISupplier", "Admin", new { }, new AjaxOptions { UpdateTargetId = "divAddEdit", OnSuccess = "$('#addedit_modal').modal('show');", OnBegin = "fnStartLoader", OnComplete = "fnStopLoader" }, new { @class = "btn btn-sm btn-primary" })
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Supplier Name</th>
+                                <th>API Type</th>
+                                <th>Endpoint</th>
+                                <th>Active</th>
+                                <th>Switch To Live</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (objAPIList.Count > 0)
+                            {
+                                foreach (var item in objAPIList)
+                                {
+                                    <tr>
+                                        <td>@item.Supplier</td>
+                                        <td>@item.APIType</td>
+                                        <td>
+                                            <label>Live : @item.LiveEndPointUrl </label>
+                                            <br />
+                                            <label>Test : @item.TestEndPointUrl </label>
+                                        </td>
+                                        <td>
+                                            <div class="form-check form-switch">
+                                                    <input class="form-check-input" type="checkbox" role="switch" @(item.IsActive == true ? "checked" : "") onchange="APIActiveDeactive('IsActive',@item.APIID,0)">
+
+                                         
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="form-check form-switch">
+                                                <input class="form-check-input" type="checkbox" role="switch" @(item.IsLive == true ? "checked" : "") onchange="APIActiveDeactive('IsLive',@item.APIID,0)">
+                                            </div>
+                                        </td>
+                                        <td>
+                                            @Ajax.ActionLink("Edit", "AddEditAPISupplier", "Admin", new { id = item.APIID }, new AjaxOptions { UpdateTargetId = "divAddEdit", OnSuccess = "$('#addedit_modal').modal('show');", OnBegin = "fnStartLoader", OnComplete = "fnStopLoader" }, new { @class = "btn btn-sm btn-primary" })
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header">
+                <h4>Supplier Health</h4>
+            </div>
+            <div class="card-body">
+                @if (objAPIList.Count > 0)
+                {
+                    foreach (var item in objAPIList)
+                    {
+                        <div class="card">
+                            <div class="card-body">
+                                <h4>@item.Supplier</h4>
+                                <h6>Uptime: 99.1%</h6>
+                                <h6>Latency: 210ms</h6>
+                                <h6>Error Rate: 1.2%</h6>
+                            </div>
+                        </div>
+                    }
+                }
+
+            </div>
+        </div>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <h4>Agent-Specific API Management</h4>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Agent</th>
+                        <th>Profile</th>
+                        @if (objAPIList.Count > 0)
+                        {
+                            foreach (var item in objAPIList)
+                            {
+                                <th>@item.Supplier - @item.APIType</th>
+                            }
+                        }
+
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var agent in objAgents)
+                    {
+                        <tr>
+                            <td>
+                                <h5>@agent.Name</h5>
+                                <small>@agent.UserID</small>
+                            </td>
+                            <td>
+                                <select class="form-control">
+                                    <option value="">Premium (2000 calls/months)</option>
+                                </select>
+                            </td>
+                            @if (objAPIList.Count > 0)
+                            {
+                                foreach (var item in objAPIList)
+                                {
+                                    var objAgentAPI = db.tblManage_AssignAPI.FirstOrDefault(a => a.Usrno == agent.Usrno && a.APIID == item.APIID);
+                                    <td>
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input" type="checkbox" role="switch" @(objAgentAPI.IsActive == true ? "checked" : "") onchange="APIActiveDeactive('IsActive',@item.APIID,@agent.Usrno)">
+                                        </div>
+                                    </td>
+                                }
+                            }
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<script>
+    function APIActiveDeactive(type,id, usrno) {
+        $.ajax({
+            url: '@Url.Action("APIActiveDeactive", "Admin")',
+            type: 'GET',
+            data: { type: type, apiId: id, usrno: usrno },
+            success: function (response) {
+                //alert('Status updated successfully.');
+            },
+            error: function () {
+                alert('Error updating status.');
+            }
+        });
+    }
+</script>

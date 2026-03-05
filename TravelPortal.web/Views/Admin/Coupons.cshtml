@@ -1,0 +1,32 @@
+﻿<!-- Contact List -->
+<div id="divlist">
+    @Html.Action("ListCoupons", "Admin")
+</div>
+<!-- /Contact List -->
+<!-- Delete Coupons -->
+<div class="modal fade" id="delete_modal" role="dialog">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="text-center">
+                    <div class="avatar avatar-xl bg-danger-light rounded-circle mb-3">
+                        <i class="ti ti-trash-x fs-36 text-danger"></i>
+                    </div>
+                    <h4 class="mb-2">Remove Coupons?</h4>
+                    <p class="mb-0">Are you sure you want to remove <br> Coupons you selected.</p>
+                    @using (Ajax.BeginForm("DeleteActiveCoupons", "Admin", null, new AjaxOptions { HttpMethod = "GET", UpdateTargetId = "divlist", InsertionMode = InsertionMode.Replace, OnSuccess = "$('#delete_modal').modal('hide');", OnBegin = "fnStartLoader", OnComplete = "fnStopLoader" }))
+                    {
+                        <input type="hidden" id="type" name="type" value="IsDelete" />
+                        <input type="hidden" id="hdnId" name="hdnId" value="0" />
+                        <input type="hidden" id="parentId" name="parentId" value="0" />
+                        <div class="d-flex align-items-center justify-content-center mt-4">
+                            <a href="#" class="btn btn-light me-2" data-bs-dismiss="modal">Cancel</a>
+                            <button type="submit" class="btn btn-danger">Yes, Delete it</button>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Delete Coupons -->

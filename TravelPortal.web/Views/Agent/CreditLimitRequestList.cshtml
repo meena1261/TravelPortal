@@ -1,0 +1,52 @@
+﻿@using TravelPortal.web.Models
+@{
+    var objlist = ViewBag.list as List<TravelPortal.web.Models.ViewModel.CreditLimitRequestListViewModel>;
+}
+
+<div class="card hotel-list mb-0">
+    <div class="card-body p-0">
+        <div class="list-header d-flex align-items-center justify-content-between flex-wrap">
+            <h6>Transactions List</h6>
+            <div class="d-flex align-items-center flex-wrap">
+                <div class="input-icon-start  me-2 position-relative">
+                    <span class="icon-addon">
+                        <i class="isax isax-search-normal-1 fs-14"></i>
+                    </span>
+                    <input type="text" class="form-control" placeholder="Search">
+                </div>
+            </div>
+        </div>
+        <div class="table-responsive">
+            <table class="table">
+                <thead class="thead-light">
+                    <tr>
+                        <th>Date</th>
+                        <th>Requested Amount</th>
+                        <th>Credit Type</th>
+                        <th>Status</th>
+                        <th>Admin Remark</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (objlist != null && objlist.Count > 0)
+                    {
+                        foreach (var item in objlist)
+                        {
+                            <tr>
+                                <td>@item.RequestDate </td>
+                                <td>@item.Amount </td>
+                                <td>@item.CreditType </td>
+                                <td>
+                                    <label class="badge badge-@(item.Status.Equals(TravelPortal.web.Models.Common. CommanString.Approved)?"success":item.Status.Equals(TravelPortal.web.Models.Common.CommanString.Rejected)?"danger":"primary")">
+                                        @item.Status
+                                    </label>
+                                </td>
+                                <td>@item.Remarks </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

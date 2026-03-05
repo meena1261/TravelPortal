@@ -1,0 +1,64 @@
+﻿@model SearchReportModel
+@{
+    dynamic objlist = ViewBag.list;
+}
+<div class="card">
+    <div class="card-header">
+        <form action="@Url.Action("AgentWallet","Admin")" method="post">
+            <div class="row align-items-end">
+              
+                <div class="col-md-2">
+                    <label class="form-label">UserId/Mobile</label>
+                    @Html.TextBoxFor(m => m.userId, new { @class = "form-control" })
+                </div>
+                <div class="col-lg-2">
+                    <div class="mt-2">
+                        <button class="btn btn-primary mt-3" type="submit"><i class="ti ti-search"></i> Search</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table datatable">
+                <thead class="thead-light">
+                    <tr>
+                        <th>Name & UserId</th>
+                        <th>Phone Number</th>
+                        <th class="text-danger">Debit</th>
+                        <th class="text-success">Credit</th>
+                        <th>Balance</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (objlist != null && objlist.Count > 0)
+                    {
+                        foreach (var item in objlist)
+                        {
+                            <tr>
+                                <td>
+                                    <h6>@item.Name</h6>
+                                    <label>[@item.UserId]</label>
+                                </td>
+                                <td>@item.Mobile</td>
+
+                                <td class="text-danger"><i class="ti ti-currency-rupee"></i> @item.Debit </td>
+                                <td class="text-success"><i class="ti ti-currency-rupee"></i> @item.Credit </td>
+                                <td><i class="ti ti-currency-rupee"></i> @item.Balance </td>
+                                <td>
+                                    @Ajax.ActionLink("Cr/Dr Fund", "CreditDebitFund", "Admin", new { Usrno = item.Usrno }, new AjaxOptions { UpdateTargetId = "divAddEdit", OnSuccess = "$('#creditdebit_modal').modal('show');", OnBegin = "fnStartLoader", OnComplete = "fnStopLoader" }, new { @class = "btn btn-sm btn-outline-success" })
+                                    <a href="@Url.Action("WalletStatement", "Admin", new {id=item.Usrno})" class="btn btn-primary btn-sm">Statement</a>
+                                </td>
+                            </tr>
+                        }
+                    }
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+

@@ -1,0 +1,83 @@
+﻿@{ 
+    var profile = ViewBag.Profile as TravelPortal.web.Models.ViewModel.UserdetailViewModel;
+}
+
+
+<div class="card shadow-none mb-0">
+    <div class="card-header d-flex align-items-center justify-content-between">
+        <h6>My Profile</h6>
+        <div class="d-flex align-items-center justify-content-center">
+            <a href="@RouteConfig.UpdateProfile.ToPrefixApplicationURL()" class="p-1 rounded-circle btn btn-light d-flex align-items-center justify-content-center"><i class="isax isax-edit-2 fs-14"></i></a>
+        </div>
+    </div>
+    <div class="card-body">
+        <h6 class="fs-16 mb-3">Basic Information</h6>
+        <div class="d-flex align-items-center mb-3">
+            <span class="avatar avatar-xl flex-shrink-0 me-3 ">
+                <img src="~/Uploads/Profile/@profile.ProfilePhoto" alt="Img" class="img-fluid rounded">
+            </span>
+           
+        </div>
+        <div class="row border-bottom pb-2 mb-3">
+            <div class="col-md-6">
+                <div class="mb-2">
+                    <h6 class="fs-14">Agent ID</h6>
+                    <p>@profile.UserId </p>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="mb-2">
+                    <h6 class="fs-14">Full Name</h6>
+                    <p>@profile.Name</p>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="mb-2">
+                    <h6 class="fs-14">Email</h6>
+                    <p>@profile.Email</p>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="mb-2">
+                    <h6 class="fs-14">Mobile No.</h6>
+                    <p>@(string.IsNullOrEmpty(profile.Mobile)?"N/A": profile.Mobile)</p>
+                </div>
+            </div>
+        </div>
+        <h6 class="fs-16 mb-3">Address Information</h6>
+        <div class="row g-2">
+            <div class="col-md-12">
+                <div>
+                    <h6 class="fs-14">Address</h6>
+                    <p>@(string.IsNullOrEmpty(profile.Address) ?"N/A": profile.Address)</p>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div>
+                    <h6 class="fs-14">Country</h6>
+ 
+                    <p>@(string.IsNullOrEmpty(profile.Country) ?"N/A": profile.Country)</p>
+
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div>
+                    <h6 class="fs-14">State</h6>
+                    <p>@(string.IsNullOrEmpty(profile.State) ?"N/A": profile.State)</p>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div>
+                    <h6 class="fs-14">City</h6>
+                    <p>@(string.IsNullOrEmpty(profile.City) ?"N/A": profile.City)</p>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div>
+                    <h6 class="fs-14">Postal Code</h6>
+                    <p>@(string.IsNullOrEmpty(profile.PostalCode) ?"N/A": profile.PostalCode)</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

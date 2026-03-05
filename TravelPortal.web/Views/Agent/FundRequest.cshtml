@@ -1,0 +1,275 @@
+﻿@model FundRequestModel
+@{
+    var objSummary = ViewBag.fundSummary as FundRequestSummary;
+}
+<div class="row">
+    <!-- Wallet List -->
+    <div class="col-xl-12 col-lg-12 d-flex">
+        <div class="row flex-fill">
+            <div class="col-xl-3 col-lg-3 col-md-3  d-flex">
+                <div class="card shadow-none mb-4 flex-fill">
+                    <div class="card-body">
+                        <span class="avatar avatar-lg rounded-circle bg-primary mb-3"><i class="isax isax-calendar-15 text-white"></i></span>
+                        <div class="">
+                            <p class="mb-0 text-truncate line-ellipsis-2">Total Amount</p>
+                            <h4><span class="ti ti-currency-rupee"></span> @objSummary.TotalAmount</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-lg-3 col-md-3  d-flex">
+                <div class="card shadow-none mb-4 flex-fill">
+                    <div class="card-body">
+                        <span class="avatar avatar-lg rounded-circle bg-secondary mb-3"><i class="isax isax-money-send5 text-white"></i></span>
+                        <div class="">
+                            <p class="mb-0 text-truncate line-ellipsis-2">Pending Amount</p>
+                            <h4><span class="ti ti-currency-rupee"></span> @objSummary.PendingAmount</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-lg-3 col-md-3  d-flex">
+                <div class="card shadow-none mb-4 flex-fill">
+                    <div class="card-body">
+                        <span class="avatar avatar-lg rounded-circle bg-purple mb-3"><i class="isax isax-money-time5 text-white"></i></span>
+                        <div class="">
+                            <p class="mb-0 text-truncate line-ellipsis-2">Rejected Amount</p>
+                            <h4><span class="ti ti-currency-rupee"></span> @objSummary.RejectAmount</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-lg-3 col-md-3  d-flex">
+                <div class="card shadow-none mb-4 flex-fill">
+                    <div class="card-body">
+                        <span class="avatar avatar-lg rounded-circle bg-teal mb-3"><i class="isax isax-money-time5 text-white"></i></span>
+                        <div class="mb-3">
+                            <p class="mb-0 text-truncate line-ellipsis-2">Approved Amount</p>
+                            <h4><span class="ti ti-currency-rupee"></span> @objSummary.ApproveAmount</h4>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /Wallet List -->
+    <!-- Wallet -->
+    <div class="col-xl-12 col-lg-12 d-flex">
+        <div class="card payment-details flex-fill mb-4">
+            <div class="card-header d-flex justify-content-between">
+                <div>
+
+                    <h5 class="mb-3">FUND REQUEST</h5>
+               
+                    <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#bankdetail_modal">
+                        View Bank Details
+                    </button>
+                    <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#fundrequest_modal">
+                       Raise Request
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /Wallet -->
+</div>
+
+<!-- Transactions -->
+<div class="card mb-4">
+    <div class="card-body">
+        <div class="d-flex align-items-center">
+            <div>
+                <h6>Transactions</h6>
+            </div>
+        </div>
+        <hr class="border" />
+        <div class="row">
+            <div class="col-md-3">
+                <label class="form-label">Search</label>
+                <input type="text" class="form-control" name="Searchtext" placeholder="Search..." />
+            </div>
+            <div class="col-md-3">
+                <label class="form-label">From Date</label>
+                <input type="date" class="form-control" name="fromDate" />
+            </div>
+            <div class="col-md-3">
+                <label class="form-label">To Date</label>
+                <input type="date" class="form-control" name="toDate" />
+            </div>
+            <div class="col-md-3">
+                <br />
+                <button type="submit" class="btn btn-primary mt-2">Search</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Transactions -->
+<!-- Transactions List -->
+@Html.Action("FundRequestList", "Agent")
+<!-- /Transactions List -->
+<div class="modal fade" id="bankdetail_modal">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="page-title">
+                    <h5 class="modal-title">Recharge Through NEFT</h5>
+                </div>
+            </div>
+            <div class="modal-body">
+                <label>Transfer the required amount to the  below mentioned details. The Vertual Account Number is Unique to your company.</label>
+                <label class="mt-3">Your wallet balance will be updated after a successful transfer.</label>
+                <table class="table mt-3">
+                    <tr>
+                        <td>Account Number</td>
+                        <td>
+                            <h6>9685741230</h6>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Beneficiary Name</td>
+                        <td><h6>Make my trip</h6></td>
+                    </tr>
+                    <tr>
+                        <td>IFSC Code</td>
+                        <td><h6>ICICI0001</h6> </td>
+                    </tr>
+                    <tr>
+                        <td>Bank Name</td>
+                        <td><h6>ICICI</h6> </td>
+                    </tr>
+                    <tr>
+                        <td>Account Type</td>
+                        <td><h6>Current Account</h6> </td>
+                    </tr>
+                    <tr>
+                        <td>Branch Name</td>
+                        <td><h6>Suncity</h6> </td>
+                    </tr>
+                    <tr>
+                        <td>Branch Location</td>
+                        <td><h6>Suncity,Gurgoan</h6> </td>
+                    </tr>
+                </table>
+
+                <div class="d-flex justify-content-center mt-3">
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal" aria-label="Close">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="fundrequest_modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                    <h5 class="modal-title">Raise Request</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3">
+                    @using (Ajax.BeginForm("RaiseFundRequest", "Agent", null, new AjaxOptions { HttpMethod = "POST", OnSuccess = "fn_Success", OnFailure = "fn_Failure", OnBegin = "", OnComplete = "" }, new { enctype = "multipart/form-data" }))
+                    {
+                        <div class="row">
+                            <div class="col-md-7">
+                                <div class="row">
+
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label class="text-dark mb-1">Payment mode</label>
+                                            @Html.DropDownListFor(m => m.PaymentMode, (IEnumerable<SelectListItem>)ViewBag.Paymentmode, "-- Select --", new { @class = "form-control", @data_val = "true", @data_val_required = "Required" })
+                                        </div>
+                                        @Html.ValidationMessageFor(model => model.PaymentMode, "", new { @class = "text-danger" })
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label class="text-dark mb-1">Transaction Date</label>
+                                            @Html.TextBoxFor(m => m.TransactionDate, new { @type = "date", @class = "form-control mb-2", @data_val = "true", @data_val_required = "Required" })
+                                        </div>
+                                        @Html.ValidationMessageFor(model => model.TransactionDate, "", new { @class = "text-danger" })
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label class="text-dark mb-1">Amount</label>
+                                            @Html.TextBoxFor(m => m.Amount, new { @class = "form-control mb-2", @data_val = "true", @data_val_required = "Required" })
+                                        </div>
+                                        @Html.ValidationMessageFor(model => model.Amount, "", new { @class = "text-danger" })
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label class="text-dark mb-1">UTR/URN/Reference ID</label>
+                                            @Html.TextBoxFor(m => m.UTRNo, new { @class = "form-control mb-2", @data_val = "true", @data_val_required = "Required" })
+                                        </div>
+                                        @Html.ValidationMessageFor(model => model.UTRNo, "", new { @class = "text-danger" })
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label class="text-dark mb-1">Bank Name</label>
+                                            @Html.TextBoxFor(m => m.BankName, new { @class = "form-control mb-2" })
+                                        </div>
+                                        @Html.ValidationMessageFor(model => model.BankName, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="col-md-5">
+                                <br />
+                                <div class="alert alert-secondary">
+                                    <h5>Upload your proof of Payment!</h5>
+                                    <p>Please upload a screen shot of your bank statement with UTR transaction in <b>PNG, JPEG</b> or <b>PDF</b> format. Not larger than 3MB in size. </p>
+                                    <br />
+                                    @Html.TextBoxFor(m => m.TransactionProof, new { @type = "file", @class = "form-control d-none", @id = "proofFile", @data_val = "true", @data_val_required = "Required" })
+                                    <label class="btn btn-outline-success" for="TransactionProof">Select From your computer</label>
+                                </div>
+                                <p>Note: Mandatory field, to help us validate faster.</p>
+                            </div>
+                        </div>
+                        <div class="mt-2">
+                            <button type="submit" class="btn btn-success" id="btnContinue">
+                                Submit Request
+                            </button>
+                            <button class="btn btn-success" type="button" disabled="" id="btndisabled" style="display:none;">
+                                <span class="spinner-border spinner-border-sm align-middle" role="status" aria-hidden="true"></span>
+                                Pleas wait ...
+                            </button>
+                            <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script>
+    function fn_Success(d) {
+        if (d.status > 0) {
+
+            Swal.fire({
+                title: "Successfully",
+                text: d.message,
+                icon: "success"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    location.reload();
+                }
+            });
+        } else {
+            Swal.fire({
+                title: "failed",
+                text: d.message,
+                icon: "error"
+            });
+        }
+    }
+    function fn_Failure(d) {
+        Swal.fire({
+            title: "failed",
+            text: "error",
+            icon: "error"
+        });
+    }
+</script>

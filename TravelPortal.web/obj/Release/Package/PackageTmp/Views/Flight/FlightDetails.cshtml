@@ -1,0 +1,1060 @@
+﻿@model TravelPortal.web.Models.CreateOrderPNRModel
+@{
+    var result = ViewBag.flightinfo as TravelPortal.web.Models.ViewModel.FlightInfoVM;
+
+    var objfareSummary = result.flightSummary;
+
+    string walletBalance = ViewBag.walletBalance;
+    string CreditLimit = ViewBag.CreditLimit;
+
+
+}
+
+<style>
+    .flight-card {
+        border: 1px solid #e0e0e0;
+        border-radius: 10px;
+        padding: 16px;
+        box-shadow: 0 1px 5px rgba(0,0,0,0.1);
+    }
+
+    .flight-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid #eee;
+        padding-bottom: 8px;
+    }
+
+    .flight-time {
+        font-weight: 600;
+        font-size: 1.1rem;
+    }
+
+    .flight-detail {
+        margin-left: 24px;
+    }
+
+    .bag-icon {
+        color: #f4b400;
+    }
+
+    .tag {
+        background-color: #e9f7ef;
+        color: #28a745;
+        font-size: 0.8rem;
+        padding: 2px 8px;
+        border-radius: 4px;
+        font-weight: 500;
+    }
+
+    .traveller-card {
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        padding: 16px;
+        margin-top: 15px;
+        background: #fff;
+    }
+
+    .section-header {
+        font-weight: 600;
+        background: #f8f9fa;
+        padding: 8px 12px;
+        border-radius: 6px;
+        margin-bottom: 10px;
+    }
+
+    .info-text {
+        font-size: 0.85rem;
+        color: #666;
+    }
+
+    .plane {
+        margin: 30px auto;
+        background: #fff;
+        border-radius: 20px;
+        padding: 20px;
+        box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        width: 80%;
+        max-width: 700px;
+    }
+
+    .seat-row {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 6px 0;
+    }
+
+    .seat {
+        width: 30px;
+        height: 30px;
+        background: #e0e0e0;
+        margin: 3px;
+        border-radius: 4px;
+        cursor: pointer;
+        text-align: center;
+        line-height: 30px;
+        font-size: 12px;
+        transition: all 0.2s ease;
+    }
+
+        .seat:hover {
+            background: #b3e5fc;
+        }
+
+        .seat.selected {
+            background: #2196f3;
+            color: white;
+        }
+
+        .seat.reserved {
+            background: #9e9e9e;
+            cursor: not-allowed;
+        }
+
+    .aisle {
+        width: 30px;
+    }
+
+    .legend {
+        margin-top: 15px;
+    }
+
+        .legend span {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            margin-right: 5px;
+            border-radius: 3px;
+        }
+
+    .legend-item {
+        margin-right: 15px;
+    }
+
+    .input-validation-error {
+        border-color: orangered;
+    }
+</style>
+<div class="container">
+    @using (Ajax.BeginForm("CreateOrderPNR", "Flight", new { crId = result.CacheKey }, new AjaxOptions { HttpMethod = "POST", OnSuccess = "fn_Success", OnFailure = "fn_Failure", OnBegin = "", OnComplete = "" }, new { id = "frmCreateOrderPNR", onsubmit = "return onSubmit();", enctype = "multipart/form-data" }))
+    {
+        
+    <input type="hidden" name="tripType" value="Oneway" />
+
+        <div class="row">
+            <div class="col-md-9">
+                @FlightDetail(result)
+
+                @Passangers(objfareSummary)
+
+            </div>
+            @FareSummary(objfareSummary)
+        </div>
+    }
+</div>
+
+@helper FlightDetail(TravelPortal.web.Models.ViewModel.FlightInfoVM result)
+{
+    string offerId = string.Empty;
+    <div class="card">
+        <div class="card-body">
+            @if (result != null && result.flightItineraries.Count > 0)
+            {
+                foreach (var item in result.flightItineraries)
+                {
+                    offerId += item.offerId;
+                    int segCount = 1;
+                    <div class="flight-card bg-white mt-2">
+                        <div class="flight-header">
+                            <div>
+                                <h5 class="mb-0 fw-bold text-dark">@item.FromCity → @item.ToCity</h5>
+                                <small class="text-muted"><span class="badge bg-primary"> @item.TravelDate </span> @(item.Stops > 0 ? $". {item.Stops} Stops" : "") · @item.Duration</small>
+                            </div>
+                            <div>
+                                <span class="tag">CANCELLATION FEES APPLY</span>
+                            </div>
+                        </div>
+
+                        @foreach (var segments in item.segments)
+                        {
+
+                            <div class="d-flex align-items-center justify-content-between mt-3">
+                                <div class="d-flex align-items-center gap-2">
+                                    <img src="@segments.AirlineLogo" alt="@segments.AirlineName" width="40">
+                                    <div>
+                                        <strong>@segments.AirlineName</strong> <small>@segments.AirlineCode @segments.FlightNumber</small>
+                                        <br>
+                                        <span class="badge text-bg-light border">@segments.AirCraftCode</span>
+                                        <small>@segments.CabinClass -> @segments.CabinClassType</small>
+                                    </div>
+                                </div>
+                                <div>
+                                    <a href="#" data-bs-toggle="modal" data-bs-target="#fare-rule-@segCount" class="btn btn-primary btn-xs mb-1">Fare Rules</a>
+                                </div>
+                            </div>
+
+                            <div class="mt-3">
+                                <div class="d-flex">
+                                    <div style="width:80px;">
+                                        <div class="flight-time">@segments.DepatureTime</div>
+
+                                    </div>
+                                    <div class="flight-detail flex-grow-1">
+                                        <b class="text-dark">@segments.FromCity</b>
+                                        <br />
+                                        <small>@segments.FromAirport, @(!string.IsNullOrEmpty(segments.DepartureTerminal) ? $"Terminal-{segments.DepartureTerminal}" : "")</small>
+                                        @*<div class="text-muted small">2h 55m</div>*@
+                                    </div>
+                                </div>
+                                <div>
+                                    <h6>
+                                        @segments.Duration
+                                    </h6>
+                                </div>
+                                <div class="d-flex mt-2">
+                                    <div style="width:80px;">
+                                        <div class="flight-time">@segments.ArrivalTime</div>
+                                    </div>
+                                    <div class="flight-detail flex-grow-1">
+                                        <b class="text-dark">@segments.ToCity</b>
+                                        <br />
+                                        <small>@segments.ToAirport, @(!string.IsNullOrEmpty(segments.ArrivalTerminal) ? $"Terminal-{segments.ArrivalTerminal}" : "")</small>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <hr>
+
+                            <div class="d-flex justify-content-between">
+                                <div><i class="ti ti-luggage bag-icon"></i> Cabin Baggage: <strong>@segments.CabinBaggage.weight @segments.CabinBaggage.weightUnit / Adult</strong></div>
+                                <div><i class="ti ti-luggage bag-icon"></i> Check-In Baggage: <strong>@segments.CheckInBaggage.weight @segments.CheckInBaggage.weightUnit / Adult</strong></div>
+                            </div>
+                            if (segments.IsExtraBaggage > 0)
+                            {
+                                <div class="alert alert-info mt-3 d-flex justify-content-between align-items-center py-2 px-3 mb-0">
+                                    <div class="small">
+                                        Got excess baggage? Don’t stress, buy extra check-in baggage allowance for DEL–BLR at fab rates!
+                                    </div>
+                                    <a href="#" class="fw-semibold small text-primary text-decoration-none">ADD BAGGAGE</a>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="alert alert-info mt-3 d-flex justify-content-between align-items-center py-2 px-3 mb-0">
+                                    <div class="small">
+                                        <img src="~/Content/icon/extra-bag.png" style="width:25px;margin-right:5px;" />
+                                        <span>
+                                            Sorry, extra check-in baggage allowance details are currently not available from the airline for @segments.FromCity-@segments.ToCity.
+                                        </span>
+                                    </div>
+                                </div>
+                            }
+
+                            <!-- Fare Rules Model -->
+                            <div class="modal fade" id="fare-rule-@segCount" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+                                <div class="modal-dialog modal-dialog-centered modal-xl">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5>Fare Rules</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            @if (segments.fareRule != null && segments.fareRule.fareNotes != null && segments.fareRule.fareNotes.descriptions.Any())
+                                            {
+                                                var objRules = segments.fareRule.fareNotes.descriptions;
+                                                foreach (var rule in objRules)
+                                                {
+                                                    <h5>@rule.descriptionType</h5>
+                                                    <pre>@rule.text</pre>
+                                                }
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- End Fare Rules Model -->
+                            segCount++;
+                        }
+                    </div>
+                }
+            }
+
+        </div>
+    </div>
+
+    <input type="hidden" name="offerId" value="@offerId" />
+}
+
+@helper Passangers(TravelPortal.web.Models.ViewModel.FlightSummaryVM objfareSummary)
+{
+    <div class="traveller-card shadow-sm">
+        <h5 class="mb-3">Traveller Details</h5>
+        @if (objfareSummary.Adult > 0)
+        {
+            <div class="card">
+                <div class="card-header d-flex justify-content-between">
+                    <h6 class="card-title">ADULT (12 yrs+)</h6>
+                    <div>
+                        <span class="me-1" id="spnadultCount">0</span>
+                        <span class="me-1">/</span>
+                        <span class="me-1">@objfareSummary.Adult</span>
+                        <span class="me-1">added</span>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="alert alert-primary small">
+                        <strong>Important:</strong> Enter name as mentioned on your passport or Government approved IDs.
+                        Ensure Frequent Flyer No is correct to earn points.
+                    </div>
+
+                    <!-- Traveller List -->
+                    <div id="adultdiv" data-prefix="Adults">
+                        @for (int ad = 0; ad < Model.Adults.Count; ad++)
+                        {
+                            <div class="traveller-item traveller-card border p-3 mb-3">
+                                <div class="d-flex align-items-center mb-2">
+                                    <input class="form-check-input me-2" name="adult" value="adult" type="checkbox">
+                                    <strong>ADULT 1</strong>
+                                </div>
+
+                                <div class="row g-2 mb-2">
+                                    <div class="col-md-4">
+                                        <label class="form-label">First & Middle Name</label>
+                                        @Html.TextBoxFor(m => m.Adults[ad].FirstName, new { @class = "form-control", @data_val = "true", @data_val_required = "Required", @placeholder = "First & Middle Name" })
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="form-label">Last Name</label>
+                                        @Html.TextBoxFor(m => m.Adults[ad].LastName, new { @class = "form-control", @placeholder = "Last Name" })
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="form-label">Gender</label>
+                                        @Html.DropDownListFor(m => m.Adults[ad].Gender, DropdownLists.Gender(), "-- Select --", new { @class = "form-control" })
+                                    </div>
+                                </div>
+                                <div class="row g-2 mb-2">
+
+                                    <div class="col-md-4">
+                                        <label class="form-label">Date of birth</label>
+                                        @Html.TextBoxFor(m => m.Adults[ad].DOB, new { @type = "date", @class = "form-control" })
+                                    </div>
+                                </div>
+                                <div class="row g-2 mb-2">
+                                    <div class="col-md-4">
+                                        <label class="form-label">Country Code</label>
+                                        @Html.DropDownListFor(m => m.Adults[ad].CountryCode, ViewBag.Country as List<SelectListItem>, "-- Select --", new { @class = "form-control" })
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="form-label">Mobile</label>
+                                        @Html.TextBoxFor(m => m.Adults[ad].Mobile, new { @class = "form-control", @placeholder = "Mobile No (Optional)" })
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="form-label">Email</label>
+                                        @Html.TextBoxFor(m => m.Adults[ad].Email, new { @class = "form-control", @placeholder = "Email (Optional)" })
+                                    </div>
+                                </div>
+
+                                <div class="form-check mt-2">
+                                    <input class="form-check-input" name="IsHasFrequentFlyerNumber" type="checkbox" id="ff1">
+                                    <label class="form-check-label" for="ff1">
+                                        Frequent Flyer Number <small>(Avail extra benefits & earn points)</small>
+                                    </label>
+                                </div>
+
+                                <div class="row g-2 mt-1">
+                                    <div class="col-md-6">
+                                        <label class="form-label">Frequent Flyer Airline</label>
+
+                                        @Html.TextBoxFor(m => m.Adults[ad].FrequentFlyerAirline, new { @class = "form-control", @placeholder = "Frequent Flyer Airline" })
+
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">Frequent Flyer No</label>
+                                        @Html.TextBoxFor(m => m.Adults[ad].FrequentFlyerNo, new { @class = "form-control", @placeholder = "Frequent Flyer No" })
+                                    </div>
+                                </div>
+
+                                <div class="form-check mt-3">
+                                    @Html.CheckBoxFor(m => m.Adults[ad].IsRequiredWheelChair, new { @class = "form-check-input" })
+                                    <label class="form-check-label" for="wheel1">I require wheelchair (Optional)</label>
+                                </div>
+                            </div>
+                        }
+                    </div>
+
+                    <!-- Add New Adult -->
+                    <div class="text-start">
+                        <button type="button" class="btn btn-outline-primary btn-sm" onclick="addPassenger('adult')">
+                            <i class="bi bi-plus-circle me-1"></i> ADD NEW ADULT
+                        </button>
+                        <button type="button" class="btn btn-danger btn-sm btn-remove" style="display:none"> Delete</button>
+                    </div>
+                </div>
+            </div>
+        }
+
+        @if (objfareSummary.Children > 0)
+        {
+            <div class="card">
+                <div class="card-header d-flex justify-content-between">
+                    <h6 class="card-title">CHILD (2-12 Yrs)</h6>
+                    <div>
+                        <span class="me-1">0</span>
+                        <span class="me-1">/</span>
+                        <span class="me-1">@objfareSummary.Children</span>
+                        <span class="me-1">added</span>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="alert alert-primary small">
+                        <strong>Important:</strong> Enter name as mentioned on your passport or Government approved IDs.
+                        Ensure Frequent Flyer No is correct to earn points.
+                    </div>
+
+                    <!-- Traveller List -->
+                    <div id="childdiv" data-prefix="Children">
+                        @for (int ch = 0; ch < Model.Childs.Count; ch++)
+                        {
+                            <div class="traveller-item traveller-card border p-3 mb-3">
+                                <div class="d-flex align-items-center mb-2">
+                                    <input class="form-check-input me-2" name="adult" value="adult" type="checkbox" checked>
+                                    <strong>CHILD 1</strong>
+                                </div>
+
+                                <div class="row g-2 mb-2">
+                                    <div class="col-md-4">
+                                        <label class="form-label">First & Middle Name</label>
+                                        @Html.TextBoxFor(m => m.Childs[ch].FirstName, new { @class = "form-control", @data_val = "true", @data_val_required = "Required", @placeholder = "First & Middle Name" })
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="form-label">Last Name</label>
+                                        @Html.TextBoxFor(m => m.Childs[ch].LastName, new { @class = "form-control", @placeholder = "Last Name" })
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="form-label">Gender</label>
+                                        @Html.DropDownListFor(m => m.Childs[ch].Gender, DropdownLists.Gender(), "-- Select --", new { @class = "form-control" })
+                                    </div>
+                                </div>
+
+                                <div class="row g-2 mb-2">
+
+                                    <div class="col-md-4">
+                                        <label class="form-label">Date of birth</label>
+                                        @Html.TextBoxFor(m => m.Childs[ch].DOB, new { @type = "date", @class = "form-control" })
+                                    </div>
+                                </div>
+
+                                <div class="row g-2 mb-2">
+                                    <div class="col-md-4">
+                                        <label class="form-label">Country Code</label>
+                                        @Html.DropDownListFor(m => m.Childs[ch].CountryCode, ViewBag.Country as List<SelectListItem>, "-- Select --", new { @class = "form-control" })
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="form-label">Mobile</label>
+                                        @Html.TextBoxFor(m => m.Childs[ch].Mobile, new { @class = "form-control", @placeholder = "Mobile No (Optional)" })
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="form-label">Email</label>
+                                        @Html.TextBoxFor(m => m.Childs[ch].Email, new { @class = "form-control", @placeholder = "Email (Optional)" })
+                                    </div>
+                                </div>
+                                <div class="form-check mt-2">
+                                    <input class="form-check-input" name="IsHasFrequentFlyerNumber" type="checkbox" id="ff1">
+                                    <label class="form-check-label" for="ff1">
+                                        Frequent Flyer Number <small>(Avail extra benefits & earn points)</small>
+                                    </label>
+                                </div>
+
+                                <div class="row g-2 mt-1">
+                                    <div class="col-md-6">
+                                        <label class="form-label">Frequent Flyer Airline</label>
+
+                                        @Html.TextBoxFor(m => m.Childs[ch].FrequentFlyerAirline, new { @class = "form-control", @placeholder = "Frequent Flyer Airline" })
+
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">Frequent Flyer No</label>
+                                        @Html.TextBoxFor(m => m.Childs[ch].FrequentFlyerNo, new { @class = "form-control", @placeholder = "Frequent Flyer No" })
+                                    </div>
+                                </div>
+
+                                <div class="form-check mt-3">
+                                    @Html.CheckBoxFor(m => m.Childs[ch].IsRequiredWheelChair, new { @class = "form-check-input" })
+                                    <label class="form-check-label" for="wheel1">I require wheelchair (Optional)</label>
+                                </div>
+                            </div>
+                        }
+                    </div>
+
+                    <!-- Add New Adult -->
+                    <div class="text-start">
+                        <button type="button" class="btn btn-outline-primary btn-sm" onclick="addPassenger('child')">
+                            <i class="bi bi-plus-circle me-1"></i> ADD NEW ADULT
+                        </button>
+                        <button type="button" class="btn btn-danger btn-remove" style="display:none">🗑 Delete</button>
+                    </div>
+                </div>
+            </div>
+
+        }
+
+        @if (objfareSummary.Infant > 0)
+        {
+            <div class="card">
+                <div class="card-header d-flex justify-content-between">
+                    <h6 class="card-title">Infant (15 days - 2 Yrs)</h6>
+                    <div>
+                        <span class="me-1">0</span>
+                        <span class="me-1">/</span>
+                        <span class="me-1">@objfareSummary.Infant</span>
+                        <span class="me-1">added</span>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="alert alert-primary small">
+                        <strong>Important:</strong> Enter name as mentioned on your passport or Government approved IDs.
+                        Ensure Frequent Flyer No is correct to earn points.
+                    </div>
+
+                    <!-- Traveller List -->
+                    <div id="infantdiv" data-prefix="Infants">
+                        @for (int inf = 0; inf < Model.Infants.Count; inf++)
+                        {
+                            <div class="traveller-item traveller-card border p-3 mb-3">
+                                <div class="d-flex align-items-center mb-2">
+                                    <input class="form-check-input me-2" name="adult" value="adult" type="checkbox" checked>
+                                    <strong>INFANT 1</strong>
+                                </div>
+
+                                <div class="row g-2 mb-2">
+                                    <div class="col-md-4">
+                                        <label class="form-label">First & Middle Name</label>
+                                        @Html.TextBoxFor(m => m.Infants[inf].FirstName, new { @class = "form-control", @data_val = "true", @data_val_required = "Required", @placeholder = "First & Middle Name" })
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="form-label">Last Name</label>
+                                        @Html.TextBoxFor(m => m.Infants[inf].LastName, new { @class = "form-control", @placeholder = "Last Name" })
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="form-label">Gender</label>
+                                        @Html.DropDownListFor(m => m.Infants[inf].Gender, DropdownLists.Gender(), "-- Select --", new { @class = "form-control" })
+                                    </div>
+                                </div>
+
+                                <div class="row g-2 mb-2">
+
+                                    <div class="col-md-4">
+                                        <label class="form-label">Date of birth</label>
+                                        @Html.TextBoxFor(m => m.Infants[inf].DOB, new { @type = "date", @class = "form-control" })
+                                    </div>
+                                </div>
+                                <div class="row g-2 mb-2">
+                                    <div class="col-md-4">
+                                        <label class="form-label">Country Code</label>
+                                        @Html.DropDownListFor(m => m.Infants[inf].CountryCode, ViewBag.Country as List<SelectListItem>, "-- Select --", new { @class = "form-control" })
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="form-label">Mobile</label>
+                                        @Html.TextBoxFor(m => m.Infants[inf].Mobile, new { @class = "form-control", @placeholder = "Mobile No (Optional)" })
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="form-label">Email</label>
+                                        @Html.TextBoxFor(m => m.Infants[inf].Email, new { @class = "form-control", @placeholder = "Email (Optional)" })
+                                    </div>
+                                </div>
+                                <div class="form-check mt-2">
+                                    <input class="form-check-input" name="IsHasFrequentFlyerNumber" type="checkbox" id="ff1">
+                                    <label class="form-check-label" for="ff1">
+                                        Frequent Flyer Number <small>(Avail extra benefits & earn points)</small>
+                                    </label>
+                                </div>
+
+                                <div class="row g-2 mt-1">
+                                    <div class="col-md-6">
+                                        <label class="form-label">Frequent Flyer Airline</label>
+
+                                        @Html.TextBoxFor(m => m.Infants[inf].FrequentFlyerAirline, new { @class = "form-control", @placeholder = "Frequent Flyer Airline" })
+
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">Frequent Flyer No</label>
+                                        @Html.TextBoxFor(m => m.Infants[inf].FrequentFlyerNo, new { @class = "form-control", @placeholder = "Frequent Flyer No" })
+                                    </div>
+                                </div>
+
+                                <div class="form-check mt-3">
+                                    @Html.CheckBoxFor(m => m.Infants[inf].IsRequiredWheelChair, new { @class = "form-check-input" })
+                                    <label class="form-check-label" for="wheel1">I require wheelchair (Optional)</label>
+                                </div>
+                            </div>
+                        }
+                    </div>
+
+                    <!-- Add New Adult -->
+                    <div class="text-start">
+                        <button type="button" class="btn btn-outline-primary btn-sm" onclick="addPassenger('infant')">
+                            <i class="bi bi-plus-circle me-1"></i> ADD NEW INFANT
+                        </button>
+                        <button type="button" class="btn btn-danger btn-remove" style="display:none">🗑 Delete</button>
+                    </div>
+                </div>
+            </div>
+
+        }
+
+        <div class="card">
+            <div class="card-body">
+                <h6>Booking details will be sent to</h6>
+                <div class="row">
+                    <div class="col-md-4">
+                        <label class="form-label">Country Code</label>
+                        @Html.DropDownListFor(m => m.CountryCode, ViewBag.Country as List<SelectListItem>, "-- Select --", new { @class = "form-control", @data_val = "true", @data_val_required = "Required" })
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">Mobile No</label>
+                        @Html.TextBoxFor(m => m.Mobile, new { @class = "form-control", @data_val = "true", @data_val_required = "Required", @placeholder = "Mobile No." })
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">Email</label>
+                        @Html.TextBoxFor(m => m.Email, new { @class = "form-control", @data_val = "true", @data_val_required = "Required", @placeholder = "Mobile No." })
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card mt-4">
+        <div class="card-body">
+            <h6>Your State </h6>
+            <small>(Required for GST purpose on your tax invoice. You can edit this anytime later in your profile section. )</small>
+            <div class="row mt-2">
+                <div class="col-md-4">
+                    <label class="form-label">Select the State</label>
+                    @Html.DropDownListFor(m => m.State, DropdownLists.States(), "-- Select --", new { @class = "form-control", @data_val = "true", @data_val_required = "Required" })
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@helper FareSummary(TravelPortal.web.Models.ViewModel.FlightSummaryVM objfareSummary)
+{
+    var paymentmode = DropdownLists.PaymentModeTypes();
+    <div class="col-md-3 theiaStickySidebar">
+        @if (objfareSummary != null)
+        {
+            <div class="card">
+                <div class="card-header">
+                    <h6 class="card-title">Fare Summary</h6>
+                </div>
+                <div class="card-body">
+
+                    <h6>Base Fare</h6>
+                    <div>
+                        @if (objfareSummary.Adult > 0)
+                        {
+                            <p class="d-flex justify-content-between">
+                                <small>Adult(s) (@objfareSummary.Adult X ₹ @objfareSummary.AdultBasePrice)</small>
+                                <small>₹ @objfareSummary.AdultTotalPrice</small>
+                            </p>
+                        }
+                        @if (objfareSummary.Children > 0)
+                        {
+                            <p class="d-flex justify-content-between">
+
+                                <small>Children(s) (@objfareSummary.Children X ₹ @objfareSummary.ChildrenBasePrice)</small>
+                                <small>₹ @objfareSummary.ChildrenTotalPrice</small>
+                            </p>
+                        }
+                        @if (objfareSummary.Infant > 0)
+                        {
+                            <p class="d-flex justify-content-between">
+
+                                <small>Infant(s) (@objfareSummary.Infant X ₹ @objfareSummary.InfantBasePrice)</small>
+                                <small>₹ @objfareSummary.InfantTotalPrice</small>
+                            </p>
+                        }
+                    </div>
+                    @if (objfareSummary.UniversalMarkup > 0)
+                    {
+
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h6 class="mt-3">Universal Markup</h6>
+                            <small class="mt-3">
+                                ₹ @objfareSummary.UniversalMarkup
+                            </small>
+                        </div>
+                    }
+                    @if (objfareSummary.AirlineMarkup > 0)
+                    {
+
+                        <div class="d-flex justify-content-between align-items-center">
+
+                            <h6 class="mt-3">Airline Markup</h6>
+                            <small class="mt-3">
+                                ₹ @objfareSummary.AirlineMarkup
+                            </small>
+                        </div>
+                    }
+
+                    <h6 class="mt-3">Taxes and Surcharges</h6>
+                    <div class="d-flex justify-content-between">
+                        <small>Airline Taxes and Surcharges</small>
+                        <small>
+                            ₹ @objfareSummary.TaxesServiceCharges
+                        </small>
+                    </div>
+
+                    <div id="divPaymentmode" style="display:none;">
+                        <div class="d-flex justify-content-between">
+                            <h6 class="mt-3" id="usepaymentmode"></h6>
+                            <small class="mt-3" id="useAmount"> </small>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <h6 class="d-flex justify-content-between">
+                        <small> Total Amount</small>
+                        <small id="spnTotalAmount">₹ @objfareSummary.TotalPrice</small>
+                    </h6>
+                </div>
+            </div><div class="card mt-2">
+                <div class="card-header">
+                    <h6 class="card-title">Payment Mode</h6>
+                </div>
+                <div class="card-body">
+                    @if (paymentmode.Count > 0)
+                    {
+                        foreach (var p in paymentmode)
+                        {
+                            <div class="form-check">
+                                @Html.RadioButtonFor(m => m.PaymentMode, p.Value, new { @class = "form-check-input", id = "pm_" + p.Value, @data_val = "true", @data_val_required = "Required" })
+
+                                <label class="form-check-label" for="@("pm_" + p.Value)">
+                                    @p.Text
+                                </label>
+                            </div>
+                        }
+                    }
+                </div>
+            </div>
+            <button class="btn btn-lg btn-outline-primary w-100" type="submit">Continue</button>
+        }
+    </div>
+}
+
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
+    function fn_Success(d) {
+        if (d.status == 1) {
+            let redirectUrl = '@Url.Action("BookingConfirm", "Flight")';
+            let orderid = d.data.flightOrderId;
+
+            if (parseFloat(d.data.PaybleAmount) > 0) {
+                // Payment Getway
+                let amt = d.data.PaybleAmount;
+                initRazorPayLunch(amt, orderid);
+            }
+            else {
+                location.href = redirectUrl + "?orderId=" + orderid;
+            }
+        }
+        else {
+            Swal.fire({
+                title: "error",
+                text: d.message,
+                icon: "error"
+            });
+        }
+    }
+
+    function fn_Failure(d) {
+        Swal.fire({
+            title: "error",
+            text: d.message,
+            icon: "error"
+        });
+    }
+
+    $(document).ready(function () {
+        const rows = ['7', '8', '9', '10', '11', '12', '13', '14', '15', '16'];
+        const seats = ['A', 'B', 'C', '', 'D', 'E', 'F'];
+        const reservedSeats = ['8C', '9E', '11B'];
+
+        let seatMap = $('#seat-map');
+        let selectedSeats = [];
+
+        rows.forEach(row => {
+            let rowDiv = $('<div class="seat-row"></div>');
+            seats.forEach(seat => {
+                if (seat === '') {
+                    rowDiv.append('<div class="aisle"></div>');
+                } else {
+                    let seatId = row + seat;
+                    let seatDiv = $('<div class="seat" data-seat="' + seatId + '">' + seat + '</div>');
+
+                    if (reservedSeats.includes(seatId)) {
+                        seatDiv.addClass('reserved');
+                    }
+
+                    rowDiv.append(seatDiv);
+                }
+            });
+            seatMap.append(rowDiv);
+        });
+
+        $(document).on('click', '.seat', function () {
+            if ($(this).hasClass('reserved')) return;
+
+            $(this).toggleClass('selected');
+            const seatId = $(this).data('seat');
+
+            if ($(this).hasClass('selected')) {
+                selectedSeats.push(seatId);
+            } else {
+                selectedSeats = selectedSeats.filter(s => s !== seatId);
+            }
+
+            $('#selected-seats').text(selectedSeats.length ? selectedSeats.join(', ') : 'None');
+        });
+
+        $('#continue-btn').click(function () {
+            if (selectedSeats.length === 0) {
+                alert('Please select at least one seat.');
+            } else {
+                alert('Seats confirmed: ' + selectedSeats.join(', '));
+            }
+        });
+    });
+
+
+    function addPassenger(type) {
+
+        const container = $("#" + type + "div");
+        const prefix = container.data("prefix"); // Adults / Children / Infants
+
+        const rows = container.find(".traveller-item");
+        const index = rows.length;
+
+        const newRow = rows.last().clone();
+
+        // Reset fields + update names
+        newRow.find("input, select").each(function () {
+
+            const el = $(this);
+
+            // clear values
+            if (el.attr("type") === "checkbox") {
+                el.prop("checked", false);
+            } else if (el.attr("type") !== "hidden") {
+                el.val("");
+            }
+
+            el.removeClass("input-validation-error");
+
+            // Update ID
+            let id = el.attr("id");
+            if (id) {
+                id = id.replace(/_\d+__/, `_${index}__`);
+                el.attr("id", id);
+            }
+
+            // Update NAME
+            let name = el.attr("name");
+            if (name) {
+                name = name.replace(/\[\d+\]/, `[${index}]`);
+                name = name.replace(/(Adults|Children|Infants)/, prefix);
+                el.attr("name", name);
+            }
+        });
+
+        // new row me remove show hoga
+        $(container).closest(".btn-remove").show();
+        container.append(newRow);
+        updateButtons(container);
+        rebindValidation();
+    }
+
+    function updateButtons(container) {
+
+        container.find(".btn-add").hide();
+        container.find(".traveller-item:last .btn-add").show();
+
+        // first row remove hide
+        container.find(".traveller-item:first .btn-remove").hide();
+    }
+
+    $(document).on("click", ".btn-remove", function () {
+
+        const container = $(this).closest("[id$='div']");
+
+        if (container.find(".traveller-item").length === 1) {
+            alert("At least one passenger required");
+            return;
+        }
+
+        $(this).closest(".traveller-item").remove();
+
+        reindexPassengers();
+        updateButtons(container);
+    });
+
+
+    function reindexPassengers() {
+
+        $("[id$='div']").each(function () {
+
+            const container = $(this);
+            const prefix = container.data("prefix");
+
+            container.find(".traveller-item").each(function (i) {
+
+                $(this).find("input, select").each(function () {
+
+                    let el = $(this);
+
+                    // update name
+                    let name = el.attr("name");
+                    if (name) {
+                        name = name.replace(/\[\d+\]/, `[${i}]`);
+                        name = name.replace(/(Adults|Children|Infants)/, prefix);
+                        el.attr("name", name);
+                    }
+
+                    // update id
+                    let id = el.attr("id");
+                    if (id) {
+                        id = id.replace(/_\d+__/, `_${i}__`);
+                        el.attr("id", id);
+                    }
+
+                });
+
+            });
+
+        });
+
+        rebindValidation();
+    }
+
+    function rebindValidation() {
+        var form = $('form');
+        form.removeData('validator');
+        form.removeData('unobtrusiveValidation');
+        $.validator.unobtrusive.parse(form);
+    }
+
+    function onSubmit() {
+
+        // 1️⃣ ensure indexes correct (safety)
+        reindexPassengers();
+
+        // 2️⃣ refresh validator
+        const form = $('form');
+
+        form.removeData('validator');
+        form.removeData('unobtrusiveValidation');
+        $.validator.unobtrusive.parse(form);
+
+        // 3️⃣ validate
+        if (!form.valid()) {
+
+            // scroll to first error
+            $('html, body').animate({
+                scrollTop: $('.input-validation-error:first').offset().top - 120
+            }, 300);
+
+            return false;
+        }
+
+        // 4️⃣ prevent double submit
+        //$("button[type='submit']").prop("disabled", true);
+
+        return true;
+    }
+
+    $(document).on("change", "input[name='PaymentMode']", function () {
+        var value = $(this).val();
+        fnPaymentMode(value);
+    });
+
+  function fnPaymentMode(t) {
+
+    let walletBalance = parseFloat(@walletBalance);
+    let creditBalance = parseFloat(@CreditLimit);
+    let totalPrice = parseFloat(@objfareSummary.TotalPrice);
+
+    let usedAmount = 0;
+    let payable = totalPrice;
+
+    if (t == '@TravelPortal.web.Models.Enum.PaymentModeEnum.Wallet.ToString()') {
+
+        $("#divPaymentmode").show();
+        $("#usepaymentmode").text('Use ' + t);
+
+        usedAmount = Math.min(walletBalance, totalPrice);
+        payable = totalPrice - usedAmount;
+
+        $("#useAmount").text("₹ " + usedAmount.toFixed(2));
+        $("#spnTotalAmount").text("₹ " + payable.toFixed(2));
+    }
+
+    else if (t == '@TravelPortal.web.Models.Enum.PaymentModeEnum.Credit.ToString()') {
+
+        $("#divPaymentmode").show();
+        $("#usepaymentmode").text('Use ' + t + ' Limit');
+
+        usedAmount = Math.min(creditBalance, totalPrice);
+        payable = totalPrice - usedAmount;
+
+        $("#useAmount").text("₹ " + usedAmount.toFixed(2));
+        $("#spnTotalAmount").text("₹ " + payable.toFixed(2));
+    }
+
+    else {
+        $("#divPaymentmode").hide();
+        $("#usepaymentmode").text('');
+        $("#spnTotalAmount").text("₹ " + totalPrice.toFixed(2));
+    }
+}
+
+    function initRazorPayLunch(amt,id) {
+        let redirectUrl = '@Url.Action("BookingConfirm", "Flight")';
+        fetch('@Url.Action("CreateOrder", "Flight")', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ amount: amt, flightOrderId:id }) // ₹500
+        }).then(res => res.json()).then(data => {
+            var options = {
+                "key": "@ConfigHelper.RazorpayKey",
+                "amount": amt,
+                "currency": "INR",
+                "name": "My Company",
+                "description": "Test Payment",
+                "order_id": data.orderId,
+                "handler": function (response) {
+                    fetch('@Url.Action("VerifyPayment", "Flight")', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ paymentId: response.razorpay_payment_id, orderId: response.razorpay_order_id, signature: response.razorpay_signature, flightOrderId:id }) // ₹500
+                    }).then(res => res.json()).then(data => {
+                        if (data.status > 0) {
+                            location.href = redirectUrl +"?orderId="+id;
+                        } else {
+                            Swal.fire({
+                                title: "error",
+                                text: data.message,
+                                icon: "error"
+                            });
+                        }
+                    });
+                },
+                "theme": {
+                    "color": "#3399cc"
+                }
+            };
+            var rzp = new Razorpay(options);
+            rzp.open();
+        });
+    }
+</script>

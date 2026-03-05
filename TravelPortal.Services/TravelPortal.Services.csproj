@@ -1,0 +1,23 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Implementations\SupplierManager.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Razorpay" Version="3.3.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Travel.API.Data\Travel.API.Data.csproj" />
+    <ProjectReference Include="..\TravelPortal.Models\TravelPortal.Models.csproj" />
+    <ProjectReference Include="..\TravelPortal.Supplier\TravelPortal.Supplier.csproj" />
+  </ItemGroup>
+
+</Project>

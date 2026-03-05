@@ -1,0 +1,78 @@
+﻿@model UserTypeModel
+<div class="modal fade" id="addedit_modal" role="dialog">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Add Roles</h5>
+                <button class="btn-close custom-btn-close border p-1 me-0 text-dark" data-bs-dismiss="modal"
+                        aria-label="Close">
+                    <i class="ti ti-x"></i>
+                </button>
+            </div>
+            @using (Ajax.BeginForm("AddEditRoles", "Admin", null, new AjaxOptions { HttpMethod = "POST", OnSuccess = "fn_Success", OnFailure = "fn_Failure", OnBegin = "fnStartLoader", OnComplete = "fnStopLoader" }, new { enctype = "multipart/form-data" }))
+            {
+                @Html.HiddenFor(e => e.CreatedByUsrno)
+                
+                <div class="modal-body">
+                    <div class="row">
+
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="text-dark mb-1">Role Name</label>
+                                @Html.TextBoxFor(m => m.UserType, new { @class = "form-control mb-2", @data_val = "true", @data_val_required = "Required" })
+                            </div>
+                            @Html.ValidationMessageFor(model => model.UserType, "", new { @class = "text-danger" })
+                        </div>
+                        
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <div>
+                        <button type="submit" class="btn btn-success" id="btnContinue">
+                            @(Model.ID > 0 ?"Update": "Submit")
+                        </button>
+                        <button class="btn btn-success" type="button" disabled="" id="btndisabled" style="display:none;">
+                            <span class="spinner-border spinner-border-sm align-middle" role="status" aria-hidden="true"></span>
+                            Pleas wait ...
+                        </button>
+
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+@Scripts.Render("~/bundles/jqueryval")
+<script>
+    function fn_Success(d) {
+        if (d.status > 0) {
+            $.toast({
+                heading: 'Success',
+                text: d.message,
+                position: 'top-right',
+                showHideTransition: 'fade',
+                icon: 'success'
+            });
+            location.reload();
+        } else {
+            $.toast({
+                heading: 'Message',
+                text: d.message,
+                position: 'top-right',
+                showHideTransition: 'fade',
+                icon: 'error'
+            });
+        }
+    }
+    function fn_Failure(d) {
+        $.toast({
+            heading: 'Message',
+            text: 'failed',
+            position: 'top-right',
+            showHideTransition: 'fade',
+            icon: 'error'
+        });
+    }
+</script>

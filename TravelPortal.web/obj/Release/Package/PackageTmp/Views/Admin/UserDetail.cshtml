@@ -1,0 +1,430 @@
+﻿@model int
+@{
+    int Usrno = Model;
+    var db = new TravelPortal.EDMX.db_silviEntities();
+    var objUser = db.View_Users.FirstOrDefault(e => e.Usrno == Usrno);
+    if (objUser.RoleId == "1")
+    {
+        @AdminDetail();
+    }
+    else
+    {
+        @AgentDetail();
+    }
+}
+
+
+@helper AgentDetail()
+{
+    int Usrno = Model;
+    var db = new TravelPortal.EDMX.db_silviEntities();
+    var objuser = db.View_Users.FirstOrDefault(e => e.Usrno == Usrno);
+
+    string status = objuser.Status.ToString().ToLower() == "active" ? "success" : objuser.Status.ToString().ToLower() == "pending" ? "warning" : "danger";
+
+    var WalletBalance = db.tblAccount_Main.Where(e => e.UsrNo == Usrno).Select(e => e.Balance).FirstOrDefault();
+
+    var objAPI = db.tblManage_AssignAPI.Where(e => e.Usrno == Usrno).ToList();
+
+    var objFlightSearchLog = db.tblFlight_SearchLog.Where(e => e.Usrno == Usrno).ToList();
+    int totalLooks = objFlightSearchLog.Count();
+    int totalBookings = objFlightSearchLog.Where(e => e.IsBook == true).Count();
+    int convertedLooks = totalBookings;
+    int notConvertedLooks = totalLooks - totalBookings;
+    double lookToBookPercentage = totalLooks > 0 ? (double)totalBookings / totalLooks * 100 : 0.0;
+
+    var objCreditLimit = db.tblManage_CreditLimit.Where(e => e.Usrno == Usrno).ToList();
+
+    <style>
+        .wallet-balance {
+            margin-left: 15px;
+        }
+
+            .wallet-balance p {
+                margin: 0;
+                font-size: 24px;
+                font-weight: bold;
+            }
+    </style>
+    <div class="card">
+        <div class="card-header">
+            <a href="@Url.Action("ManageAgent","Admin")">
+
+                <h5>
+                    <span class="ti ti-arrow-left"></span>
+                    @objuser.Name 's Detail
+                </h5>
+            </a>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="d-flex justify-content-between">
+                        <span> Profile Detail</span>
+                        @Ajax.ActionLink("Edit", "AddEditAgent", "Admin", new { id = objuser.Usrno }, new AjaxOptions { UpdateTargetId = "divAddEdit", OnSuccess = "$('#addedit_modal').modal('show');", OnBegin = "fnStartLoader", OnComplete = "fnStopLoader" }, new { @class = "ti ti-edit" })
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <table class="table table-borderless">
+
+                        <tr>
+                            <td><b>UserId</b></td>
+                            <td>@objuser.UserID</td>
+                        </tr>
+
+                        <tr>
+                            <td><b>Name</b></td>
+                            <td>@objuser.Name</td>
+                        </tr>
+                        <tr>
+                            <td><b>Email</b></td>
+                            <td>@objuser.Email</td>
+                        </tr>
+                        <tr>
+                            <td><b>Mobile</b></td>
+                            <td>@objuser.Mobile</td>
+                        </tr>
+                        <tr>
+                            <td><b>Registration Date</b></td>
+                            <td>@objuser.AddDate</td>
+                        </tr>
+                        <tr>
+                            <td><b>Status</b></td>
+                            <td>
+                                <label class="badge bg-@status"><b> @objuser.Status </b></label>
+
+                                <label class="mx-3">
+                                    @Ajax.ActionLink("Send Activation Mail", "SendActivationMail", "Admin", new { id = objuser.Usrno }, new AjaxOptions { OnSuccess = "$('#mail_send_comman_modal').modal('show');", OnBegin = "fnStartLoader", OnComplete = "fnStopLoader" }, new { })
+                                    <span class="fa fa-mailbox"></span>
+                                </label>
+                            </td>
+
+                        </tr>
+                        <tr>
+                            <td><b>KYC Status</b></td>
+                            <td>
+                                @if (objuser.IsKycCompleted == null)
+                                {
+                                    <label class="badge bg-warning">Not Upload</label>
+                                }
+                                else if (objuser.IsKycCompleted == false)
+                                {
+                                    <label class="badge bg-danger">Under Review !</label>
+                                }
+                                else
+                                {
+                                    <label class="badge bg-success">Completed</label>
+                                }
+
+                            </td>
+
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="d-flex justify-content-between">
+                        <span> Finance Detail</span>
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="card-title">Wallet</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="d-flex">
+
+                                <img src="~/assets/icons/wallet.png" style="width:50px;" />
+                                <div class="wallet-balance">
+                                    <p> <span class="ti ti-currency-rupee"></span>@WalletBalance</p>
+                                    @Ajax.ActionLink("Credit", "CreditDebitFund", "Admin", new { Usrno = objuser.Usrno, factor = "CR" }, new AjaxOptions { UpdateTargetId = "divAddEdit", OnSuccess = "$('#creditdebit_modal').modal('show');", OnBegin = "fnStartLoader", OnComplete = "fnStopLoader" }, new { @class = "badge bg-success" })
+                                    @Ajax.ActionLink("Debit", "CreditDebitFund", "Admin", new { Usrno = objuser.Usrno, factor = "DR" }, new AjaxOptions { UpdateTargetId = "divAddEdit", OnSuccess = "$('#creditdebit_modal').modal('show');", OnBegin = "fnStartLoader", OnComplete = "fnStopLoader" }, new { @class = "badge bg-danger" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="card-title">
+                                Credit Limit Management
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <table class="table table-warning">
+                                <thead>
+                                    <tr>
+                                        <th>Credit Type</th>
+                                        <th>Limit</th>
+                                        <th>Active</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if (objCreditLimit.Count > 0)
+                                    {
+                                        foreach (var item in objCreditLimit)
+                                        {
+                                            var objCreditType = db.tblMaster_CreditType.FirstOrDefault(e => e.CreditTypeId == item.CreditTypeID);
+                                            <tr>
+                                                <td>@(objCreditType != null ?objCreditType.CreditType:"")</td>
+                                                <td>
+                                                    <span class="ti ti-currency-rupee"></span>@item.Amount
+                                                </td>
+                                                <td>
+                                                    <div class="form-check form-switch">
+                                                        <input class="form-check-input" type="checkbox" role="switch" @(item.IsApproved == true ? "checked" : "")>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        }
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title">
+                        API Management
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <table class="table table-warning">
+                        <thead>
+                            <tr>
+                                <th>API Name</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (objAPI != null)
+                            {
+                                foreach (var api in objAPI)
+                                {
+                                    var apiList = db.tblManage_API.Where(e => e.APIID == api.APIID).FirstOrDefault();
+                                    <tr>
+                                        <td>@apiList.Supplier - @apiList.APIType</td>
+                                        <td>
+                                            <div class="form-check form-switch">
+                                                <input class="form-check-input" type="checkbox" role="switch" @(api.IsActive == true ? "checked" : "") onchange="APIActiveDeactive('IsActive',@api.APIID,@api.Usrno)">
+                                            </div>
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                            else
+                            {
+                                <tr>
+                                    <td colspan="2">No API Assigned</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card flex-fill">
+                <div class="card-header d-flex justify-content-between align-items-center flex-wrap gap-3">
+                    <div class="d-inline-flex align-items-center">
+                        <span class="title-icon bg-soft-orange fs-16 me-2"><i class="ti ti-eye"></i></span>
+                        <h5 class="card-title mb-0">Look To Book</h5>
+                    </div>
+                    <div class="dropdown">
+                        <a href="javascript:void(0);" class="dropdown-toggle btn btn-sm btn-white d-flex align-items-center" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="ti ti-calendar me-1"></i>Monthly
+                        </a>
+                        <ul class="dropdown-menu p-3">
+                            @*<li>
+                                    <a href="javascript:void(0);" class="dropdown-item">Today</a>
+                                </li>
+                                <li>
+                                    <a href="javascript:void(0);" class="dropdown-item">Weekly</a>
+                                </li>*@
+                            <li>
+                                <a href="javascript:void(0);" class="dropdown-item">Monthly</a>
+                            </li>
+                        </ul>
+                    </div>
+
+                </div>
+                <div class="card-body">
+                    <div class="d-flex align-items-center justify-content-between flex-wrap gap-4 mb-4">
+                        <div>
+                            <canvas id="top-category" height="287" width="250" style="display: block; box-sizing: border-box; height: 230px; width: 200px;"></canvas>
+                        </div>
+                        <div>
+                            <div class="category-item category-primary">
+                                <p class="fs-13 mb-1">Converted</p>
+                                <h2 class="d-flex align-items-center">@convertedLooks</h2>
+                            </div>
+                            <div class="category-item category-orange">
+                                <p class="fs-13 mb-1">Not Converted</p>
+                                <h2 class="d-flex align-items-center">@notConvertedLooks</h2>
+                            </div>
+                        </div>
+                    </div>
+                    <h6 class="mb-2">Category Statistics</h6>
+                    <div class="border br-8">
+                        <div class="d-flex align-items-center justify-content-between border-bottom p-2">
+                            <p class="d-inline-flex align-items-center mb-0"><i class="ti ti-square-rounded-filled text-indigo fs-8 me-2"></i>Total Looks</p>
+                            <h5>@totalLooks</h5>
+                        </div>
+                        <div class="d-flex align-items-center justify-content-between border-bottom p-2">
+                            <p class="d-inline-flex align-items-center mb-0"><i class="ti ti-square-rounded-filled text-orange fs-8 me-2"></i>Total Booking</p>
+                            <h5>@totalBookings</h5>
+                        </div>
+                        <div class="d-flex align-items-center justify-content-between p-2">
+                            <p class="d-inline-flex align-items-center mb-0"><i class="ti ti-square-rounded-filled text-orange fs-8 me-2"></i>Look <span class="ti ti-arrow-right"></span> Book %</p>
+                            <h5>@lookToBookPercentage %</h5>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        $(document).ready(function () {
+            if ($('#top-category').length > 0) {
+                var ctx = document.getElementById('top-category').getContext('2d');
+                var mySemiDonutChart = new Chart(ctx, {
+                    type: 'doughnut', // Chart type
+                    data: {
+                        labels: ['Converted', 'Not Converted'],
+                        datasets: [{
+                            label: 'Semi Donut',
+                            data: [@convertedLooks, @notConvertedLooks],
+                            backgroundColor: ['#E04F16', '#092C4C'],
+                            borderWidth: 5,
+                            borderRadius: 10,
+                            borderColor: '#fff', // Border between segments
+                            hoverBorderWidth: 0,   // Border radius for curved edges
+                            cutout: '50%',
+                        }]
+                    },
+                    options: {
+                        layout: {
+                            padding: {
+                                top: -20,    // Set to 0 to remove top padding
+                                bottom: -20, // Set to 0 to remove bottom padding
+                            }
+                        },
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                display: false // Hide the legend
+                            }
+                        },
+                    }
+                });
+            }
+        });
+    </script>
+}
+
+@helper AdminDetail()
+{
+    int Usrno = Model;
+    var db = new TravelPortal.EDMX.db_silviEntities();
+    var objuser = db.View_Users.FirstOrDefault(e => e.Usrno == Usrno);
+
+    string status = objuser.Status.ToString().ToLower() == "active" ? "success" : objuser.Status.ToString().ToLower() == "pending" ? "warning" : "danger";
+    <div class="card">
+        <div class="card-header">
+            <a href="@Url.Action("ManageAdmin","Admin")">
+
+                <h5>
+                    <span class="ti ti-arrow-left"></span>
+                    @objuser.Name 's Detail
+                </h5>
+            </a>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="d-flex justify-content-between">
+                        <span> Profile Detail</span>
+                        @Ajax.ActionLink("Edit", "AddEditAdmin", "Admin", new { id = objuser.Usrno }, new AjaxOptions { UpdateTargetId = "divAddEdit", OnSuccess = "$('#addedit_modal').modal('show');", OnBegin = "fnStartLoader", OnComplete = "fnStopLoader" }, new { @class = "ti ti-edit" })
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <table class="table table-borderless">
+                        <tr>
+                            <td><b>UserId</b></td>
+                            <td>@objuser.UserID</td>
+                        </tr>
+                        <tr>
+                            <td><b> Role </b></td>
+                            <td>@objuser.UserType</td>
+                        </tr>
+                        <tr>
+                            <td><b>Name</b></td>
+                            <td>@objuser.Name</td>
+                        </tr>
+                        <tr>
+                            <td><b>Email</b></td>
+                            <td>@objuser.Email</td>
+                        </tr>
+                        <tr>
+                            <td><b>Mobile</b></td>
+                            <td>@objuser.Mobile</td>
+                        </tr>
+                        <tr>
+                            <td><b>Registration Date</b></td>
+                            <td>@objuser.AddDate</td>
+                        </tr>
+                        <tr>
+                            <td><b>Status</b></td>
+                            <td>
+                                <label class="badge bg-@status"><b> @objuser.Status </b></label>
+
+                                <label class="mx-3">
+                                    @Ajax.ActionLink("Send Activation Mail", "SendActivationMail", "Admin", new { id = objuser.Usrno }, new AjaxOptions { OnSuccess = "$('#mail_send_comman_modal').modal('show');", OnBegin = "fnStartLoader", OnComplete = "fnStopLoader" }, new { })
+                                    <span class="fa fa-mailbox"></span>
+                                </label>
+                            </td>
+
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12">
+            @Html.Action("ListAdminRights", "Admin", new { hdnUsrno = objuser.Usrno })
+        </div>
+    </div>
+
+}
+<div class="modal fade modal-default" id="mail_send_comman_modal">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body p-0">
+                <div class="success-wrap text-center">
+
+                    <div class="icon-success bg-success-transparent text-success mb-2">
+                        <i class="ti ti-check-box"></i>
+                    </div>
+                    <h3 class="mb-2">Mail Sent Successfully </h3>
+                    <p class="fs-16 mb-3">Account Activation Mail Sent !</p>
+                    <div class="d-flex align-items-center justify-content-center gap-2 flex-wrap">
+                        <button type="button" class="btn btn-md btn-secondary" data-bs-dismiss="modal">Ok</button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

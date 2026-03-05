@@ -1,0 +1,105 @@
+﻿@{
+    var result = ViewBag.flights as TravelPortal.web.Models.ViewModel.FlightResults;
+    var objfilter = result.filters;
+    int accordionCnt = 1;
+    string MinPrice = "0";
+    string MaxPrice = "0";
+}
+
+<div class="card filter-sidebar mb-4 mb-lg-0">
+    <div class="card-header d-flex align-items-center justify-content-between">
+        <h5>Filters</h5>
+        <a href="#" class="fs-14 link-primary">Reset</a>
+    </div>
+    <div class="card-body p-0">
+        <form action="#">
+            <div class="accordion accordion-list">
+                @foreach (var item in objfilter)
+                {
+                    if (item.Type.Equals(TravelPortal.web.Models.Enum.InputTypeEnum.CheckBox.ToString()))
+                    {
+                        <div class="accordion-item border-bottom p-3">
+                            <div class="accordion-header">
+                                <div class="accordion-button p-0" data-bs-toggle="collapse" data-bs-target="#accordion-@accordionCnt" aria-expanded="true" aria-controls="accordion-@accordionCnt" role="button">
+                                    @item.Title
+                                </div>
+                            </div>
+                            <div id="accordion-@accordionCnt" class="accordion-collapse collapse show">
+                                <div class="accordion-body">
+                                    <div class="more-content">
+                                        @if (item.Items != null)
+                                        {
+                                            int cntp = 1;
+                                            foreach (var d in item.Items)
+                                            {
+                                                <div class="form-check d-flex align-items-center ps-0 mb-2">
+                                                    <input class="form-check-input ms-0 mt-0 filter-item" data-filter="@item.FilterKey" type="checkbox" id="@($"{d.value}_{cntp}")" value="@d.value">
+                                                    <label class="form-check-label ms-2" for="@($"{d.value}_{cntp}")">
+                                                        @d.label
+                                                    </label>
+                                                </div>
+                                                cntp++;
+                                            }
+                                        }
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                    else if (item.Type.Equals(TravelPortal.web.Models.Enum.InputTypeEnum.Range.ToString()))
+                    {
+                        MinPrice = item.Items.min;
+                        MaxPrice = item.Items.max;
+                        <div class="accordion-item border-bottom p-3">
+                            <div class="accordion-header">
+                                <div class="accordion-button p-0" data-bs-toggle="collapse" data-bs-target="#accordion-@accordionCnt" aria-expanded="true" aria-controls="accordion-@accordionCnt" role="button">
+                                    @item.Title
+                                </div>
+                            </div>
+                            <div id="accordion-@accordionCnt" class="accordion-collapse collapse show">
+                                <div class="accordion-body">
+                                    <div class="filter-range">
+                                        <input type="text" data-filter="@item.FilterKey" id="range_03">
+                                        <input type="hidden" id="txtMinPrice" value="@item.Items.min" />
+                                        <input type="hidden" id="txtMaxPrice" value="@item.Items.max" />
+                                    </div>
+                                    <div class="filter-range-amount">
+                                        <p class="fs-14">
+                                            Range : 
+                                            <span class="text-gray-9 fw-medium">
+                                                <span class="ti ti-currency-rupee"></span>@item.Items.min -
+                                                <span class="ti ti-currency-rupee"></span>@item.Items.max
+                                            </span>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                    accordionCnt++;
+                }
+
+            </div>
+        </form>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        $("#range_03").ionRangeSlider(
+            {
+                type: "double",
+                grid: !0,
+                min: @MinPrice,
+                max: @MaxPrice,
+                from: @MinPrice,
+                to: @MaxPrice,
+                prefix: "₹",
+                onFinish: function (data) {
+                    $("#txtMinPrice").val(data.from);
+                    $("#txtMaxPrice").val(data.to);
+                    applyFilters(); // <-- AJAX call yaha se bhi
+                }
+            });
+    });
+</script>

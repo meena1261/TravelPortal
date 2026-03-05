@@ -1,0 +1,30 @@
+﻿
+<div class="card">
+    <div class="card-header">
+        <div class="row">
+            <div class="col-md-3">
+                @Html.DropDownList("Agentlist", ViewBag.agentlist as IEnumerable<SelectListItem>, "--Select--", new { @class = "js-example-basic-single select2", @data_val = "true", @data_val_required = "Required", onchange = "onChangeUserList()" })
+            </div>
+        </div>
+    </div>
+    <div class="card-body p-0" id="divagentuserslist">
+
+    </div>
+</div>
+<script>
+    function onChangeUserList() {
+        var ddlvalue = $("#Agentlist").val();
+         $.ajax({
+            url: '@Url.Action("ListAgentUsers", "Admin")',
+             type: 'POST',
+             beforeSend: fnStartLoader,
+             complete: fnStopLoader,
+            data: { hdnUsrno: ddlvalue},
+            success: function (data) {
+                $('#divagentuserslist').html('');  // Replace with your partial view
+                $('#divagentuserslist').html(data);  // Replace with your partial view
+            }
+        });
+    }
+
+</script>

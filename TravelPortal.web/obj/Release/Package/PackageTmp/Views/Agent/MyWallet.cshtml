@@ -1,0 +1,178 @@
+﻿@{
+    var objSummary = ViewBag.walletSummary as WalletSummaryViewModel;
+}
+
+
+<div class="row">
+
+    <!-- Wallet List -->
+    <div class="col-xl-5 col-lg-12 d-flex">
+        <div class="row flex-fill">
+            <div class="col-xl-6 col-lg-6 col-md-6  d-flex">
+                <div class="card shadow-none mb-4 flex-fill">
+                    <div class="card-body">
+                        <span class="avatar avatar-lg rounded-circle bg-primary mb-3"><i class="isax isax-calendar-15 text-white"></i></span>
+                        <div class="">
+                            <p class="mb-0 text-truncate line-ellipsis-2">Wallet Balance</p>
+                            <h4><span class="ti ti-currency-rupee"></span> @objSummary.Balance</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-6 col-lg-6 col-md-6  d-flex">
+                <div class="card shadow-none mb-4 flex-fill">
+                    <div class="card-body">
+                        <span class="avatar avatar-lg rounded-circle bg-secondary mb-3"><i class="isax isax-money-send5 text-white"></i></span>
+                        <div class="">
+                            <p class="mb-0 text-truncate line-ellipsis-2">Total Credit</p>
+                            <h4><span class="ti ti-currency-rupee"></span> @objSummary.TotalCredit</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-6 col-lg-6 col-md-6  d-flex">
+                <div class="card shadow-none mb-4 flex-fill">
+                    <div class="card-body">
+                        <span class="avatar avatar-lg rounded-circle bg-purple mb-3"><i class="isax isax-money-time5 text-white"></i></span>
+                        <div class="">
+                            <h4><span class="ti ti-currency-rupee"></span> @objSummary.TotalDebit</h4>
+                            <p class="mb-0">Total Debit</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-6 col-lg-6 col-md-6  d-flex">
+                <div class="card shadow-none mb-4 flex-fill">
+                    <div class="card-body">
+                        <span class="avatar avatar-lg rounded-circle bg-teal mb-3"><i class="isax isax-money-time5 text-white"></i></span>
+                        <div class="mb-3">
+                            <h4>@objSummary.TotalTransaction</h4>
+                            <p class="mb-0">Transactions</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /Wallet List -->
+    <!-- Wallet -->
+    <div class="col-xl-7 col-lg-12 d-flex">
+        <div class="card payment-details flex-fill mb-4">
+            <div class="card-header">
+                <h5>Wallet</h5>
+            </div>
+            <div class="card-body">
+                <form>
+                    <div class="mb-3">
+                        <label class="form-label">Enter Amount</label>
+                        <input type="text" class="form-control" id="rechargeAmount" placeholder="Enter Amount">
+                    </div>
+                    <div class="tab-pane fade active show" id="wallet">
+
+                        <div class="d-flex align-items-center justify-content-center">
+                            <button type="button" id="btnPay" class="btn btn-primary">Add Payment</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- /Wallet -->
+
+</div>
+
+<!-- Transactions -->
+<div class="card mb-4">
+    <div class="card-body">
+        <div class="d-flex align-items-center">
+            <div>
+                <h6>Transactions</h6>
+                <p class="fs-14">No of Transactions : @objSummary.TotalTransaction</p>
+            </div>
+        </div>
+        <hr class="border" />
+        <div class="row">
+            <div class="col-md-3">
+                <label class="form-label">Search</label>
+                <input type="text" class="form-control" name="Searchtext" placeholder="Search..." />
+            </div>
+            <div class="col-md-3">
+                <label class="form-label">From Date</label>
+                <input type="date" class="form-control" name="fromDate" />
+            </div>
+            <div class="col-md-3">
+                <label class="form-label">To Date</label>
+                <input type="date" class="form-control" name="toDate" />
+            </div>
+            <div class="col-md-3">
+                <br />
+                <button type="submit" class="btn btn-primary mt-2">Search</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Transactions -->
+<!-- Transactions List -->
+@Html.Action("WalletStatement", "Agent")
+<!-- /Transactions List -->
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
+        document.getElementById("btnPay").onclick = function () {
+            var txtAmount = document.getElementById("rechargeAmount").value;
+
+            if (txtAmount == "" || parseInt(rechargeAmount) <= 1) {
+                alert("Amount must be greater then zero !");
+                return;
+            }
+            fetch('@Url.Action("CreateOrder", "Agent")', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ amount: txtAmount }) // ₹500
+            }).then(res => res.json()).then(data => {
+                var options = {
+                    "key": "@ConfigHelper.RazorpayKey",
+                    "amount": txtAmount,
+                    "currency": "INR",
+                    "name": "My Company",
+                    "description": "Test Payment",
+                    "order_id": data.orderId,
+                    "handler": function (response) {
+                        // send payment info to server for verification
+                        /*window.location.href = "/Payment/VerifyPayment?paymentId=" + response.razorpay_payment_id + "&orderId=" + response.razorpay_order_id + "&signature=" + response.razorpay_signature;*/
+
+                        fetch('@Url.Action("VerifyPayment", "Agent")', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ paymentId: response.razorpay_payment_id, orderId: response.razorpay_order_id, signature: response.razorpay_signature }) // ₹500
+                        }).then(res => res.json()).then(data => {
+                            if (data.status > 0) {
+                                Swal.fire({
+                                    title: "Successfully",
+                                    text: data.message,
+                                    icon: "success"
+                                }).then((result) => {
+                                    if (result.isConfirmed) {
+                                        location.reload();
+                                    }
+                                });
+                               // location.reload();
+                            } else {
+                                Swal.fire({
+                                    title: "error",
+                                    text: d.message,
+                                    icon: "error"
+                                });
+                            }
+                        });
+
+                    },
+                    "theme": {
+                        "color": "#3399cc"
+                    }
+                };
+                var rzp = new Razorpay(options);
+                rzp.open();
+            });
+        };
+
+</script>

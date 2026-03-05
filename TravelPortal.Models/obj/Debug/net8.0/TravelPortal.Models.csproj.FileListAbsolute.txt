@@ -1,0 +1,12 @@
+D:\Project\TravelPortal\TravelPortal.Models\bin\Debug\net8.0\TravelPortal.Models.deps.json
+D:\Project\TravelPortal\TravelPortal.Models\bin\Debug\net8.0\TravelPortal.Models.dll
+D:\Project\TravelPortal\TravelPortal.Models\bin\Debug\net8.0\TravelPortal.Models.pdb
+D:\Project\TravelPortal\TravelPortal.Models\obj\Debug\net8.0\TravelPortal.Models.csproj.AssemblyReference.cache
+D:\Project\TravelPortal\TravelPortal.Models\obj\Debug\net8.0\TravelPortal.Models.GeneratedMSBuildEditorConfig.editorconfig
+D:\Project\TravelPortal\TravelPortal.Models\obj\Debug\net8.0\TravelPortal.Models.AssemblyInfoInputs.cache
+D:\Project\TravelPortal\TravelPortal.Models\obj\Debug\net8.0\TravelPortal.Models.AssemblyInfo.cs
+D:\Project\TravelPortal\TravelPortal.Models\obj\Debug\net8.0\TravelPortal.Models.csproj.CoreCompileInputs.cache
+D:\Project\TravelPortal\TravelPortal.Models\obj\Debug\net8.0\TravelPortal.Models.dll
+D:\Project\TravelPortal\TravelPortal.Models\obj\Debug\net8.0\refint\TravelPortal.Models.dll
+D:\Project\TravelPortal\TravelPortal.Models\obj\Debug\net8.0\TravelPortal.Models.pdb
+D:\Project\TravelPortal\TravelPortal.Models\obj\Debug\net8.0\ref\TravelPortal.Models.dll

@@ -1,0 +1,156 @@
+﻿@model SearchReportModel
+@{
+    ViewBag.Title = "Manage Agent";
+    var db = new TravelPortal.EDMX.db_silviEntities();
+    var objUser = db.View_Users.Where(e => e.RoleId == "2").ToList();
+}
+
+<div class="mb-4">
+    <ul class="nav nav-pills">
+        <li class="nav-item">
+            @Ajax.ActionLink("Add New Agent", "AddEditAgent", "Admin", new { }, new AjaxOptions { UpdateTargetId = "divAddEdit", OnSuccess = "$('#addedit_modal').modal('show');", OnBegin = "fnStartLoader", OnComplete = "fnStopLoader" }, new { @class = "nav-link active" })
+        </li>
+    </ul>
+</div>
+<div class="card">
+    <div class="card-body pb-1">
+        <form action="@Url.Action("ManageAgent","Admin")" method="post">
+            <div class="row align-items-end">
+                <div class="col-md-3">
+                    <div class="mb-3">
+                        <label class="form-label">From Date</label>
+                        <div class="input-icon-start position-relative">
+                            @Html.TextBoxFor(m => m.fromDate, new { @class = "form-control flatpickr_date_input", @placeholder = "dd/mm/yyyy" })
+                            <span class="input-icon-left">
+                                <i class="ti ti-calendar"></i>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="mb-3">
+                        <label class="form-label">To Date</label>
+                        <div class="input-icon-start position-relative">
+                            @Html.TextBoxFor(m => m.toDate, new { @class = "form-control flatpickr_date_input", @placeholder = "dd/mm/yyyy" })
+                            <span class="input-icon-left">
+                                <i class="ti ti-calendar"></i>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-2">
+                    <div class="mb-3">
+                        <button class="btn btn-primary w-100" type="submit"><i class="ti ti-search"></i> Search</button>
+                    </div>
+                </div>
+            </div>
+
+        </form>
+    </div>
+</div>
+<div class="card no-search">
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table datatable">
+                <thead class="thead-light">
+                    <tr>
+                        <th>S. No</th>
+                        <th>Name</th>
+                        <th>Contact</th>
+                        <th>Supplier</th>
+                        <th>Status</th>
+                        <th>Sales on/off</th>
+                        <th>Payment by cc</th>
+                        <th>Payment by account</th>
+                        <th>Use own logo on e-ticket</th>
+                        <th>Contract</th>
+                        <th>Token</th>
+                        <th>Creation Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (objUser != null && objUser.Count > 0)
+                    {
+                        int i = 1;
+                        foreach (var item in objUser)
+                        {
+                            <tr>
+                                <td class="expand">
+                                    @i
+                                </td>
+                                <td>
+                                    <h5>
+                                        @item.Name
+                                    </h5>
+                                    <a href="@Url.Action("UserDetail", "Admin", new {userid = item.Usrno})">
+                                        <i class="ti ti-eye"></i>  <small>[@item.UserID]</small>
+                                    </a>
+                                </td>
+                                <td>
+                                    <h5>
+                                        @item.Mobile
+                                    </h5>
+                                    <small>@item.Email</small>
+                                </td>
+                                <td>
+                                    @if (item.IsSupplier == true)
+                                    {
+                                        <a href="~/Uploads/@item.AspNetID/SupplierAgreements/@item.SupplierAgreement" target="_blank">View Agreement</a>
+                                    }
+                                    else
+                                    {
+                                        <label>@item.AgreementRemark</label>
+                                    }
+                                </td>
+                                <td>
+                                    <input type="checkbox" @(item.IsActive == true ? "checked" : "") onclick="UpdateAgentPermission('@item.Usrno','@ActionTypes.IsActive')" />
+
+                                </td>
+
+                                <td>
+                                    <input type="checkbox" @(item.IsSales == true ? "checked" : "") onclick="UpdateAgentPermission('@item.Usrno','@ActionTypes.IsSales')" />
+                                </td>
+                                <td>
+                                    <input type="checkbox" @(item.IsPaymentByCC == true ? "checked" : "") onclick="UpdateAgentPermission('@item.Usrno','@ActionTypes.IsPaymentByCC')" />
+                                </td>
+                                <td>
+                                    <input type="checkbox" @(item.IsPaymentByAccount == true ? "checked" : "") onclick="UpdateAgentPermission('@item.Usrno','@ActionTypes.IsPaymentByAccount')" />
+                                </td>
+                                <td>
+                                    <input type="checkbox" @(item.IsUseLogo == true ? "checked" : "") onclick="UpdateAgentPermission('@item.Usrno','@ActionTypes.IsUseLogo')" />
+                                </td>
+                                <td>
+                                    <input type="checkbox" @(item.IsContract == true ? "checked" : "") onclick="UpdateAgentPermission('@item.Usrno','@ActionTypes.IsContract')" />
+                                </td>
+                                <td>
+                                    <input type="checkbox" @(item.IsToken == true ? "checked" : "") onclick="UpdateAgentPermission('@item.Usrno','@ActionTypes.IsToken')" />
+                                </td>
+                                <td>
+                                    @item.AddDate
+                                </td>
+
+                            </tr>
+                            i++;
+                        }
+
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<script>
+    function UpdateAgentPermission(id, t) {
+        $.ajax({
+            url: '@Url.Action("UpdateAgentPermission", "Admin")',
+            type: 'POST',
+            data: { Id: id, type: t },
+            success: function (response) {
+                //alert('Status updated successfully.');
+            },
+            error: function () {
+                alert('Error updating status.');
+            }
+        });
+    }
+</script>

@@ -1,0 +1,229 @@
+﻿@{
+    string CurrentUrl = ViewBag.CurrentUrl;
+    var profile = ViewBag.Profile as TravelPortal.web.Models.ViewModel.UserdetailViewModel;
+}
+
+<!-- Breadcrumb -->
+<div class="breadcrumb-bar breadcrumb-bg-04 text-center">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 col-12">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb justify-content-center mb-0">
+                        <li class="breadcrumb-item"><a href="@Url.Action("AgentBooking","Agent")"><i class="isax isax-home5"></i></a></li>
+                        <li class="breadcrumb-item active" aria-current="page">@CurrentUrl.Replace("agent/", "").ToUpper()</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Breadcrumb -->
+<!-- Page Wrapper -->
+<div class="content content-two">
+    <div class="container">
+        <div class="row">
+            <!-- Sidebar -->
+            <div class="col-xl-3 col-lg-4 theiaStickySidebar">
+                <div class="card user-sidebar mb-4">
+                    <div class="card-header user-sidebar-header">
+                        <div class="profile-content rounded-pill">
+                            <div class="d-flex align-items-center justify-content-between">
+                                <div class=" d-flex align-items-center justify-content-center">
+                                    <img src="~/Uploads/Profile/@profile.ProfilePhoto" alt="image" class="img-fluid avatar avatar-lg rounded-circle me-1">
+                                    <div>
+                                        <h6 class="fs-16">@profile.Name</h6>
+                                        <span class="fs-14 text-gray-6">Since @profile.CreatedDate</span>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="d-flex align-items-center justify-content-center">
+                                        <a href="@RouteConfig.UpdateProfile.ToPrefixApplicationURL()" class="p-1 rounded-circle btn btn-light d-flex align-items-center justify-content-center"><i class="isax isax-edit-2 fs-14"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        @if (profile.IsKYCCompleted != true)
+                        {
+                            <label class="alert alert-danger w-100 mt-2">
+                                Please Complete Your KYC
+                                <a href="#" data-bs-toggle="modal" data-bs-target="#popup_agentKyc">Click here </a> !
+                            </label>
+                        }
+                    </div>
+                    <div class="card-body user-sidebar-body">
+                        <ul>
+                            <li>
+                                <span class="fs-14 text-gray-3 fw-medium mb-2">Main</span>
+                            </li>
+                            <li>
+                                <a href="@RouteConfig.AgentDashboard.ToPrefixApplicationURL()" class="d-flex align-items-center @(CurrentUrl.Equals(RouteConfig.AgentDashboard)?"active":"")">
+                                    <i class="isax isax-grid-55"></i> Dashboard
+                                </a>
+                            </li>
+                            <li class="submenu">
+                                <a href="#" class="d-block @(CurrentUrl.Equals(RouteConfig.MyBooking.Replace("{type}","flight"))?"active subdrop":"")"><i class="isax isax-calendar-tick5"></i><span>My Bookings</span><span class="menu-arrow"></span></a>
+                                <ul>
+                                    <li>
+                                        <a href="@RouteConfig.MyBooking.Replace("{type}","flight").ToPrefixApplicationURL()" class="fs-14 d-inline-flex align-items-center @(CurrentUrl.Equals(RouteConfig.MyBooking.Replace("{type}","flight"))?"active":"")">Flights</a>
+                                    </li>
+                                    <li>
+                                        <a href="#" class="fs-14 d-inline-flex align-items-center">Hotels</a>
+                                    </li>
+                                    <li>
+                                        <a href="#" class="fs-14 d-inline-flex align-items-center">Cars</a>
+                                    </li>
+                                    <li>
+                                        <a href="#" class="fs-14 d-inline-flex align-items-center">Cruise</a>
+                                    </li>
+                                    <li>
+                                        <a href="#" class="fs-14 d-inline-flex align-items-center">Tour</a>
+                                    </li>
+                                    <li>
+                                        <a href="#" class="fs-14 d-inline-flex align-items-center">Bus</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="submenu">
+                                <a href="#" class="d-block @(CurrentUrl.Equals(RouteConfig.ManageInventory) || CurrentUrl.Equals(RouteConfig.ManageInventoryAdd) || CurrentUrl.Equals(RouteConfig.ManageInventoryList)?"active subdrop":"")"><i class="isax isax-book-saved"></i><span>Manage Inventory</span><span class="menu-arrow"></span></a>
+                                <ul>
+                                    <li>
+                                        <a href="@RouteConfig.ManageInventoryAdd.ToPrefixApplicationURL()" class="fs-14 d-inline-flex align-items-center @(CurrentUrl.Equals(RouteConfig.ManageInventoryAdd)?"active":"")">Add Inventory</a>
+                                    </li>
+                                    <li>
+                                        <a href="@RouteConfig.ManageInventoryList.ToPrefixApplicationURL()" class="fs-14 d-inline-flex align-items-center @(CurrentUrl.Equals(RouteConfig.ManageInventoryList)?"active":"")">List Inventory</a>
+                                    </li>
+                                    <li>
+                                        <a href="@RouteConfig.ManageInventoryList.ToPrefixApplicationURL()" class="fs-14 d-inline-flex align-items-center">List Booking</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li>
+                                <div class="message-content">
+                                    <a href="@RouteConfig.ManageSubUsers.ToPrefixApplicationURL()" class="d-flex align-items-center @(CurrentUrl.Equals(RouteConfig.ManageSubUsers)?"active":"")">
+                                        <i class="isax isax-user"></i> Manage Users
+                                    </a>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="message-content">
+                                    <a href="@Url.Action("AgentChat","ChatNotes")" class="d-flex align-items-center">
+                                        <i class="isax isax-message-square5"></i> Messages
+                                    </a>
+                                    <span class="msg-count rounded-circle">0</span>
+                                </div>
+                            </li>
+                            <li>
+                                <span class="fs-14 text-gray-3 fw-medium mb-2">Finance</span>
+                            </li>
+                            <li>
+                                <a href="@RouteConfig.Wallet.ToPrefixApplicationURL()" class="d-flex align-items-center @(CurrentUrl.Equals(RouteConfig.Wallet)?"active":"")">
+                                    <i class="isax isax-wallet-add-15"></i> Wallet
+                                </a>
+                            </li>
+                            <li class="mb-2">
+                                <a href="@RouteConfig.FundRequest.ToPrefixApplicationURL()" class="d-flex align-items-center @(CurrentUrl.Equals(RouteConfig.FundRequest)?"active":"")">
+                                    <i class="isax isax-money-recive5"></i> Fund Request
+                                </a>
+                            </li>
+                            <li class="mb-2">
+                                <a href="@RouteConfig.CreditLimit.ToPrefixApplicationURL()" class="d-flex align-items-center @(CurrentUrl.Equals(RouteConfig.CreditLimit)?"active":"")">
+                                    <i class="isax isax-money-recive5"></i> Credit limit
+                                </a>
+                            </li>
+                            <li>
+                                <span class="fs-14 text-gray-3 fw-medium mb-2">Account</span>
+                            </li>
+                            <li>
+                                <a href="@RouteConfig.MyProfile.ToPrefixApplicationURL()" class="d-flex align-items-center @(CurrentUrl.Equals(RouteConfig.MyProfile)?"active":"")">
+                                    <i class="isax isax-profile-tick5"></i> My Profile
+                                </a>
+                            </li>
+                            <li>
+                                <a href="@RouteConfig.AgentSetting.ToPrefixApplicationURL()" class="d-flex align-items-center @(CurrentUrl.Equals(RouteConfig.AgentSetting) || CurrentUrl.Equals(RouteConfig.UpdateProfile) || CurrentUrl.Equals(RouteConfig.Security)?"active":"")">
+                                    <i class="isax isax-setting-25"></i> Settings
+                                </a>
+                            </li>
+                            <li>
+                                <a href="@Url.Action("Logout","Account")" class="d-flex align-items-center pb-0">
+                                    <i class="isax isax-logout-15"></i> Logout
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <!-- /Sidebar -->
+
+            <div class="col-xl-9 col-lg-8">
+                @if (CurrentUrl.Equals(RouteConfig.AgentDashboard))
+                {
+                    @Html.Action("Dashboard", "Agent")
+                }
+                else if (CurrentUrl.Equals(RouteConfig.Wallet))
+                {
+                    @Html.Action("MyWallet", "Agent")
+                }
+                else if (CurrentUrl.Equals(RouteConfig.FundRequest))
+                {
+                    @Html.Action("FundRequest", "Agent")
+                }
+                else if (CurrentUrl.Equals(RouteConfig.CreditLimit))
+                {
+                    @Html.Action("CreditLimit", "Agent")
+                }
+                else if (CurrentUrl.Equals(RouteConfig.MyProfile))
+                {
+                    @Html.Action("MyProfile", "Agent")
+                }
+                else if (CurrentUrl.Equals(RouteConfig.AgentSetting) || CurrentUrl.Equals(RouteConfig.UpdateProfile) || CurrentUrl.Equals(RouteConfig.Security))
+                {
+                    @Html.Action("AccountSetting", "Agent")
+                }
+                else if (CurrentUrl.Equals(RouteConfig.ManageInventory) || CurrentUrl.Equals(RouteConfig.ManageInventoryAdd) || CurrentUrl.Equals(RouteConfig.ManageInventoryList))
+                {
+                    @Html.Action("ManageInventory", "Agent")
+                }
+                else if (CurrentUrl.Equals(RouteConfig.ManageSubUsers))
+                {
+                    @Html.Action("ManageSubUsers", "Agent")
+                }
+                else if (CurrentUrl.Equals(RouteConfig.MyBooking.Replace("{type}", "flight")))
+                {
+                    @Html.Action("BookingReports", "Agent")
+                }
+                <br />
+                <br />
+                <br />
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Page Wrapper -->
+
+@if (profile.IsKYCCompleted != true)
+{
+    <div class="modal fade" id="popup_agentKyc" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5>Complete Your KYC</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body pb-0">
+                    @Html.Action("BussinessKYC", "Agent")
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        $(document).ready(function () {
+            var IsShowKYCPopup = sessionStorage.getItem("IsShowKYCPopup");
+            if (IsShowKYCPopup == null) {
+                $('#popup_agentKyc').modal({ backdrop: 'static', keyboard: false });
+                $("#popup_agentKyc").modal('show');
+                sessionStorage.setItem("IsShowKYCPopup", "1");
+            }
+        });
+    </script>
+}

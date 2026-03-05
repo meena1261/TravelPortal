@@ -1,0 +1,127 @@
+﻿@model AddEditCouponsModel
+<div class="modal fade" id="addedit_modal" role="dialog">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Add Coupons</h5>
+                <button class="btn-close custom-btn-close border p-1 me-0 text-dark" data-bs-dismiss="modal"
+                        aria-label="Close">
+                    <i class="ti ti-x"></i>
+                </button>
+            </div>
+            @using (Ajax.BeginForm("AddEditCoupons", "Admin", null, new AjaxOptions { HttpMethod = "POST", OnSuccess = "fn_Success", OnFailure = "fn_Failure", OnBegin = "fnStartLoader", OnComplete = "fnStopLoader" }, new { enctype = "multipart/form-data", id = "frm_AddEditCoupons" }))
+            {
+                <div class="modal-body">
+                    <div class="row">
+
+                        <div class="col-md-12">
+                            <div class="mb-3 ">
+                                <label class="form-label">Coupons Code<span class="text-danger"> *</span></label>
+
+                                @Html.TextBoxFor(m => m.CouponCode, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.CouponCode, "", new { @class = "text-danger" })
+                                <a href="javascript:void(0)" id="generateBtn" class="text-right w-100">Generate Coupon</a>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="mb-3 ">
+                                <label class="form-label">Discount Type </label>
+                                <div class="row">
+                                    <div class="col-6">
+                                        <label><input type="radio" name="DiscountType" value="Fixed" checked="checked" /> Fixed </label>
+                                    </div>
+                                    <div class="col-6">
+                                        <label><input type="radio" name="DiscountType" value="Percentage" /> Percentage </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="mb-3 ">
+                                <label class="form-label">Discount </label>
+
+                                @Html.TextBoxFor(m => m.Discount, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.Discount, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="mb-3 ">
+                                <label class="form-label">Max Usage <br /> <small>Note: Unlimited Usage Enter -1</small> </label>
+
+                                @Html.TextBoxFor(m => m.MaxUsage, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.MaxUsage, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="mb-3 ">
+                                <label class="form-label">Expiry Date </label>
+
+                                @Html.TextBoxFor(m => m.ExpiryDate, "{0:yyyy-MM-dd}", new { @class = "form-control", @type = "date" })
+                                @Html.ValidationMessageFor(model => model.ExpiryDate, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="d-flex align-items-center justify-content-end m-0">
+                        <a href="#" class="btn btn-light me-2" data-bs-dismiss="modal">Cancel</a>
+                        <button type="submit" class="btn btn-primary">@(Model.Id > 0 ? "Update": "Create")</button>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+@Scripts.Render("~/bundles/jqueryval")
+<script>
+    $(document).ready(function () {
+        $('#generateBtn').click(function () {
+            var code = generateCoupon(10); // You can change the length here
+            $('#CouponCode').val(code);
+        });
+    });
+    function fn_Success(d) {
+        if (d.status > 0) {
+            $.toast({
+                heading: 'Success',
+                text: d.message,
+                position: 'top-right',
+                showHideTransition: 'fade',
+                icon: 'success'
+            });
+            $("#addedit_modal").modal('hide');
+            $.get('@Url.Action("ListCoupons", "Admin")', function (data) {
+                $("#divlist").html(data);
+            });
+        } else {
+            $.toast({
+                heading: 'Message',
+                text: d.message,
+                position: 'top-right',
+                showHideTransition: 'fade',
+                icon: 'error'
+            });
+        }
+    }
+    function fn_Failure(d) {
+        $.toast({
+            heading: 'Message',
+            text: 'failed',
+            position: 'top-right',
+            showHideTransition: 'fade',
+            icon: 'error'
+        });
+    }
+    function generateCoupon(length) {
+        var chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+        var coupon = '';
+        for (var i = 0; i < length; i++) {
+            var randomIndex = Math.floor(Math.random() * chars.length);
+            coupon += chars[randomIndex];
+        }
+        return coupon;
+    }
+</script>
+
+
+

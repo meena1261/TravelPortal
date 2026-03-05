@@ -1,0 +1,665 @@
+﻿@model SearchRequestDto
+@{
+    var tripType = ViewBag.tripTypes as List<SelectListItem>;
+    var ClassTypes = ViewBag.ClassTypes as List<SelectListItem>;
+
+    int firstrow = 0;
+}
+<style>
+    .suggestiondropdown {
+        position: absolute;
+        top: 95px;
+        left: 0;
+    }
+</style>
+
+<div class="d-flex align-items-center justify-content-between flex-wrap mb-2">
+    <div class="d-flex align-items-center">
+        @if (tripType != null && tripType.Count > 0)
+        {
+            int cnt = 1;
+            foreach (var item in tripType)
+            {
+                <div class="form-check d-flex align-items-center me-3 mb-2">
+                    @Html.RadioButtonFor(m => m.tripType, item.Value, new { @class = "form-check-input mt-0", id = item.Value })
+                    <label class="form-check-label fs-14 ms-2" for="@item.Value">
+                        @item.Text
+                    </label>
+                </div>
+                cnt++;
+            }
+        }
+    </div>
+
+</div>
+<div class="normal-trip">
+    <form action="@RouteConfig.FlightSearch.ToPrefixApplicationURL()" id="frmSearchflight">
+
+        <div class="form-info">
+            <div class="row">
+                <div class="col-8">
+
+                    <div class="d-flex">
+                        <input type="hidden" id="hdnFromCity-@firstrow" value="@Model.Destinations[firstrow].FromCityIata" />
+                        <input type="hidden" id="hdnToCity-@firstrow" value="@Model.Destinations[firstrow].ToCityIata" />
+
+                        <div class="form-item dropdown">
+                            <div>
+                                <label class="form-label fs-14 text-default mb-1">From</label>
+                                @Html.TextBoxFor(m => m.Destinations[firstrow].FromCity, new { @class = "form-control txtfromcity", autocomplete = "off", @data_val = "true", @data_val_required = "Required" })
+                                <p class="fs-12 mb-0" id="fromAirport-@firstrow">@Model.Destinations[firstrow].FromCityAirport</p>
+                            </div>
+                            @Html.ValidationMessageFor(model => model.Destinations[firstrow].FromCity, "", new { @class = "text-danger" })
+                            <div class="dropdown-menu dropdown-md p-0 suggestiondropdown" id="fromDropdown-@firstrow">
+                                <ul id="fromcityList-@firstrow"></ul>
+                            </div>
+                        </div>
+                        <div class="form-item dropdown ps-2 ps-sm-3">
+                            <div>
+                                <label class="form-label fs-14 text-default mb-1">To</label>
+                                @Html.TextBoxFor(m => m.Destinations[firstrow].ToCity, new { @class = "form-control txttoCity", autocomplete = "off", @data_val = "true", @data_val_required = "Required" })
+                                <p class="fs-12 mb-0" id="toAiport-@firstrow">@Model.Destinations[firstrow].ToCityAirport</p>
+                                @Html.ValidationMessageFor(model => model.Destinations[firstrow].ToCity, "", new { @class = "text-danger" })
+                                <span class="way-icon badge badge-primary rounded-pill translate-middle">
+                                    <i class="fa-solid fa-arrow-right-arrow-left"></i>
+                                </span>
+                            </div>
+                            <div class="dropdown-menu dropdown-md p-0 suggestiondropdown" id="toDropdown-@firstrow">
+                                <ul id="tocityList-@firstrow"></ul>
+                            </div>
+                        </div>
+                        <div class="form-item">
+                            <label class="form-label fs-14 text-default mb-1">Departure</label>
+                            @Html.TextBoxFor(m => m.Destinations[firstrow].DepatureDate, new { @class = "form-control datetimepicker txtdeparturedate", @data_val = "true", @data_val_required = "Required" })
+                            @Html.ValidationMessageFor(model => model.Destinations[firstrow].DepatureDate, "", new { @class = "text-danger" })
+
+                        </div>
+                    </div>
+
+                </div>
+                <div class="col-4">
+                    <div class="d-flex">
+                        <div class="form-item round-drip">
+                            <label class="form-label fs-14 text-default mb-1">Return</label>
+                            @Html.TextBoxFor(m => m.ReturnDate, new { @class = "form-control datetimepicker", @data_val = "true", @data_val_required = "Required" })
+                            @Html.ValidationMessageFor(model => model.ReturnDate, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="form-item dropdown">
+                            <div data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false" role="menu">
+                                <label class="form-label fs-14 text-default mb-1">Travellers and cabin class</label>
+                                <h5><span id="spntotalperson">1</span> <span class="fw-normal fs-14">Persons</span></h5>
+                                <p class="fs-12 mb-0" id="paragraphtxt">1 Adult, Economy</p>
+                            </div>
+                            <div class="dropdown-menu dropdown-menu-end dropdown-xl">
+                                <h5 class="mb-3">Select Travelers &  Class</h5>
+                                <div class="mb-3 border br-10 info-item pb-1">
+                                    <h6 class="fs-16 fw-medium mb-2">Travellers</h6>
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="mb-3">
+                                                <label class="form-label text-gray-9 mb-2">Adults <span class="text-default fw-normal">( 12+ Yrs )</span></label>
+                                                <div class="custom-increment">
+                                                    <div class="input-group">
+                                                        <span class="input-group-btn float-start">
+                                                            <button type="button" class="quantity-left-minus btn btn-light btn-number" data-type="minus" data-field="">
+                                                                <span><i class="isax isax-minus"></i></span>
+                                                            </button>
+                                                        </span>
+                                                        @Html.TextBoxFor(m => m.Adults, new { @class = "input-number mb-2", @data_val = "true", @data_val_required = "Required" })
+                                                        <span class="input-group-btn float-end">
+                                                            <button type="button" class="quantity-right-plus btn btn-light btn-number" data-type="plus" data-field="">
+                                                                <span><i class="isax isax-add"></i></span>
+                                                            </button>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="mb-3">
+                                                <label class="form-label text-gray-9 mb-2">Childrens <span class="text-default fw-normal">( 2-12 Yrs )</span></label>
+                                                <div class="custom-increment">
+                                                    <div class="input-group">
+                                                        <span class="input-group-btn float-start">
+                                                            <button type="button" class="quantity-left-minus btn btn-light btn-number" data-type="minus" data-field="">
+                                                                <span><i class="isax isax-minus"></i></span>
+                                                            </button>
+                                                        </span>
+                                                        @Html.TextBoxFor(m => m.Children, new { @class = "input-number mb-2", @data_val = "true", @data_val_required = "Required" })
+
+                                                        <span class="input-group-btn float-end">
+                                                            <button type="button" class="quantity-right-plus btn btn-light btn-number" data-type="plus" data-field="">
+                                                                <span><i class="isax isax-add"></i></span>
+                                                            </button>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="mb-3">
+                                                <label class="form-label text-gray-9 mb-2">Infants<span class="text-default fw-normal">( 0-12 Yrs )</span></label>
+                                                <div class="custom-increment">
+                                                    <div class="input-group">
+                                                        <span class="input-group-btn float-start">
+                                                            <button type="button" class="quantity-left-minus btn btn-light btn-number" data-type="minus" data-field="">
+                                                                <span><i class="isax isax-minus"></i></span>
+                                                            </button>
+                                                        </span>
+                                                        @Html.TextBoxFor(m => m.Infant, new { @class = "input-number mb-2", @data_val = "true", @data_val_required = "Required" })
+
+                                                        <span class="input-group-btn float-end">
+                                                            <button type="button" class="quantity-right-plus btn btn-light btn-number" data-type="plus" data-field="">
+                                                                <span><i class="isax isax-add"></i></span>
+                                                            </button>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="mb-3 border br-10 info-item pb-1">
+                                    <h6 class="fs-16 fw-medium mb-2">Travellers</h6>
+                                    <div class="d-flex align-items-center flex-wrap">
+                                        @if (ClassTypes != null && ClassTypes.Count > 0)
+                                        {
+                                            int cnt = 1;
+                                            foreach (var item in ClassTypes)
+                                            {
+                                                <div class="form-check me-3 mb-3">
+                                                    @Html.RadioButtonFor(m => m.CabinClass, item.Value, new { @class = "form-check-input mt-0", id = item.Value, @data_val = "true", @data_val_required = "Required", onchange = "TravellerCabinClass()" })
+                                                    <label class="form-check-label" for="@item.Value">
+                                                        @item.Text
+                                                    </label>
+                                                </div>
+                                                cnt++;
+                                            }
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="divMultiCity" style="@(Model.tripType.Equals(TravelPortal.web.Models.Enum.FlightTripTypes.MultiCity.ToString())?"display:block;":"display:none;")">
+            @if (Model.Destinations.Count > 1)
+            {
+                for (int i = 1; i < Model.Destinations.Count; i++)
+                {
+                    <div class="form-info mt-2" id="divClonMultiCity">
+                        <div class="row">
+                            <div class="col-8">
+                                <div class="d-flex">
+                                    <input type="hidden" id="hdnFromCity-@i" value="@Model.Destinations[i].FromCityIata" />
+                                    <input type="hidden" id="hdnToCity-@i" value="@Model.Destinations[i].ToCityIata" />
+
+                                    <div class="form-item dropdown">
+                                        <div>
+                                            <label class="form-label fs-14 text-default mb-1">From</label>
+                                            @Html.TextBoxFor(m => m.Destinations[i].FromCity, new { @class = "form-control txtfromcity", autocomplete = "off", @data_val = "true", @data_val_required = "Required" })
+                                            <p class="fs-12 mb-0" id="fromAirport-@i">@Model.Destinations[i].FromCityAirport</p>
+                                        </div>
+                                        @Html.ValidationMessageFor(model => model.Destinations[i].FromCity, "", new { @class = "text-danger" })
+                                        <div class="dropdown-menu dropdown-md p-0 suggestiondropdown" id="fromDropdown-@i">
+                                            <ul id="fromcityList-@i"></ul>
+                                        </div>
+                                    </div>
+                                    <div class="form-item dropdown ps-2 ps-sm-3">
+                                        <div>
+                                            <label class="form-label fs-14 text-default mb-1">To</label>
+                                            @Html.TextBoxFor(m => m.Destinations[i].ToCity, new { @class = "form-control txttoCity", autocomplete = "off", @data_val = "true", @data_val_required = "Required" })
+                                            <p class="fs-12 mb-0" id="toAiport-@i">@Model.Destinations[i].ToCityAirport</p>
+                                            @Html.ValidationMessageFor(model => model.Destinations[i].ToCity, "", new { @class = "text-danger" })
+                                            <span class="way-icon badge badge-primary rounded-pill translate-middle">
+                                                <i class="fa-solid fa-arrow-right-arrow-left"></i>
+                                            </span>
+                                        </div>
+                                        <div class="dropdown-menu dropdown-md p-0 suggestiondropdown" id="toDropdown-@i">
+                                            <ul id="tocityList-@i"></ul>
+                                        </div>
+                                    </div>
+                                    <div class="form-item">
+                                        <label class="form-label fs-14 text-default mb-1">Departure</label>
+                                        @Html.TextBoxFor(m => m.Destinations[i].DepatureDate, new { @class = "form-control datetimepicker txtdeparturedate", @data_val = "true", @data_val_required = "Required" })
+                                        @Html.ValidationMessageFor(model => model.Destinations[i].DepatureDate, "", new { @class = "text-danger" })
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                @if ((Model.Destinations.Count-1) == i)
+                                {
+                                    <div class="d-flex btn-container">
+
+                                        <div class="form-item add-btn">
+                                            <br />
+                                            <button type="button" class="btn btn-outline-info btnAddCity">
+                                                + ADD ANOTHER CITY
+                                            </button>
+                                        </div>
+
+                                        <div class="form-item remove-btn ms-2">
+                                            <br />
+                                            <button type="button" class="btn btn-outline-danger btnRemoveCity">
+                                                REMOVE
+                                            </button>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+
+                        </div>
+                    </div>
+                }
+
+            }
+            else
+            {
+                <div class="form-info mt-2" id="divClonMultiCity">
+                    <div class="row">
+                        <div class="col-8">
+                            <div class="d-flex">
+                                <input type="hidden" id="hdnFromCity-1" value="DEL">
+                                <input type="hidden" id="hdnToCity-1" value="SOQ">
+
+                                <div class="form-item dropdown">
+                                    <div>
+                                        <label class="form-label fs-14 text-default mb-1">From</label>
+                                        <input autocomplete="off" class="form-control txtfromcity" data-val="true" data-val-required="Required" id="Destinations_1__FromCity" name="Destinations[1].FromCity" type="text" value="Delhi">
+                                        <p class="fs-12 mb-0" id="fromAirport-1">Indira Gandhi International Airport</p>
+                                    </div>
+                                    <span class="field-validation-valid text-danger" data-valmsg-for="Destinations[1].FromCity" data-valmsg-replace="true"></span>
+                                    <div class="dropdown-menu dropdown-md p-0 suggestiondropdown" id="fromDropdown-1">
+                                        <ul id="fromcityList-1"></ul>
+                                    </div>
+                                </div>
+                                <div class="form-item dropdown ps-2 ps-sm-3">
+                                    <div>
+                                        <label class="form-label fs-14 text-default mb-1">To</label>
+                                        <input autocomplete="off" class="form-control txttoCity" data-val="true" data-val-required="Required" id="Destinations_1__ToCity" name="Destinations[1].ToCity" type="text" value="Sorong">
+                                        <p class="fs-12 mb-0" id="toAiport-1">Sorong</p>
+                                        <span class="field-validation-valid text-danger" data-valmsg-for="Destinations[1].ToCity" data-valmsg-replace="true"></span>
+                                        <span class="way-icon badge badge-primary rounded-pill translate-middle">
+                                            <i class="fa-solid fa-arrow-right-arrow-left"></i>
+                                        </span>
+                                    </div>
+                                    <div class="dropdown-menu dropdown-md p-0 suggestiondropdown" id="toDropdown-1">
+                                        <ul id="tocityList-1"></ul>
+                                    </div>
+                                </div>
+                                <div class="form-item">
+                                    <label class="form-label fs-14 text-default mb-1">Departure</label>
+                                    <input class="form-control datetimepicker txtdeparturedate" data-val="true" data-val-required="Required" id="Destinations_1__DepatureDate" name="Destinations[1].DepatureDate" type="text" value="13-02-2026">
+                                    <span class="field-validation-valid text-danger" data-valmsg-for="Destinations[1].DepatureDate" data-valmsg-replace="true"></span>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <div class="d-flex btn-container">
+                                <div class="form-item add-btn">
+                                    <br />
+                                    <button type="button" class="btn btn-outline-info btnAddCity">
+                                        + ADD ANOTHER CITY
+                                    </button>
+                                </div>
+
+                                <div class="form-item remove-btn ms-2">
+                                    <br />
+                                    <button type="button" class="btn btn-outline-danger btnRemoveCity">
+                                        REMOVE
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            }
+
+        </div>
+        <div class="d-lg-flex justify-content-center mt-3">
+            <button type="button" class="btn btn-primary" style="width:200px;" onclick="onSearch();">Search</button>
+        </div>
+    </form>
+</div>
+
+<script>
+    $(document).ready(function () {
+
+        hideShowTriptypes();
+
+        Init();
+
+        //Increment Decrement Numberes
+        $(".quantity-right-plus").on("click", function (e) {
+            e.preventDefault();
+            var input = $(this).closest(".custom-increment").find(".input-number");
+            var quantity = parseInt(input.val());
+            // Increment the quantity
+            input.val(quantity + 1);
+
+            TravellerCabinClass();
+        });
+
+        $(".quantity-left-minus").on("click", function (e) {
+            e.preventDefault();
+            var input = $(this).closest(".custom-increment").find(".input-number");
+            var quantity = parseInt(input.val());
+            // Decrement the quantity, but not below 0
+            if (quantity > 0) {
+                input.val(quantity - 1);
+            }
+            TravellerCabinClass();
+        });
+
+        // Fligt Check
+        $(".banner-form .form-check-input").on("change", function (e) {
+            hideShowTriptypes();
+        });
+        //Increment Decrement Numberes
+
+        TravellerCabinClass();
+
+        $(document).on("click", ".btnAddCity", function () {
+            AddAnotherCity();
+        });
+
+        $(document).on("click", ".btnRemoveCity", function () {
+            RemoveLastCity();
+        });
+
+    });
+
+    function Init() {
+        let rowCnt = 0;
+        $(".txtfromcity").each(function () {
+            var frominput = $("#" + $(this).attr('id'));
+            var fromdropdown = $("#fromDropdown-" + rowCnt);
+            var fromlist = $("#fromcityList-" + rowCnt);
+            var fromaddress = $("#fromAirport-" + rowCnt);
+            var FromCity = $("#hdnFromCity-" + rowCnt);
+            var ItemClass = 'from-item-' + rowCnt;
+            InitAutocomplete(frominput, fromdropdown, fromlist, fromaddress, FromCity, ItemClass);
+            rowCnt++;
+        });
+
+        rowCnt = 0;
+        $(".txttoCity").each(function () {
+
+            var toinput = $("#" + $(this).attr('id'));
+            var todropdown = $("#toDropdown-" + rowCnt);
+            var tolist = $("#tocityList-" + rowCnt);
+            var toaddress = $("#toAiport-" + rowCnt);
+            var ToCity = $("#hdnToCity-" + rowCnt);
+            var ItemClass = 'to-item-' + rowCnt;
+            InitAutocomplete(toinput, todropdown, tolist, toaddress, ToCity, ItemClass);
+
+            rowCnt++;
+        });
+
+        if ($('.datetimepicker').length > 0) {
+            $('.datetimepicker').datetimepicker({
+                format: 'DD-MM-YYYY',
+                icons: {
+                    up: "fas fa-angle-up",
+                    down: "fas fa-angle-down",
+                    next: 'fas fa-angle-right',
+                    previous: 'fas fa-angle-left'
+                }
+            });
+        }
+    }
+
+    function InitAutocomplete(input, dropdown, list, address, hdnIata, itemClass) {
+        // typing event
+        $(input).on("keyup", function () {
+            var term = $(this).val();
+            if (term.length < 1) {
+                $(dropdown).removeClass("show");
+                return;
+            }
+
+            $.get("@Url.Action("GetCityAirport", "Flight")", { term: term }, function (data) {
+                $(list).empty();
+                $.each(data, function (i, item) {
+                    var li = `<li class="border-bottom">
+                    <a href="javascript:void(0)" class="dropdown-item ${itemClass}"
+                    data-iata="${item.IATACode}"
+                    data-city="${item.CityAirport}"
+                    data-airport="${item.Address}">
+                    <h6>${item.CityAirport}</h6>
+                    <p>${item.Address}</p>
+                    </a>
+                    </li>`;
+                    $(list).append(li);
+                });
+                $(dropdown).addClass("show");
+            });
+
+        });
+        // select city (dynamic event)
+        var itemClassName = "." + itemClass;
+        $(document).on("click", itemClassName, function (e) {
+            e.preventDefault();
+            $(input).val($(this).data("city"));
+            $(address).text($(this).data("airport"));
+            $(hdnIata).val($(this).data("iata"));
+            $(dropdown).removeClass("show");
+
+
+        });
+        // outside click hide
+        $(document).click(function (e) {
+            if (!$(e.target).closest('.form-item').length) {
+                $(dropdown).removeClass("show");
+            }
+
+        });
+    }
+
+    function TravellerCabinClass() {
+        var cabinClass = $("input[name='CabinClass']:checked").val();
+        var txtAdult = parseInt($("#Adults").val());
+        var txtChild = parseInt($("#Children").val());
+        var txtInfants = parseInt($("#Infant").val());
+        var totalPerson = txtAdult + txtChild + txtInfants;
+
+        var travellerdetail="";
+        if (txtAdult > 0)
+            travellerdetail += txtAdult+ " Adult ";
+        if (txtChild > 0)
+            travellerdetail += txtChild + " Childrens ";
+        if (txtInfants > 0)
+            travellerdetail += txtInfants + " Infants ";
+
+        travellerdetail += cabinClass;
+        $("#spntotalperson").text(totalPerson);
+        $("#paragraphtxt").text(travellerdetail);
+    }
+
+    function onSearch() {
+
+        var frm = $("#frmSearchflight");
+        $.validator.unobtrusive.parse(frm);
+
+        if (!frm.valid()) {
+            frm.validate().focusInvalid();
+            return false;
+        }
+
+        var itineraryArray = [];
+
+        var returnDate = $("#ReturnDate").val();
+        var cabinClass = $("input[name='CabinClass']:checked").val();
+        var tripType = $("input[name='tripType']:checked").val();
+        var adults = parseInt($("#Adults").val());
+        var children = parseInt($("#Children").val());
+        var infants = parseInt($("#Infant").val());
+
+        // ✅ Multi / One Way Segments
+        $(".txtdeparturedate").each(function (index) {
+
+            var fromCity = $("#hdnFromCity-" + index).val();
+            var toCity = $("#hdnToCity-" +index).val();
+            var departureDate = $(this).val();
+
+            if (tripType === "MultiCity" || index === 0) {
+                itineraryArray.push(fromCity + "_" + toCity + "_" + departureDate);
+            }
+        });
+
+        // ✅ Round Trip Return Segment
+        if (tripType === "RoundTrip" && returnDate) {
+
+            var fromCity = $("#hdnFromCity-0").val();
+            var toCity = $("#hdnToCity-0").val();
+
+            itineraryArray.push(toCity + "_" + fromCity + "_" + returnDate);
+        }
+
+        var itinerary = itineraryArray.join("~");
+        var traveller = "A-" + adults + "_C-" + children + "_I-" + infants;
+
+        $("#hdntripType").val(tripType);
+        $("#hdnItinerary").val(itinerary);
+        $("#hdnpaxType").val(traveller);
+        $("#hdncabinClass").val(cabinClass);
+
+        var url = '@RouteConfig.FlightSearch.ToPrefixApplicationURL()'
+            + '?itinerary=' + encodeURIComponent(itinerary)
+            + '&paxType=' + traveller
+            + '&tripType=' + tripType
+            + '&cabinClass=' + cabinClass;
+
+        console.log(itineraryArray);
+        $("#mmtLoader").show();
+        window.location.href = url;
+    }
+
+    function hideShowTriptypes() {
+        var radioval = $("input[name='tripType']:checked").val();
+        if (radioval === "RoundTrip") {
+            $(".round-drip").show();
+            $("#divMultiCity").hide();
+            $(".normal-trip").show();
+        } else if (radioval === "MultiCity") {
+            $(".round-drip").hide();
+            $("#divMultiCity").show();
+            initMultiCity();
+        } else {
+            $(".round-drip").hide();
+            $("#divMultiCity").hide();
+            $(".normal-trip").show();
+        }
+    }
+
+    function initMultiCity() {
+        var rowCount = 0;
+
+        var lastToCityText = $("#Destinations_" + rowCount + "__ToCity").val();
+        var lastToCityCode = $("#hdnToCity-" + rowCount).val();
+        var lastToAirport = $("#toAiport-" + rowCount).text();
+
+        rowCount = 1;
+        $("#Destinations_" + rowCount + "__FromCity").val(lastToCityText);
+        $("#hdnFromCity-" + rowCount).val(lastToCityCode);
+        $("#fromAiport-" + rowCount).text(lastToAirport);
+
+        $("#Destinations_" + rowCount + "__DepatureDate").val('');
+        $("#Destinations_" + rowCount + "__ToCity").val('');
+        $("#hdnToCity-" + rowCount).val('');
+        $("#toAiport-" + rowCount).text('');
+    }
+
+    function AddAnotherCity() {
+
+        var rowCount = $("#divMultiCity .form-info").length;
+        var newIndex = rowCount + 1;
+
+        // Last row data
+        var lastToCityText = $("#Destinations_" + rowCount + "__ToCity").val();
+        var lastToCityCode = $("#hdnToCity-" + rowCount).val();
+        var lastToAirport = $("#toAiport-" + rowCount).text();
+
+        var cloneDiv = $("#divClonMultiCity").clone();
+
+        // Update IDs
+        cloneDiv.find("[id]").each(function () {
+            var oldId = $(this).attr("id");
+            var newId = oldId.replace(/\d+/, newIndex);
+            $(this).attr("id", newId);
+        });
+
+        // Update names
+        cloneDiv.find("[name]").each(function () {
+            var oldName = $(this).attr("name");
+            var newName = oldName.replace(/\d+/, newIndex);
+            $(this).attr("name", newName);
+        });
+
+        // Clear fields
+        cloneDiv.find("input[type='text']").val("");
+        cloneDiv.find("input[type='hidden']").val("");
+        cloneDiv.find("p").text("");
+
+        // 🔥 Auto set From = previous To
+        cloneDiv.find("#Destinations_" + newIndex + "__FromCity").val(lastToCityText);
+        cloneDiv.find("#hdnFromCity-" + newIndex).val(lastToCityCode);
+        cloneDiv.find("#fromAirport-" + newIndex).text(lastToAirport);
+
+        $("#divMultiCity").append(cloneDiv);
+
+        UpdateButtons();
+        RebindValidation();
+        Init();
+    }
+
+    function UpdateButtons() {
+
+        $(".add-btn").hide();
+        $(".remove-btn").hide();
+
+        var totalRows = $("#divMultiCity .form-info").length;
+        var lastRow = $("#divMultiCity .form-info").last();
+
+        // Add button sirf last row me
+        lastRow.find(".add-btn").show();
+
+        // Show add button only on last row
+        $("#divMultiCity .form-info").last().find(".add-btn").show();
+
+        // Remove button sirf tab dikhe jab 1 se zyada rows ho
+        if (totalRows > 1) {
+            lastRow.find(".remove-btn").show();
+        }
+    }
+    function RebindValidation() {
+        var form = $("#frmSearchflight");
+        form.removeData("validator");
+        form.removeData("unobtrusiveValidation");
+        $.validator.unobtrusive.parse("#frmSearchflight");
+    }
+
+
+    function RemoveLastCity() {
+
+        var rows = $("#divMultiCity .form-info");
+        var totalRows = rows.length;
+
+        // Minimum 1 row rehni chahiye
+        if (totalRows > 1) {
+            rows.last().remove();
+        }
+
+        UpdateButtons();
+        RebindValidation();
+    }
+
+</script>
+
+

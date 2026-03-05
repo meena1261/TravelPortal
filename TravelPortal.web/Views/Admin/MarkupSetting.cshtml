@@ -1,0 +1,292 @@
+﻿@model MarkupSettingModel
+@{
+    ViewBag.Title = "Markup Setting";
+    var db = new TravelPortal.EDMX.db_silviEntities();
+    var objUniversalMarkupList = db.tblManage_Markup.Where(e => e.Usrno == 0 && string.IsNullOrEmpty(e.AirlineCode) == true).ToList();
+    var objAgentMarkupList = db.tblManage_Markup.Where(e => e.Usrno > 0 && string.IsNullOrEmpty(e.AirlineCode) == true).ToList();
+    var objAirlineMarkupList = db.tblManage_Markup.Where(e => e.Usrno == 0 && string.IsNullOrEmpty(e.AirlineCode) == false).ToList();
+}
+<div class="card">
+    <div class="card-body">
+        <nav>
+            <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                <button class="nav-link active" id="nav-universal-tab" data-bs-toggle="tab" data-bs-target="#nav-universal" type="button" role="tab" aria-controls="nav-universal" aria-selected="true" onclick="onChangeTabs('u')">Universal Markup (All Portals)</button>
+                <button class="nav-link" id="nav-agent-tab" data-bs-toggle="tab" data-bs-target="#nav-universal" type="button" role="tab" aria-controls="nav-agent" aria-selected="true" onclick="onChangeTabs('ag')">Agent-Specific Markup (B2B)</button>
+                <button class="nav-link" id="nav-airline-tab" data-bs-toggle="tab" data-bs-target="#nav-universal" type="button" role="tab" aria-controls="nav-universal" aria-selected="true" onclick="onChangeTabs('air')">Airline-Specific Markup </button>
+            </div>
+        </nav>
+        <div class="tab-content" id="nav-tabContent">
+            <div class="tab-pane fade show active" id="nav-universal" role="tabpanel" aria-labelledby="nav-universal-tab">
+                <div class="card">
+                    <div class="card-header">
+                        <h4 id="headingTitle">Universal Markup Configuration</h4>
+                    </div>
+                    <div class="card-body">
+                        @using (Ajax.BeginForm("MarkupSetting", "Admin", null, new AjaxOptions { HttpMethod = "POST", OnSuccess = "fn_Success", OnFailure = "fn_Failure", OnBegin = "fnStartLoader", OnComplete = "fnStopLoader" }, new { enctype = "multipart/form-data", @id = "frmRequestCreditLimit" }))
+                        {
+                            <div class="row">
+                                <div class="col-md-3" id="divAgent" style="display:none;">
+                                    <div class="form-group">
+                                        <label class="text-dark mb-1">Agent Name/ID</label>
+                                        @Html.DropDownListFor(m => m.Usrno, ViewBag.agentlist as IEnumerable<SelectListItem>, "--Select--", new { @class = "js-example-basic-single select2", @data_val = "true", @data_val_required = "Required" })
+                                    </div>
+                                    @Html.ValidationMessageFor(model => model.Usrno, "", new { @class = "text-danger" })
+                                </div>
+                                <div class="col-md-3" id="divAirline" style="display:none;">
+                                    <div class="form-group">
+                                        <label class="text-dark mb-1">Airline Name/ID</label>
+                                        @Html.TextBoxFor(m => m.AirlineName, new { @class = "form-control mb-2", @data_val = "true", @data_val_required = "Required" })
+                                    </div>
+                                    @Html.ValidationMessageFor(model => model.AirlineName, "", new { @class = "text-danger" })
+                                </div>
+                                @Html.HiddenFor(m=>m.AirlineId)
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label class="text-dark mb-1">Markup Type</label>
+                                        @Html.DropDownListFor(m => m.MarkupTypeID, ViewBag.MarkupTypes as IEnumerable<SelectListItem>, "--Select--", new { @class = "form-control mb-2", @data_val = "true", @data_val_required = "Required" })
+                                    </div>
+                                    @Html.ValidationMessageFor(model => model.MarkupTypeID, "", new { @class = "text-danger" })
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label class="text-dark mb-1">Value</label>
+                                        @Html.TextBoxFor(m => m.MarkupValue, new { @class = "form-control mb-2", @data_val = "true", @data_val_required = "Required" })
+                                    </div>
+                                    @Html.ValidationMessageFor(model => model.MarkupValue, "", new { @class = "text-danger" })
+                                </div>
+                                <div class="col-md-3" id="divCurrency">
+                                    <div class="form-group">
+                                        <label class="text-dark mb-1">Currency</label>
+                                        @Html.DropDownListFor(m => m.CurrencyID, ViewBag.CurrencyList as IEnumerable<SelectListItem>, "--Select--", new { @class = "form-control mb-2", @data_val = "true", @data_val_required = "Required" })
+                                    </div>
+                                    @Html.ValidationMessageFor(model => model.CurrencyID, "", new { @class = "text-danger" })
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label class="text-dark mb-1">Application Method</label>
+                                        @Html.DropDownListFor(m => m.CurrencyID, ViewBag.MarkupMethodType as IEnumerable<SelectListItem>, "--Select--", new { @class = "form-control mb-2", @data_val = "true", @data_val_required = "Required" })
+                                    </div>
+                                    @Html.ValidationMessageFor(model => model.CurrencyID, "", new { @class = "text-danger" })
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="text-dark mb-1">Start Date - End Date</label>
+                                    <div class="input-icon-start position-relative">
+                                        @Html.TextBoxFor(m => m.DateRange, new { @class = "form-control date-range bookingrange", @placeholder = "dd/mm/yyyy - dd/mm/yyyy", @data_val = "true", @data_val_required = "Required" })
+                                        <span class="input-icon-left">
+                                            <i class="ti ti-calendar"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label class="text-dark mb-1">Categories (Apply to)</label>
+                                        @Html.DropDownListFor(m => m.MarkupCategoryId, ViewBag.MarkupCategories as IEnumerable<SelectListItem>, "--Select--", new { @class = "form-control mb-2", @data_val = "true", @data_val_required = "Required" })
+                                    </div>
+                                    @Html.ValidationMessageFor(model => model.MarkupCategoryId, "", new { @class = "text-danger" })
+                                </div>
+                                <div class="col-md-12">
+                                    <br />
+                                    <button type="submit" class="btn btn-success">Submit</button>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive" id="divUniversaldata">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Category Combo</th>
+                        <th>Markup Type</th>
+                        <th>Value</th>
+                        <th>Method</th>
+                        <th>Currency</th>
+                        <th>Active Period</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    @foreach (var item in objUniversalMarkupList)
+                    {
+                        string CategoryCombo = DropdownLists.MarkupCategories().FirstOrDefault(e => e.Value == item.MarkupCategoryId.ToString())?.Text;
+                        string MarkupType = DropdownLists.MarkupType().FirstOrDefault(e => e.Value == item.MarkupCategoryId.ToString())?.Text;
+                        string ApplicationMethod = DropdownLists.MarkupMethodType().FirstOrDefault(e => e.Value == item.MarkupCategoryId.ToString())?.Text;
+                        string Currency = db.Currencies.FirstOrDefault(e => e.CurrencyId == item.CurrencyID)?.CurrencyCode;
+                        <tr>
+                            <td>@CategoryCombo</td>
+                            <td>@MarkupType</td>
+                            <td>@item.Value</td>
+                            <td>@ApplicationMethod</td>
+                            <td>@Currency</td>
+                            <td>@Convert.ToDateTime(item.StartDate).ToString("dd/MM/yyyy") - @Convert.ToDateTime(item.EndDate).ToString("dd/MM/yyyy")</td>
+                            <td>
+                                @if (item.IsActive == true)
+                                {
+                                    <span class="badge bg-success">Active</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-danger">Inactive</span>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <div class="table-responsive" id="divAgentData" style="display:none;">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Agent</th>
+                        <th>Categories</th>
+                        <th>Markup Type</th>
+                        <th>Value</th>
+                        <th>Method</th>
+                        <th>Active Period</th>
+                        <th>Override universal</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    @foreach (var item in objAgentMarkupList)
+                    {
+                        string CategoryCombo = DropdownLists.MarkupCategories().FirstOrDefault(e => e.Value == item.MarkupCategoryId.ToString())?.Text;
+                        string MarkupType = DropdownLists.MarkupType().FirstOrDefault(e => e.Value == item.MarkupCategoryId.ToString())?.Text;
+                        string ApplicationMethod = DropdownLists.MarkupMethodType().FirstOrDefault(e => e.Value == item.MarkupCategoryId.ToString())?.Text;
+                        var objAgent = db.tblMaster_User.FirstOrDefault(e => e.Usrno == item.Usrno);
+                        <tr>
+                            <td>@objAgent.Name [@objAgent.UserID]</td>
+                            <td>@CategoryCombo</td>
+                            <td>@MarkupType</td>
+                            <td>@item.Value</td>
+                            <td>@ApplicationMethod</td>
+                            <td>@Convert.ToDateTime(item.StartDate).ToString("dd/MM/yyyy") - @Convert.ToDateTime(item.EndDate).ToString("dd/MM/yyyy")</td>
+                            <td><input type="checkbox" /></td>
+                            <td>
+                                <button type="button" class="btn btn-danger btn-sm">Delete</button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <div class="table-responsive" id="divAirlineData" style="display:none;">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Airline</th>
+                        <th>Categories</th>
+                        <th>Markup Type</th>
+                        <th>Value</th>
+                        <th>Method</th>
+                        <th>Active Period</th>
+                        <th>Override universal</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    @foreach (var item in objAirlineMarkupList)
+                    {
+                        string CategoryCombo = DropdownLists.MarkupCategories().FirstOrDefault(e => e.Value == item.MarkupCategoryId.ToString())?.Text;
+                        string MarkupType = DropdownLists.MarkupType().FirstOrDefault(e => e.Value == item.MarkupCategoryId.ToString())?.Text;
+                        string ApplicationMethod = DropdownLists.MarkupMethodType().FirstOrDefault(e => e.Value == item.MarkupCategoryId.ToString())?.Text;
+                        <tr>
+                            <td>
+                                @item.AirlineCode
+                            </td>
+                            <td>@CategoryCombo</td>
+                            <td>@MarkupType</td>
+                            <td>@item.Value</td>
+                            <td>@ApplicationMethod</td>
+                            <td>@Convert.ToDateTime(item.StartDate).ToString("dd/MM/yyyy") - @Convert.ToDateTime(item.EndDate).ToString("dd/MM/yyyy")</td>
+                            <td><input type="checkbox" /></td>
+                            <td>
+                                <button type="button" class="btn btn-danger">Delete</button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    <script>
+$(document).ready(function () {
+            var Airlineurl = '@Url.Action("AirlineSearch", "Json")';
+    var txtAirlineName = $("#AirlineName");
+    var hdnAirlineId = $("#AirlineId");
+    fn_autocomplete(txtAirlineName, Airlineurl, hdnAirlineId);
+});
+        function onChangeTabs(tabType) {
+            if (tabType == 'u') {
+                $('#divAgent').hide();
+                $('#divAirline').hide();
+                $('#divCurrency').show();
+                $("#headingTitle").text("Universal Markup Configuration");
+                $("#divUniversaldata").show();
+                $("#divAgentData").hide();
+                $("#divAirlineData").hide();
+
+            } else if (tabType == 'ag') {
+                $('#divAgent').show();
+                $('#divAirline').hide();
+                $('#divCurrency').hide();
+                $("#headingTitle").text("Add New Agent Markup");
+                $("#divAgentData").show();
+                $("#divUniversaldata").hide();
+                $("#divAirlineData").hide();
+
+            } else if (tabType == 'air') {
+                $('#divAgent').hide();
+                $('#divAirline').show();
+                $('#divCurrency').hide();
+                $("#headingTitle").text("Add New Airline Markup");
+                $("#divAirlineData").show();
+                $("#divUniversaldata").hide();
+                $("#divAgentData").hide();
+
+            }
+        }
+        function fn_Success(d) {
+            if (d.status > 0) {
+                $.toast({
+                    heading: 'Success',
+                    text: d.message,
+                    position: 'top-right',
+                    showHideTransition: 'fade',
+                    icon: 'success'
+                });
+                location.reload();
+            } else {
+                $.toast({
+                    heading: 'Message',
+                    text: d.message,
+                    position: 'top-right',
+                    showHideTransition: 'fade',
+                    icon: 'error'
+                });
+            }
+        }
+
+        function fn_Failure(d) {
+            $.toast({
+                heading: 'Message',
+                text: 'failed',
+                position: 'top-right',
+                showHideTransition: 'fade',
+                icon: 'error'
+            });
+        }
+    </script>
+}

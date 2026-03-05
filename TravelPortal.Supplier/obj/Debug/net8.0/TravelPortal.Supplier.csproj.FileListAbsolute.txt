@@ -1,0 +1,15 @@
+D:\Project\TravelPortal\TravelPortal.Supplier\bin\Debug\net8.0\TravelPortal.Supplier.deps.json
+D:\Project\TravelPortal\TravelPortal.Supplier\bin\Debug\net8.0\TravelPortal.Supplier.dll
+D:\Project\TravelPortal\TravelPortal.Supplier\bin\Debug\net8.0\TravelPortal.Supplier.pdb
+D:\Project\TravelPortal\TravelPortal.Supplier\bin\Debug\net8.0\TravelPortal.Models.dll
+D:\Project\TravelPortal\TravelPortal.Supplier\bin\Debug\net8.0\TravelPortal.Models.pdb
+D:\Project\TravelPortal\TravelPortal.Supplier\obj\Debug\net8.0\TravelPortal.Supplier.csproj.AssemblyReference.cache
+D:\Project\TravelPortal\TravelPortal.Supplier\obj\Debug\net8.0\TravelPortal.Supplier.GeneratedMSBuildEditorConfig.editorconfig
+D:\Project\TravelPortal\TravelPortal.Supplier\obj\Debug\net8.0\TravelPortal.Supplier.AssemblyInfoInputs.cache
+D:\Project\TravelPortal\TravelPortal.Supplier\obj\Debug\net8.0\TravelPortal.Supplier.AssemblyInfo.cs
+D:\Project\TravelPortal\TravelPortal.Supplier\obj\Debug\net8.0\TravelPortal.Supplier.csproj.CoreCompileInputs.cache
+D:\Project\TravelPortal\TravelPortal.Supplier\obj\Debug\net8.0\TravelPo.C4A1042C.Up2Date
+D:\Project\TravelPortal\TravelPortal.Supplier\obj\Debug\net8.0\TravelPortal.Supplier.dll
+D:\Project\TravelPortal\TravelPortal.Supplier\obj\Debug\net8.0\refint\TravelPortal.Supplier.dll
+D:\Project\TravelPortal\TravelPortal.Supplier\obj\Debug\net8.0\TravelPortal.Supplier.pdb
+D:\Project\TravelPortal\TravelPortal.Supplier\obj\Debug\net8.0\ref\TravelPortal.Supplier.dll

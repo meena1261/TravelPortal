@@ -1,0 +1,117 @@
+﻿@model LoginViewModel
+@{
+    ViewBag.Title = "Log in";
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Mirrored from Silvicom/html/template/signin-2.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 06 Aug 2025 17:44:03 GMT -->
+<head>
+
+    <!-- Meta Tags -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Silvi - Login</title>
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="~/Content/admin/css/bootstrap.min.css">
+    <link href="~/Content/admin/css/bootstrap.min.css" rel="stylesheet" />
+    <!-- Fontawesome CSS -->
+    <link rel="stylesheet" href="~/Content/admin/plugins/fontawesome/css/fontawesome.min.css">
+    <link rel="stylesheet" href="~/Content/admin/plugins/fontawesome/css/all.min.css">
+
+    <!-- Tabler Icon CSS -->
+    <link rel="stylesheet" href="~/Content/admin/plugins/tabler-icons/tabler-icons.min.css">
+
+    <!-- Main CSS -->
+    <link rel="stylesheet" href="~/Content/admin/css/style.css">
+
+</head>
+<body class="account-page bg-white">
+
+    <!-- Main Wrapper -->
+    <div class="main-wrapper">
+        <div class="account-content">
+            <div class="row login-wrapper m-0">
+                <div class="col-lg-6 p-0">
+                    <div class="login-content">
+
+                        <form action="@RouteConfig.AdminLogin.ToPrefixApplicationURL()" method="post" class="form-horizontal" role="form">
+
+                            @Html.AntiForgeryToken()
+
+                            <input type="hidden" name="Authtype" value="User" />
+                            <div class="login-userset">
+                                <div class="login-logo logo-normal">
+                                    <img src="~/Content/logo/logo.png" />
+                                </div>
+                                <a href="#" class="login-logo logo-white">
+                                    <img src="~/Content/logo/logo.png" />
+                                </a>
+                                <div class="login-userheading">
+                                    <h3>Sign In</h3>
+                                    <h4>Access the Silvi panel using your email and passcode.</h4>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Email ID</label>
+                                    <div class="input-group">
+                                        @Html.TextBoxFor(m => m.Email, new { @class = "form-control border-end-0" })
+
+                                        <span class="input-group-text border-start-0">
+                                            <i class="ti ti-user"></i>
+                                        </span>
+                                    </div>
+                                    @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Password</label>
+                                    <div class="pass-group">
+                                        @Html.PasswordFor(m => m.Password, new { @class = "pass-input form-control" })
+                                        <span class="ti toggle-password ti-eye-off text-gray-9"></span>
+                                    </div>
+                                    @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+                                </div>
+                                <div class="form-login authentication-check">
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <div class="custom-control custom-checkbox">
+                                                <label class="checkboxs ps-4 mb-0 pb-0 line-height-1">
+                                                    @Html.CheckBoxFor(m => m.RememberMe)
+
+                                                    <span class="checkmarks"></span>Remember me
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-6 text-end">
+                                            @Html.ActionLink("Forgot Password?", "ForgotPassword", new { @class = "forgot-link" })
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-login">
+                                    <button type="submit" class="btn btn-login">Sign In</button>
+                                </div>
+                                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                            </div>
+                        </form>
+
+
+                    </div>
+                </div>
+                <div class="col-lg-6 p-0">
+                    <div class="login-img">
+                        <img src="~/Content/admin/img/login-bg.jpg" alt="img">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /Main Wrapper -->
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/jqueryval")
+</body>
+
+</html>

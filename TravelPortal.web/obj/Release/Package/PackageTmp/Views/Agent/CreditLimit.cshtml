@@ -1,0 +1,176 @@
+﻿@model CreditLimitRequestModel
+@{
+    var objSummary = ViewBag.CreditSummary as CreditLimitSummaryViewModel;
+}
+<div class="row">
+    <!-- Wallet List -->
+    <div class="col-xl-12 col-lg-12 d-flex">
+        <div class="row flex-fill">
+            <div class="col-xl-3 col-lg-3 col-md-3  d-flex">
+                <div class="card shadow-none mb-4 flex-fill">
+                    <div class="card-body">
+                        <span class="avatar avatar-lg rounded-circle bg-primary mb-3"><i class="isax isax-calendar-15 text-white"></i></span>
+                        <div class="">
+                            <p class="mb-0 text-truncate line-ellipsis-2">Total Limit</p>
+                            <h4><span class="ti ti-currency-rupee"></span> @objSummary.TotalLimit</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-lg-3 col-md-3  d-flex">
+                <div class="card shadow-none mb-4 flex-fill">
+                    <div class="card-body">
+                        <span class="avatar avatar-lg rounded-circle bg-secondary mb-3"><i class="isax isax-money-send5 text-white"></i></span>
+                        <div class="">
+                            <p class="mb-0 text-truncate line-ellipsis-2">Pending Limit</p>
+                            <h4><span class="ti ti-currency-rupee"></span> @objSummary.PendingLimit</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-lg-3 col-md-3  d-flex">
+                <div class="card shadow-none mb-4 flex-fill">
+                    <div class="card-body">
+                        <span class="avatar avatar-lg rounded-circle bg-purple mb-3"><i class="isax isax-money-time5 text-white"></i></span>
+                        <div class="">
+                            <p class="mb-0 text-truncate line-ellipsis-2">Unbilled Amount</p>
+                            <h4><span class="ti ti-currency-rupee"></span> @objSummary.UnbilledAmount</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-lg-3 col-md-3  d-flex">
+                <div class="card shadow-none mb-4 flex-fill">
+                    <div class="card-body">
+                        <span class="avatar avatar-lg rounded-circle bg-teal mb-3"><i class="isax isax-money-time5 text-white"></i></span>
+                        <div class="mb-3">
+                            <p class="mb-0 text-truncate line-ellipsis-2">Due Amount</p>
+                            <h4><span class="ti ti-currency-rupee"></span> @objSummary.DueBillAmount</h4>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+  
+</div>
+
+<!-- Transactions -->
+<div class="card mb-4">
+    <div class="card-body">
+        <div class="d-flex align-items-center justify-content-between">
+            <div>
+                <h6>Transactions</h6>
+            </div>
+            <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#creditlimitrequest_modal">
+                Raise Credit Request
+            </button>
+        </div>
+        <hr class="border" />
+        <div class="row">
+            <div class="col-md-3">
+                <label class="form-label">Search</label>
+                <input type="text" class="form-control" name="Searchtext" placeholder="Search..." />
+            </div>
+            <div class="col-md-3">
+                <label class="form-label">From Date</label>
+                <input type="date" class="form-control" name="fromDate" />
+            </div>
+            <div class="col-md-3">
+                <label class="form-label">To Date</label>
+                <input type="date" class="form-control" name="toDate" />
+            </div>
+            <div class="col-md-3">
+                <br />
+                <button type="submit" class="btn btn-primary mt-2">Search</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Transactions -->
+<!-- Transactions List -->
+@Html.Action("CreditLimitRequestList", "Agent")
+<!-- /Transactions List -->
+
+<div class="modal fade" id="creditlimitrequest_modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Raise Request</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3">
+                    @using (Ajax.BeginForm("RequestCreditLimit", "Agent", null, new AjaxOptions { HttpMethod = "POST", OnSuccess = "fn_Success", OnFailure = "fn_Failure", OnBegin = "", OnComplete = "" }, new { enctype = "multipart/form-data", @id = "frmRequestCreditLimit" }))
+                    {
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="text-dark mb-1">Requested Amount</label>
+                                    @Html.TextBoxFor(m => m.Amount, new { @class = "form-control mb-2", @data_val = "true", @data_val_required = "Required" })
+                                </div>
+                                @Html.ValidationMessageFor(model => model.Amount, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="text-dark mb-1">Credit Type</label>
+                                    @Html.DropDownListFor(m => m.CreditTypeID, ViewBag.CreditTypeList as IEnumerable<SelectListItem>, "--Select--", new { @class = "form-control mb-2", @data_val = "true", @data_val_required = "Required" })
+                                </div>
+                                @Html.ValidationMessageFor(model => model.CreditTypeID, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="text-dark mb-1">Reason/Remark (Required)</label>
+                                    @Html.TextAreaFor(m => m.Reason, new { @class = "form-control mb-2", @data_val = "true", @data_val_required = "Required", @rows = "5", @cols = "5" })
+                                </div>
+                                @Html.ValidationMessageFor(model => model.Reason, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="text-dark mb-1">Attach Supporting Document (Optional)</label>
+                                    @Html.TextBoxFor(m => m.AttachFile, new { @type = "file", @class = "form-control mb-2" })
+                                </div>
+                                @Html.ValidationMessageFor(model => model.AttachFile, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="col-md-12 text-right">
+                                <br />
+                                <button class="btn btn-success">Submit Request</button>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function fn_Success(d) {
+        if (d.status > 0) {
+
+            Swal.fire({
+                title: "Successfully",
+                text: d.message,
+                icon: "success"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    location.reload();
+                }
+            });
+        } else {
+            Swal.fire({
+                title: "failed",
+                text: d.message,
+                icon: "error"
+            });
+        }
+    }
+    function fn_Failure(d) {
+        Swal.fire({
+            title: "failed",
+            text: "error",
+            icon: "error"
+        });
+    }
+</script>

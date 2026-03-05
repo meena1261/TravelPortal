@@ -1,0 +1,95 @@
+﻿@{
+    var objlist = (List<MenuModel>)ViewBag.list;
+    var objLevelone = objlist.Where(e => e.ParentID == "0").OrderBy(e=>e.Position).ToList();
+}
+<style>
+    .sidebar .sidebar-menu {
+        padding: 10px;
+    }
+    .sidebar .sidebar-menu > ul > li.submenu-open ul {
+        border-bottom: none;
+        padding-bottom: 0px;
+        display: block;
+    }
+</style>
+<div class="sidebar" id="sidebar">
+    <!-- Logo -->
+    <div class="sidebar-logo">
+        <a href="@Url.Action("Dashboard","Admin")" class="logo logo-normal">
+            <img src="~/Content/admin/img/logo.png" alt="Img">
+        </a>
+        <a href="@Url.Action("Dashboard","Admin")" class="logo logo-white">
+            <img src="~/Content/admin/img/logo.png" alt="Img">
+        </a>
+        <a href="@Url.Action("Dashboard","Admin")" class="logo-small">
+            <img src="~/Content/admin/img/logo.png" alt="Img">
+        </a>
+    </div>
+    <!-- /Logo -->
+
+
+    <div class="sidebar-inner slimscroll">
+        <div id="sidebar-menu" class="sidebar-menu">
+            <ul>
+                @foreach (var item in objLevelone)
+                {
+                    var objSubList = objlist.Where(e => Convert.ToInt32(e.ParentID) == item.ID).ToList();
+                    if (objSubList.Count == 0)
+                    {
+                        <li class="submenu-open">
+
+                            <ul>
+                                <li>
+                                    <a href="@Url.Action(item.ActionName,item.ControllerName)">
+                                        <i class="@item.Icon fs-16 me-2"></i>
+                                        <span>@item.MenuName</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                    }
+                    else
+                    {
+                        <li class="submenu-open">
+                            <ul>
+                                <li class="submenu">
+                                    <a href="javascript:void(0);">
+                                        <i class="@item.Icon fs-16 me-2"></i>
+                                        <span>@item.MenuName</span>
+                                        <span class="menu-arrow"></span>
+                                    </a>
+                                    <ul>
+                                        @foreach (var subItem in objSubList)
+                                        {
+                                            <li>
+                                                <a href="@Url.Action(subItem.ActionName,subItem.ControllerName)">@subItem.MenuName</a>
+                                            </li>
+                                        }
+                                    </ul>
+                                </li>
+
+                            </ul>
+                        </li>
+                    }
+                }
+
+                <li class="submenu-open">
+                    <ul>
+
+                        <li>
+                            @using (Html.BeginForm("LogoutAdmin", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+                            {
+                                @Html.AntiForgeryToken()
+
+
+                                <a href="javascript:document.getElementById('logoutForm').submit()"><i class="ti ti-logout fs-16 me-2"></i><span>Log out</span> </a>}
+
+                        </li>
+                    </ul>
+                </li>
+
+
+            </ul>
+        </div>
+    </div>
+</div>

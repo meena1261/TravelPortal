@@ -1,0 +1,118 @@
+﻿@model MasterMenuModel
+@{
+    int MenuId = Model.ID;
+    int ParentID = string.IsNullOrEmpty(Model.ParentID) ? 0 : Convert.ToInt32(Model.ParentID);
+}
+
+<div class="modal fade" id="addedit_modal" role="dialog">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Add Coupons</h5>
+                <button class="btn-close custom-btn-close border p-1 me-0 text-dark" data-bs-dismiss="modal"
+                        aria-label="Close">
+                    <i class="ti ti-x"></i>
+                </button>
+            </div>
+            @using (Ajax.BeginForm("AddEditMenu", "Admin", null, new AjaxOptions { HttpMethod = "POST", OnSuccess = "fn_Success", OnFailure = "fn_Failure", OnBegin = "fnStartLoader", OnComplete = "fnStopLoader" }, new { enctype = "multipart/form-data", id = "frm_AddEditCoupons" }))
+            {
+                <div class="modal-body">
+                    @Html.HiddenFor(e => e.ID)
+                    <div class="row">
+
+                        <div class="col-md-12">
+                            <label>Menu Name</label>
+                            @Html.TextBoxFor(model => model.MenuName, new { @class = "form-control", @maxlength = "100" })
+                            @Html.ValidationMessageFor(model => model.MenuName, "", new { @class = "text-danger" })
+
+                        </div>
+                        <div class="col-md-12">
+                            <label>URL</label>
+                            @Html.TextBoxFor(model => model.URL, new { @class = "form-control", @maxlength = "100" })
+                            @Html.ValidationMessageFor(model => model.URL, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="col-md-12">
+                            <label>Page Name</label>
+                            @Html.TextBoxFor(model => model.PageName, new { @class = "form-control", @maxlength = "100" })
+                            @Html.ValidationMessageFor(model => model.PageName, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="col-md-12">
+                            <label>Icon</label>
+                            @Html.TextBoxFor(model => model.Icon, new { @class = "form-control", @maxlength = "100" })
+                            @Html.ValidationMessageFor(model => model.Icon, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="col-md-12">
+                            <label>Parent Menu</label>
+                            @Html.HiddenFor(m => m.ParentID)
+                            @Html.TextBoxFor(model => model.ParentMenuName, new { @class = "form-control", @maxlength = "100" })
+                            @Html.ValidationMessageFor(model => model.ParentMenuName, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="col-md-12">
+                            <label>Position</label>
+                            @Html.TextBoxFor(model => model.Position, new { @class = "form-control", @maxlength = "100" })
+                            @Html.ValidationMessageFor(model => model.Position, "", new { @class = "text-danger" })
+
+                        </div>
+                        <div class="col-md-12">
+                            <label>Controller Name</label>
+                            @Html.TextBoxFor(model => model.ControllerName, new { @class = "form-control", @maxlength = "100" })
+                            @Html.ValidationMessageFor(model => model.ControllerName, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="col-md-12">
+                            <label>Action Name</label>
+                            @Html.TextBoxFor(model => model.ActionName, new { @class = "form-control", @maxlength = "100" })
+                            @Html.ValidationMessageFor(model => model.ActionName, "", new { @class = "text-danger" })
+                        </div>
+
+                        <div class="col-md-12 d-flex justify-content-evenly mt-5">
+                            <button type="submit" class="btn btn-success">Submit</button>
+                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+@Scripts.Render("~/bundles/jqueryval")
+<script>
+    $(document).ready(function () {
+        var txtTitle = $("#ParentMenuName");
+        var hdnTitle = $("#ParentID");
+        var url = '@Url.Action("GetParentMenu", "Admin")';
+        fn_autocomplete(txtTitle, url, hdnTitle);
+    });
+    function fn_Success(d) {
+        if (d.status > 0) {
+            $.toast({
+                heading: 'Success',
+                text: d.message,
+                position: 'top-right',
+                showHideTransition: 'fade',
+                icon: 'success'
+            });
+            location.reload();
+        } else {
+            $.toast({
+                heading: 'Message',
+                text: d.message,
+                position: 'top-right',
+                showHideTransition: 'fade',
+                icon: 'error'
+            });
+        }
+    }
+    function fn_Failure(d) {
+        $.toast({
+            heading: 'Message',
+            text: 'failed',
+            position: 'top-right',
+            showHideTransition: 'fade',
+            icon: 'error'
+        });
+    }
+   
+</script>
+
+
+

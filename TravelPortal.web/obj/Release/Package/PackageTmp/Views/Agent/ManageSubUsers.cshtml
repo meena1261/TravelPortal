@@ -1,0 +1,214 @@
+﻿<style>
+    .input-validation-error {
+        border: 1px solid red !important;
+    }
+</style>
+
+<div class="card mb-4">
+    <div class="card-body">
+        <div class="d-flex align-items-center justify-content-between">
+            <div>
+                <h6>Users</h6>
+            </div>
+            <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#userinvitation_modal">
+                Send User Invitation
+            </button>
+        </div>
+        <hr class="border" />
+        <div class="row">
+            <div class="col-md-3">
+                <label class="form-label">Search</label>
+                <input type="text" class="form-control" name="Searchtext" placeholder="Search..." />
+            </div>
+            <div class="col-md-3">
+                <label class="form-label">From Date</label>
+                <input type="date" class="form-control" name="fromDate" />
+            </div>
+            <div class="col-md-3">
+                <label class="form-label">To Date</label>
+                <input type="date" class="form-control" name="toDate" />
+            </div>
+            <div class="col-md-3">
+                <br />
+                <button type="submit" class="btn btn-primary mt-2">Search</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Transactions -->
+<!-- Transactions List -->
+@Html.Action("SubUserList", "Agent")
+<!-- /Transactions List -->
+
+<div class="modal fade" id="userinvitation_modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">User Invited</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="">
+                    @using (Ajax.BeginForm("AddEditSubUser", "Agent", null, new AjaxOptions { HttpMethod = "POST", OnSuccess = "fn_Success", OnFailure = "fn_Failure", OnBegin = "", OnComplete = "" }, new { id = "frmUserInvited", enctype = "multipart/form-data" }))
+                    {
+                        <div id="frmclone" class="totalItemcount">
+                            <table class="table">
+                                <tr>
+                                    <td>
+                                        <label class="form-label">Name</label>
+                                        <input type="text" id="name" name="[0].Name" data-val="true" data-val-required="Required" class="form-control" />
+                                    </td>
+                                    <td>
+                                        <label class="form-label">Email Address</label>
+                                        <input type="text" id="Email" name="[0].Email" data-val="true" data-val-required="Required" class="form-control" />
+
+                                    </td>
+                                    <td>
+                                        <label class="form-label">Phone</label>
+                                        <input type="text" id="Mobile" name="[0].Mobile" data-val="true" data-val-required="Required" class="form-control" />
+                                    </td>
+                                    <td>
+                                        <label class="form-label">User Role</label>
+                                        <select class="form-control" data-val="true" data-val-required="Required" name="[0].RoleId" id="RoleId">
+                                            <option value="">Select Role</option>
+                                            @foreach (var item in ViewBag.userType as List<SelectListItem>)
+                                            {
+                                                <option value="@item.Value">@item.Text</option>
+                                            }
+                                        </select>
+                                    </td>
+                                    <td id="tddelete" class="p-0">
+                                        <div style="width:15px;"></div>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div id="divappendclon"></div>
+                        <div class="modal-footer d-flex justify-content-between p-1">
+                            <a href="javascript:void(0)" onclick="fnAddMore()"><i class="ti ti-plus"></i> Add More</a>
+                            <button type="submit" class="btn btn-primary">Send Invite</button>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    function fn_Success(d) {
+        if (d.status > 0) {
+
+            Swal.fire({
+                title: "Successfully",
+                text: d.message,
+                icon: "success"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    location.reload();
+                }
+            });
+        } else {
+            Swal.fire({
+                title: "failed",
+                text: d.message,
+                icon: "error"
+            });
+        }
+    }
+
+    function fn_Failure(d) {
+        Swal.fire({
+            title: "failed",
+            text: "error",
+            icon: "error"
+        });
+    }
+
+    function SubmitForm() {
+        var frm = $("#frmUserInvited");
+        $.validator.unobtrusive.parse(frm);
+        if (!frm.valid()) {
+            frm.validate().focusInvalid();
+            return false;
+        }
+
+        frm.submit();
+    }
+
+    function IsEmailExist(email) {
+        var isExist = false;
+        $.ajax({
+            url: '@Url.Action("CheckInvitedUserEmailExist", "AgentPanel")',
+            type: 'POST',
+            data: { email: email },
+            async: false,
+            success: function (data) {
+                isExist = data;
+            }
+        });
+        return isExist;
+    }
+
+    function IsMobileExist(mobile) {
+        var isExist = false;
+        $.ajax({
+            url: '@Url.Action("CheckInvitedUserMobileExist", "AgentPanel")',
+            type: 'POST',
+            data: { mobile: mobile },
+            async: false,
+            success: function (data) {
+                isExist = data;
+            }
+        });
+        return isExist;
+    }
+
+    function fnAddMore() {
+        // count existing rows inside #divappendclon
+        var cntfrm = $(".totalItemcount").length;
+
+        // clone the template row
+        var htmform = $("#frmclone").clone();
+
+        // remove original id and assign a new one
+        htmform.removeAttr('id').attr('id', 'frmclone' + cntfrm);
+
+        htmform.find('#tddelete').html('').append('<a href="javascript:void(0)" onclick="fnDelete(' + cntfrm + ')" class="ti ti-trash text-danger" style="font-size: 20px;margin-top: 20px; display: block;"></a>');
+        // clear values inside cloned inputs
+        htmform.find("input, select").val("");
+
+        // update input names/ids so they're unique for model binding
+        htmform.find("input, select").each(function () {
+            var oldName = $(this).attr("name");
+            if (oldName) {
+                $(this).attr("name", "[" + cntfrm + "]." + oldName.replace('[0].',''));
+            }
+
+            var oldId = $(this).attr("id");
+            if (oldId) {
+                $(this).attr("id", oldId + "_" + cntfrm);
+            }
+            $(this).val("");
+            $(this).removeClass("input-validation-error");
+        });
+
+        // append cloned row
+        $("#divappendclon").append(htmform);
+        $("#spntotalAdded").text(cntfrm+1);
+
+        var form = $("#frmUserInvited");
+
+        // 1️⃣ old validator remove
+        form.removeData("validator");
+        form.removeData("unobtrusiveValidation");
+        $.validator.unobtrusive.parse("#frmUserInvited");
+    }
+
+    function fnDelete(e) {
+        $("#frmclone" + e).remove();
+        var cntfrm = $(".totalItemcount").length + 1;
+        $("#spntotalAdded").text(cntfrm - 1);
+    }
+</script>

@@ -1,0 +1,383 @@
+﻿@{
+    ViewBag.Title = "Agent Dashboard";
+    var objSummary = ViewBag.Summary as AgentDashboardSummary;
+}
+
+<div class="row">
+    <div class="col-xl-3 col-sm-6 d-flex">
+        <div class="card shadow-none flex-fill">
+            <div class="card-body text-center">
+                <span class="avatar avatar rounded-circle bg-success mb-2">
+                    <i class="isax isax-calendar-15 fs-24"></i>
+                </span>
+                <p class="mb-1">Total Bookings</p>
+                <h5 class="mb-2">@objSummary.TotalBookings</h5>
+                <a href="#" class="fs-14 link-primary text-decoration-underline">View All</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-sm-6 d-flex">
+        <div class="card shadow-none flex-fill">
+            <div class="card-body text-center">
+                <span class="avatar avatar rounded-circle bg-orange mb-2">
+                    <i class="isax isax-money-time5 fs-24"></i>
+                </span>
+                <p class="mb-1">Total Sales</p>
+                <h5 class="mb-2">@objSummary.TotalSales</h5>
+                <a href="#" class="fs-14 link-primary text-decoration-underline">View All</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-sm-6 d-flex">
+        <div class="card shadow-none flex-fill">
+            <div class="card-body text-center">
+                <span class="avatar avatar rounded-circle bg-info mb-2">
+                    <i class="isax isax-money-send5 fs-24"></i>
+                </span>
+                <p class="mb-1">Total Commission</p>
+                <h5 class="mb-2">@objSummary.TotalCommission</h5>
+                <a href="#" class="fs-14 link-primary text-decoration-underline">View All</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-sm-6 d-flex">
+        <div class="card shadow-none flex-fill">
+            <div class="card-body text-center">
+                <span class="avatar avatar rounded-circle bg-indigo mb-2">
+                    <i class="isax isax-magic-star5 fs-24"></i>
+                </span>
+                <p class="mb-1">Total Users</p>
+                <h5 class="mb-2">@objSummary.TotalSubUsers</h5>
+                <a href="#" class="fs-14 link-primary text-decoration-underline">View All</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+
+    <!-- Bookings Statistics -->
+    <div class="col-xl-4 d-flex">
+        <div class="card shadow-none flex-fill">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h6>Bookings Statistics</h6>
+                    <div class="dropdown ">
+                        <a href="#" class="dropdown-toggle btn bg-light-200 btn-sm text-gray-6 rounded-pill fw-normal fs-14 d-inline-flex align-items-center" data-bs-toggle="dropdown">
+                            <i class="isax isax-calendar-2 me-2 fs-14 text-gray-6"></i>2025
+                        </a>
+                        <ul class="dropdown-menu  dropdown-menu-end p-3">
+                            <li>
+                                <a href="#" class="dropdown-item rounded-1">
+                                    <i class="ti ti-point-filled me-1"></i>2025
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" class="dropdown-item rounded-1">
+                                    <i class="ti ti-point-filled me-1"></i>2024
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" class="dropdown-item rounded-1">
+                                    <i class="ti ti-point-filled me-1"></i>2023
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="text-center mb-3">
+                    <div id="booking-chart"></div>
+                </div>
+                <div class="d-flex align-items-center justify-content-between mb-2">
+                    <h6 class="border-icon teal">Hotels</h6>
+                    <p class="fs-14"><span class="text-gray-9 fw-medium">0</span> Bookings</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /Bookings Statistics -->
+    <!-- Earnings -->
+    <div class="col-xl-8 d-flex">
+        <div class="card shadow-none flex-fill">
+            <div class="card-body pb-0">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h6>Earnings</h6>
+                    <div class="dropdown ">
+                        <a href="#" class="dropdown-toggle btn bg-light-200 btn-sm text-gray-6 rounded-pill fw-normal fs-14 d-inline-flex align-items-center" data-bs-toggle="dropdown">
+                            <i class="isax isax-calendar-2 me-2 fs-14 text-gray-6"></i>2025
+                        </a>
+                        <ul class="dropdown-menu  dropdown-menu-end p-3">
+                            <li>
+                                <a href="#" class="dropdown-item rounded-1">
+                                    <i class="ti ti-point-filled me-1"></i>2025
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" class="dropdown-item rounded-1">
+                                    <i class="ti ti-point-filled me-1"></i>2024
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" class="dropdown-item rounded-1">
+                                    <i class="ti ti-point-filled me-1"></i>2023
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="d-flex align-items-center justify-content-between flex-wrap">
+                        <div class="mb-2">
+                            <p class="mb-0">Total Earnings this Year</p>
+                            <h3><i class="ti ti-currency-rupee"></i>0.00</h3>
+                        </div>
+                        <div class="d-flex align-items-center mb-2">
+                            <p class="fs-14"><span class="badge badge-soft-success badge-md border border-success rounded-pill me-2"><i class="isax isax-arrow-up-3 "></i>0%</span>vs last years</p>
+                        </div>
+                    </div>
+                    <div id="earning-chart"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /Earnings -->
+
+</div>
+
+<div class="row">
+
+    <!-- Recently Added -->
+    <div class="col-xl-6 col-xxl-5 d-flex">
+        <div class="card shadow-none flex-fill">
+            <div class="card-body">
+                <h6 class="mb-4">Recently Added</h6>
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <div class="d-flex align-items-center">
+                        <a href="flight-details.html" class="avatar avatar-lg flex-shrink-0 me-2">
+                            <img src="~/Content/agent/img/flight/flight-05.jpg" class="img-fluid rounded-circle" alt="Img">
+                        </a>
+                        <div>
+                            <h6 class="fs-16"><a href="flight-details.html">Altair 333</a> <span class="badge badge-soft-teal badge-xs rounded-pill"><i class="isax isax-signpost me-1"></i>Flight</span></h6>
+                            <p class="fs-14">Last Booked : 25 May 2025</p>
+                        </div>
+                    </div>
+                    <a href="agent-flight-booking.html" class="btn rebook-btn btn-sm">14 Bookings</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /Recently Added -->
+    <!-- Recent Invoices -->
+    <div class="col-xxl-7 col-xl-6 d-flex">
+        <div class="card shadow-none flex-fill">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center mb-4 gap-2">
+                    <h6>Latest Invoices</h6>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /Recent Invoices -->
+
+</div>
+
+<!-- Add Lists -->
+<div class="row row-cols-1 row-cols-md-3 row-cols-xl-5 justify-content-center">
+
+
+    <div class="col">
+        <div class="card bg-pink-100 border-0 shadow-none">
+            <div class="card-body">
+                <h6 class="mb-1">0 Flights</h6>
+                <a href="add-flight.html" class="fs-14 fw-medium link-primary text-decoration-underline">Add New Flight</a>
+            </div>
+        </div>
+    </div>
+    <div class="col">
+        <div class="card bg-success-100 border-0 shadow-none">
+            <div class="card-body">
+                <h6 class="mb-1">0 Hotels</h6>
+                <a href="add-hotel.html" class="fs-14 fw-medium link-default text-decoration-underline">Add New Hotels</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="col">
+        <div class="card bg-danger-100 border-0 shadow-none">
+            <div class="card-body">
+                <h6 class="mb-1">0 Tours</h6>
+                <a href="add-tour.html" class="fs-14 fw-medium link-default text-decoration-underline">Add New Tour</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="col">
+        <div class="card bg-purple-100 border-0 shadow-none">
+            <div class="card-body">
+                <h6 class="mb-1">0 Cars</h6>
+                <a href="add-car.html" class="fs-14 fw-medium link-default text-decoration-underline">Add New Car</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="col">
+        <div class="card bg-cyan-100 border-0 shadow-none">
+            <div class="card-body">
+                <h6 class="mb-1">0 Cruise</h6>
+                <a href="add-cruise.html" class="fs-14 fw-medium link-default text-decoration-underline">Add New Cruise</a>
+            </div>
+        </div>
+    </div>
+
+</div>
+<!-- /Add Lists -->
+<!-- Hotel-Booking List -->
+<div class="card hotel-list mb-0">
+    <div class="card-body p-0">
+        <div class="list-header d-flex align-items-center justify-content-between flex-wrap">
+            <h6 class="">Recent Bookings</h6>
+            <div class="d-flex align-items-center flex-wrap">
+
+                <div class="input-icon-start position-relative">
+                    <span class="icon-addon">
+                        <i class="isax isax-search-normal-1 fs-14"></i>
+                    </span>
+                    <input type="text" class="form-control" placeholder="Search">
+                </div>
+            </div>
+        </div>
+
+        <!-- Hotel List -->
+        <div class="custom-datatable-filter table-responsive">
+            <div class="card hotel-list">
+                <div class="card-body p-0">
+                    <div class="list-header d-flex align-items-center justify-content-between flex-wrap">
+                        <h6 class="">Booking List</h6>
+                        <div class="d-flex align-items-center flex-wrap">
+                            <div class="input-icon-start  me-2 position-relative">
+                                <span class="icon-addon">
+                                    <i class="isax isax-search-normal-1 fs-14"></i>
+                                </span>
+                                <input type="text" class="form-control" placeholder="Search">
+                            </div>
+                            <div class="dropdown me-3">
+                                <a href="#" class="dropdown-toggle text-gray-6 btn  rounded border d-inline-flex align-items-center" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Ticket Type
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-end p-3">
+                                    <li>
+                                        <a href="#" class="dropdown-item rounded-1">Business Class</a>
+                                    </li>
+                                    <li>
+                                        <a href="#" class="dropdown-item rounded-1">Economy</a>
+                                    </li>
+                                    <li>
+                                        <a href="#" class="dropdown-item rounded-1">Fare Economy</a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="dropdown me-3">
+                                <a href="#" class="dropdown-toggle text-gray-6 btn  rounded border d-inline-flex align-items-center" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Status
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-end p-3">
+                                    <li>
+                                        <a href="#" class="dropdown-item rounded-1">Upcoming</a>
+                                    </li>
+                                    <li>
+                                        <a href="#" class="dropdown-item rounded-1">Cancelled</a>
+                                    </li>
+                                    <li>
+                                        <a href="#" class="dropdown-item rounded-1">Completed</a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="d-flex align-items-center sort-by">
+                                <span class="fs-14 text-gray-9 fw-medium">Sort By :</span>
+                                <div class="dropdown">
+                                    <a href="#" class="dropdown-toggle text-gray-6 btn  rounded d-inline-flex align-items-center" data-bs-toggle="dropdown" aria-expanded="false">
+                                        Recommended
+                                    </a>
+                                    <ul class="dropdown-menu dropdown-menu-end p-3">
+                                        <li>
+                                            <a href="#" class="dropdown-item rounded-1">Recently Added</a>
+                                        </li>
+                                        <li>
+                                            <a href="#" class="dropdown-item rounded-1">Ascending</a>
+                                        </li>
+                                        <li>
+                                            <a href="#" class="dropdown-item rounded-1">Desending</a>
+                                        </li>
+                                        <li>
+                                            <a href="#" class="dropdown-item rounded-1">Last Month</a>
+                                        </li>
+                                        <li>
+                                            <a href="#" class="dropdown-item rounded-1">Last 7 Days</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <!-- Hotel List -->
+                    <div class="custom-datatable-filter table-responsive">
+                        <table class="table datatable">
+                            <thead class="thead-light">
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Flight</th>
+                                    <th>Booked By</th>
+                                    <th>Ticket</th>
+                                    <th>From - To</th>
+                                    <th>Pricing</th>
+                                    <th>Booked on</th>
+                                    <th>Status</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><a href="#" class="link-primary fw-medium" data-bs-toggle="modal" data-bs-target="#upcoming">#TR-1245</a></td>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <div>
+                                                <p class="text-dark mb-0 fw-medium fs-14"><a href="flight-details.html">Antonov An-32</a></p>
+                                                <span class="fs-14 fw-normal text-gray-6">Air India</span>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <h6 class="fs-14 mb-1">Lynwood Dickens</h6>
+                                        <span class="fs-14 fw-normal text-gray-6">Barcelona</span>
+                                    </td>
+                                    <td>
+                                        <h6 class="fs-14 mb-1">Business Class</h6>
+                                        <span class="fs-14 fw-normal text-gray-6">2 Adults, 1 Child</span>
+                                    </td>
+                                    <td>London - Paris</td>
+                                    <td>$11,569</td>
+                                    <td>15 May 2025</td>
+                                    <td>
+                                        <span class="badge badge-info rounded-pill d-inline-flex align-items-center fs-10"><i class="fa-solid fa-circle fs-5 me-1"></i>Upcoming</span>
+                                    </td>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <a href="#" data-bs-toggle="modal" data-bs-target="#upcoming"><i class="isax isax-eye"></i></a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- /Hotel List -->
+
+                </div>
+            </div>
+        </div>
+        <!-- /Hotel List -->
+
+    </div>
+</div>
+<!-- /Hotel-Booking List -->

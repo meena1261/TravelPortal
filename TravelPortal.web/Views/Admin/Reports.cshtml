@@ -1,0 +1,104 @@
+﻿@model SearchReportModel
+@{
+    string type = ViewBag.type;
+}
+
+<div class="card">
+    <div class="card-body pb-1">
+        <form action="@RouteConfig.Reports.Replace("{type}",type).ToPrefixForwardSlash()" method="post">
+            <div class="row align-items-end">
+                <div class="col-md-3">
+                    <div class="mb-3">
+                        <label class="form-label">From Date</label>
+                        <div class="input-icon-start position-relative">
+                            @Html.TextBoxFor(m => m.fromDate, new { @class = "form-control flatpickr_date_input", @placeholder = "dd/mm/yyyy" })
+                            <span class="input-icon-left">
+                                <i class="ti ti-calendar"></i>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="mb-3">
+                        <label class="form-label">To Date</label>
+                        <div class="input-icon-start position-relative">
+                            @Html.TextBoxFor(m => m.toDate, new { @class = "form-control flatpickr_date_input", @placeholder = "dd/mm/yyyy" })
+                            <span class="input-icon-left">
+                                <i class="ti ti-calendar"></i>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-2">
+                    <div class="mb-3">
+                        <button class="btn btn-primary w-100" type="submit"><i class="ti ti-search"></i> Search</button>
+                    </div>
+                </div>
+            </div>
+
+        </form>
+    </div>
+</div>
+<div class="card no-search">
+    <div class="card-body p-0">
+       @if (type.Equals("look-to-book"))
+       {
+           @LookToBook();
+       }
+    </div>
+</div>
+
+@helper LookToBook()
+{
+    var db = new TravelPortal.EDMX.db_silviEntities();
+    var searchLogs = db.tblFlight_SearchLog.OrderByDescending(x => x.AddDate).ToList();
+    <div class="table-responsive">
+        <table class="table table-warning">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Agent</th>
+                    <th>From</th>
+                    <th>To</th>
+                    <th>Journey Date</th>
+                    <th>Return Date</th>
+                    <th>Passengers</th>
+                    <th>Class</th>
+                    <th>Search Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (searchLogs != null && searchLogs.Count > 0)
+                {
+                    int count = 1;
+                    foreach (var log in searchLogs)
+                    {
+                        var objUser = db.tblMaster_User.FirstOrDefault(e=>e.Usrno == log.Usrno);
+                        <tr>
+                            <th scope="row">@count</th>
+                            <td>@objUser.Name</td>
+                            <td>@log.Origin</td>
+                            <td>@log.Destination</td>
+                            <td>@Convert.ToDateTime(log.DepartureDate).ToString("dd-MM-yyyy")</td>
+                            <td>@(log.ReturnDate.HasValue ? log.ReturnDate.Value.ToString("dd-MM-yyyy") : "N/A")</td>
+                            <td>
+                                Adults: @log.AdultCount,
+                                Children: @log.ChildCount,
+                                Infants: @log.InfantCount
+                            </td>
+                            <td>@log.TravelClass</td>
+                            <td>@log.AddDate.Value.ToString("dd-MM-yyyy HH:mm")</td>
+                        </tr>
+                        count++;
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="8" class="text-center">No search logs found.</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}

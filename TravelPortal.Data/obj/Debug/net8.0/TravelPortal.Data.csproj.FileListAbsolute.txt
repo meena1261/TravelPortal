@@ -1,0 +1,17 @@
+D:\Project\TravelPortal\TravelPortal.Data\bin\Debug\net8.0\TravelPortal.Data.deps.json
+D:\Project\TravelPortal\TravelPortal.Data\bin\Debug\net8.0\TravelPortal.Data.runtimeconfig.json
+D:\Project\TravelPortal\TravelPortal.Data\bin\Debug\net8.0\TravelPortal.Data.dll
+D:\Project\TravelPortal\TravelPortal.Data\bin\Debug\net8.0\TravelPortal.Data.pdb
+D:\Project\TravelPortal\TravelPortal.Data\bin\Debug\net8.0\TravelPortal.Models.dll
+D:\Project\TravelPortal\TravelPortal.Data\bin\Debug\net8.0\TravelPortal.Models.pdb
+D:\Project\TravelPortal\TravelPortal.Data\obj\Debug\net8.0\TravelPortal.Data.csproj.AssemblyReference.cache
+D:\Project\TravelPortal\TravelPortal.Data\obj\Debug\net8.0\TravelPortal.Data.GeneratedMSBuildEditorConfig.editorconfig
+D:\Project\TravelPortal\TravelPortal.Data\obj\Debug\net8.0\TravelPortal.Data.AssemblyInfoInputs.cache
+D:\Project\TravelPortal\TravelPortal.Data\obj\Debug\net8.0\TravelPortal.Data.AssemblyInfo.cs
+D:\Project\TravelPortal\TravelPortal.Data\obj\Debug\net8.0\TravelPortal.Data.csproj.CoreCompileInputs.cache
+D:\Project\TravelPortal\TravelPortal.Data\obj\Debug\net8.0\TravelPo.6AC58193.Up2Date
+D:\Project\TravelPortal\TravelPortal.Data\obj\Debug\net8.0\TravelPortal.Data.dll
+D:\Project\TravelPortal\TravelPortal.Data\obj\Debug\net8.0\refint\TravelPortal.Data.dll
+D:\Project\TravelPortal\TravelPortal.Data\obj\Debug\net8.0\TravelPortal.Data.pdb
+D:\Project\TravelPortal\TravelPortal.Data\obj\Debug\net8.0\TravelPortal.Data.genruntimeconfig.cache
+D:\Project\TravelPortal\TravelPortal.Data\obj\Debug\net8.0\ref\TravelPortal.Data.dll

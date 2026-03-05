@@ -1,0 +1,52 @@
+﻿
+@using TravelPortal.web.Models
+@{
+    var objlist = ViewBag.list as List<TravelPortal.web.Models.ViewModel.InvitedUserViewModel>;
+}
+
+<div class="card hotel-list mb-0">
+    <div class="card-body p-0">
+        <div class="list-header d-flex align-items-center justify-content-between flex-wrap">
+            <h6>Users List</h6>
+            
+        </div>
+        <div class="table-responsive">
+            <table class="table">
+                <thead class="thead-light">
+                    <tr>
+                        <th>Role Type</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Mobile</th>
+                        <th>Status</th>
+                        <th>Invited Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (objlist != null && objlist.Count > 0)
+                    {
+                        foreach (var item in objlist)
+                        {
+                            string status = item.Status;
+                            <tr>
+
+
+                                <td>@item.UserType </td>
+                                <td>@item.UserName </td>
+                                <td>@item.Email </td>
+                                <td>@item.Mobile </td>
+                                <td>
+                                    <label class="badge badge-@(status.Equals(TravelPortal.web.Models.Common. CommanString.Active)?"success":status.Equals(TravelPortal.web.Models.Common.CommanString.Inactive)?"danger":"primary")">
+                                        @item.Status
+                                    </label>
+                                </td>
+                                <td>@item.InvitedDate </td>
+
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,73 @@
+﻿@model TravelPortal.web.Models.ViewModel.FlightResults
+<div class="row justify-content-center">
+    @if (Model.data.Count > 0)
+    {
+        foreach (var d in Model.data)
+        {
+            var flightList = d.Itineraries;
+            <div class="col-md-12">
+                @if (flightList.Count > 0)
+                {
+                    foreach (var item in flightList)
+                    {
+                        string[] airlineLogoItem = item.AirlineLogo.Split(',');
+
+                        <!-- Flight List -->
+                        <div class="place-item mb-4">
+                            <div class="place-content">
+                                <div class="row">
+                                    <div class="col-4">
+
+                                        <div class="d-flex align-content-center">
+                                            @foreach (var logo in airlineLogoItem)
+                                            {
+                                                <span class="avatar avatar-lg me-2">
+                                                    <img src="@logo" class="" alt="icon">
+                                                </span>
+                                            }
+                                            <div>
+                                                <h6 class="mb-0 me-2">
+                                                    @item.AirlineName
+                                                </h6>
+                                                <span>
+                                                    @item.AirlineCode
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-1">
+                                        <h6 class="">@item.DepartureTime</h6>
+                                        <p>@item.FromCity</p>
+                                    </div>
+                                    <div class="col-md-4 text-center">
+                                        <div class="login-or mb-3">
+                                            <p class="m-0">@item.Duration</p>
+                                            <span class="span-or">
+                                                <span class="via-text">@(item.Stops>0? $"{item.Stops} Stop":"") @item.Via</span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="col-1">
+                                        <h6>@item.ArrivalTime</h6>
+                                        <p>@item.ToCity</p>
+                                    </div>
+                                    <div class="col-2 text-right">
+                                        <h6>
+                                            @Convert.ToDouble(item.Price).ToString("C", new System.Globalization.CultureInfo("en_IN"))
+                                        </h6>
+                                        <small>/adult</small>
+                                        <br />
+                                        <a href="@(RouteConfig.FlightDetails.ToPrefixApplicationURL()+"?offerId="+d.offerId+"&crId="+Model.cacheKey+"&tripType="+TravelPortal.web.Models.Enum.FlightTripTypes.OneWay.ToString())" target="_blank" class="btn btn-sm btn-primary">Book Now</a>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                        <!-- /Flight List -->
+                    }
+                }
+            </div>
+        }
+    }
+</div>
+

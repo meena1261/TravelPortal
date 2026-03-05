@@ -1,0 +1,279 @@
+﻿@model CreditLimitApproveRejectModel
+<div class="card">
+    <div class="card-body">
+
+        <nav>
+            <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                <button class="nav-link active" id="nav-summary-tab" data-bs-toggle="tab" data-bs-target="#nav-summary" type="button" role="tab" aria-controls="nav-summary" aria-selected="true">Summary</button>
+                <button class="nav-link" id="nav-agent-list-tab" data-bs-toggle="tab" data-bs-target="#nav-agent-list" type="button" role="tab" aria-controls="nav-agent-list" aria-selected="false">Agent list</button>
+                <button class="nav-link" id="nav-credit-request-tab" data-bs-toggle="tab" data-bs-target="#nav-credit-request" type="button" role="tab" aria-controls="nav-credit-request" aria-selected="false">Credit Requests</button>
+                <button class="nav-link" id="nav-reports-tab" data-bs-toggle="tab" data-bs-target="#nav-reports" type="button" role="tab" aria-controls="nav-reports" aria-selected="false">Reports</button>
+            </div>
+        </nav>
+        <div class="tab-content" id="nav-tabContent">
+            <div class="tab-pane fade show active" id="nav-summary" role="tabpanel" aria-labelledby="nav-summary-tab">
+                @Summary()
+            </div>
+            <div class="tab-pane fade" id="nav-agent-list" role="tabpanel" aria-labelledby="nav-agent-list-tab">
+                @AgentList()
+            </div>
+            <div class="tab-pane fade" id="nav-credit-request" role="tabpanel" aria-labelledby="nav-credit-request-tab">
+                @CreditRequest()
+            </div>
+            <div class="tab-pane fade" id="nav-reports" role="tabpanel" aria-labelledby="nav-reports-tab">...</div>
+        </div>
+    </div>
+</div>
+
+@helper Summary()
+{
+
+    var db = new TravelPortal.EDMX.db_silviEntities();
+
+    var objCreditLimit = db.tblManage_CreditLimit.Where(x => x.IsApproved == true).ToList();
+    var totalIssuedLimit = objCreditLimit.Sum(x => x.Amount);
+    var totalUsedAmount = objCreditLimit.Sum(x => x.UsedAmount);
+    var totalAvailableAmount = objCreditLimit.Sum(x => x.AvailableAmount);
+    <div class="card">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5>Total Credit Issued</h5>
+                            <h4><i class="ti ti-currency-rupee"></i>@totalIssuedLimit</h4>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5>Total Outstanding</h5>
+                            <h4><i class="ti ti-currency-rupee"></i>@totalUsedAmount</h4>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5>Pending Auto-Approvals</h5>
+                            <h4>0</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+@helper AgentList()
+{
+    dynamic CreditLimitAgents = ViewBag.CreditLimitAgents;
+    <div class="card">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Agency ID</th>
+                            <th>Agency Name</th>
+                            <th>Status</th>
+                            <th>Currency</th>
+                            <th>Issued Limit</th>
+                            <th>Limit Left</th>
+                            <th>Cycle (Days)</th>
+                            <th>For</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in CreditLimitAgents)
+                        {
+                            <tr>
+                                <td>@item.UserID</td>
+                                <td>@item.Name</td>
+                                <td>
+                                    @if (item.Status.ToString().ToUpper() == "PENDING".ToUpper())
+                                    {
+                                        <span class="badge badge-warning">@item.Status</span>
+                                    }
+                                    else if (item.Status.ToString().ToUpper() == "Active".ToUpper())
+                                    {
+                                        <span class="badge badge-success">@item.Status</span>
+                                    }
+                                    else if (item.Status.ToString().ToUpper() == "InActive".ToUpper())
+                                    {
+                                        <span class="badge badge-danger">@item.Status</span>
+                                    }
+                                </td>
+                                <td>@item.Currency</td>
+                                <td><i class="ti ti-currency-rupee"></i>@item.IssuedLimit</td>
+                                <td><i class="ti ti-currency-rupee"></i>@item.LimitLeft</td>
+                                <td>@item.CycleDays</td>
+                                <td>@item.CreditTypes</td>
+
+                                <td>
+                                    <button class="btn btn-outline-success btn-sm">Edit</button>
+                                    @*<button class="btn btn-outline-primary btn-sm">Toggle</button>*@
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+}
+@helper CreditRequest()
+{
+    dynamic CreditRequestlist = ViewBag.creditrequestlist;
+    <div class="card">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Agency ID</th>
+                            <th>Agency Name</th>
+                            <th>Requested Amount</th>
+                            <th>Credit Type</th>
+                            <th>Agent Remark</th>
+                            <th>Request Date &amp; Time</th>
+                            <th>Payment Receipt</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var request in CreditRequestlist)
+                        {
+                            if (request.Status.ToString().ToUpper() == "PENDING")
+                            {
+                                <tr>
+                                    <td>@request.UserID</td>
+                                    <td>@request.Name</td>
+                                    <td><i class="ti ti-currency-rupee"></i>@request.Amount</td>
+                                    <td>@request.CreditType</td>
+                                    <td>@request.Remark</td>
+                                    <td>@request.RequestDate</td>
+                                    <td>
+                                        @if (!string.IsNullOrEmpty(request.PaymentReceiptUrl))
+                                        {
+                                            <a href="@request.PaymentReceiptUrl" target="_blank">View Receipt</a>
+                                        }
+                                        else
+                                        {
+                                            <span>No Receipt</span>
+                                        }
+                                    </td>
+                                    <td>
+                                        <a data-bs-toggle="modal" data-bs-target="#confirmation-modal" class="btn btn-sm btn-success" href="javascript:void(0);" onclick="ConfirmationModel('Approved','@request.ID','@request.Amount');">
+                                            Approve
+                                        </a>
+                                        <a data-bs-toggle="modal" data-bs-target="#confirmation-modal" class="btn btn-sm btn-danger" href="javascript:void(0);" onclick="ConfirmationModel('Rejected','@request.ID','@request.Amount');">
+                                            Reject
+                                        </a>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <!--Confirmation Modal-->
+    <div class="modal fade" id="confirmation-modal">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="page-wrapper-new p-0">
+                    @using (Ajax.BeginForm("CreditLimitApproveReject", "Admin", null, new AjaxOptions { HttpMethod = "POST", OnBegin = "fnStartLoader", OnComplete = "fnStopLoader", OnSuccess = "fn_Success", OnFailure = "fn_Failure" }, new { enctype = "multipart/form-data" }))
+                    {
+                        <div class="card">
+                            <div class="card-header">
+                                <h4>
+                                    Are you sure you want to <span id="spntxt">Approve</span> this ?
+                                </h4>
+                            </div>
+                            <div class="card-body">
+                                @Html.HiddenFor(e => e.Action)
+                                @Html.HiddenFor(e => e.Id)
+                                <div class="row">
+                                    <div class="col-md-12 hiddentxtbox">
+                                        <div class="form-group">
+                                            <label class="text-dark mb-1">Requested Amount</label>
+                                            @Html.TextBoxFor(m => m.Amount, new { @class = "form-control mb-2", @data_val = "true", @data_val_required = "Required", @disabled = "" })
+
+                                        </div>
+                                        @Html.ValidationMessageFor(model => model.Amount, "", new { @class = "text-danger" })
+                                    </div>
+                                    <div class="col-md-12 hiddentxtbox">
+                                        <div class="form-group">
+                                            <label class="text-dark mb-1">Period (Days,default 15)</label>
+                                            @Html.TextBoxFor(m => m.Days, new { @class = "form-control mb-2", @data_val = "true", @data_val_required = "Required" })
+                                        </div>
+                                        @Html.ValidationMessageFor(model => model.Days, "", new { @class = "text-danger" })
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label class="text-dark mb-1">Reason/Remark (Required)</label>
+                                            @Html.TextAreaFor(m => m.Reason, new { @class = "form-control mb-2", @data_val = "true", @data_val_required = "Required", @rows = "5", @cols = "5" })
+                                        </div>
+                                        @Html.ValidationMessageFor(model => model.Reason, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-footer">
+                                <div class="modal-footer-btn mt-3 d-flex justify-content-center">
+                                    <button type="submit" class="btn me-2 btn-primary fs-13 fw-medium p-2 px-3">Yes, sure</button>
+                                    <button type="button" class="btn me-2 btn-secondary fs-13 fw-medium p-2 px-3 shadow-none" data-bs-dismiss="modal">Cancel</button>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--End Confirmation Modal-->
+    <script>
+        function ConfirmationModel(txt, id, amt) {
+            $("#Id").val(id);
+            $("#Amount").val(amt);
+            $("#spntxt").text(txt);
+            $("#Action").val(txt);
+            if (txt == 'Rejected') {
+                $(".hiddentxtbox").hide();
+            } else {
+                $(".hiddentxtbox").show();
+            }
+        }
+        function fn_Success(d) {
+            if (d.status > 0) {
+                $.toast({
+                    heading: 'Success',
+                    text: d.message,
+                    position: 'top-right',
+                    showHideTransition: 'fade',
+                    icon: 'success'
+                });
+                location.reload();
+            } else {
+                $.toast({
+                    heading: 'Message',
+                    text: d.message,
+                    position: 'top-right',
+                    showHideTransition: 'fade',
+                    icon: 'error'
+                });
+            }
+        }
+        function fn_Failure(d) {
+            $.toast({
+                heading: 'Message',
+                text: 'failed',
+                position: 'top-right',
+                showHideTransition: 'fade',
+                icon: 'error'
+            });
+        }
+    </script>
+}

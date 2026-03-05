@@ -1,0 +1,744 @@
+﻿@model FlightInventoryServiceModel
+@{
+    string CurrentUrl = ViewBag.CurrentUrl;
+    var objUser = ViewBag.userdetail as TravelPortal.web.Models.ViewModel.UserdetailViewModel;
+}
+
+<div class="card settings mb-0">
+    <div class="card-header">
+        <h6>Manage Inventory</h6>
+    </div>
+    <div class="card-body pb-1">
+        <div class="settings-link d-flex align-items-center flex-wrap">
+            <a href="@RouteConfig.ManageInventoryAdd.ToPrefixApplicationURL()" class="@(CurrentUrl.Equals(RouteConfig.ManageInventory) || CurrentUrl.Equals(RouteConfig.ManageInventoryAdd)?"active":"")"><i class="isax isax-user-octagon me-2"></i>Add Inventory</a>
+            <a href="@RouteConfig.ManageInventoryList.ToPrefixApplicationURL()" class="@(CurrentUrl.Equals(RouteConfig.ManageInventoryList)?"active":"") ps-3"><i class="isax isax-shield-tick me-2"></i>List Inventory</a>
+        </div>
+        @if (CurrentUrl.Equals(RouteConfig.ManageInventory) || CurrentUrl.Equals(RouteConfig.ManageInventoryAdd))
+        {
+            @AddEditInventory()
+        }
+        else if (CurrentUrl.Equals(RouteConfig.ManageInventoryList))
+        {
+
+            <!-- InventoryList -->
+            <div class="card mb-4">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <div>
+                            <h6>Inventory</h6>
+                        </div>
+                    </div>
+                    <hr class="border" />
+                    <div class="row">
+                        <div class="col-md-3">
+                            <label class="form-label">Search</label>
+                            <input type="text" class="form-control" name="Searchtext" placeholder="Search..." />
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">From Date</label>
+                            <input type="date" class="form-control" name="fromDate" />
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">To Date</label>
+                            <input type="date" class="form-control" name="toDate" />
+                        </div>
+                        <div class="col-md-3">
+                            <br />
+                            <button type="submit" class="btn btn-primary mt-2">Search</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /InventoryList -->
+            <!-- InventoryList List -->
+            @Html.Action("InventoryList", "Agent")
+            <!-- /InventoryList List -->
+        }
+
+    </div>
+</div>
+
+@helper AddEditInventory()
+{
+    <style>
+        body {
+            background: #f4f5f7;
+            font-size: 14px;
+        }
+
+        .section-box {
+            border: 1px solid #e3e6ea;
+            background: #fff;
+            margin-bottom: 15px;
+        }
+
+        .section-header {
+            background: #f1f3f5;
+            padding: 8px 12px;
+            font-weight: 600;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0;
+        }
+
+        .section-body {
+            padding: 12px;
+        }
+
+        .form-control, .form-select {
+            height: 34px;
+            font-size: 13px;
+        }
+
+        .tag {
+            background: #ffecec;
+            color: #e53935;
+            font-size: 12px;
+            padding: 2px 8px;
+            border-radius: 4px;
+        }
+
+        .btn-add {
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            padding: 0;
+        }
+
+        .input-validation-error {
+            border-color: orangered;
+        }
+
+        .weeklist li {
+            display: inline-block;
+            margin-left: 15px;
+        }
+
+        .table td {
+            padding: .5rem .5rem;
+        }
+    </style>
+    using (Ajax.BeginForm("AddEditFlightInventory", "Agent", null, new AjaxOptions { HttpMethod = "POST", OnSuccess = "fn_Success", OnFailure = "fn_Failure", OnBegin = "", OnComplete = "" }, new { id = "frmAddEditInventory", enctype = "multipart/form-data" }))
+    {
+        <!-- Sector Details -->
+        <div class="section-box">
+            <div class="section-header">
+                <span>Sector Details</span>
+                <div>
+                    <button type="button" class="btn btn-sm btn-danger me-2" onclick="$('#daysoperation_modal').modal('show');">Days of Operation</button>
+
+                    <a class="btn btn-sm btn-danger" data-bs-effect="effect-scale" data-bs-toggle="modal" href="#connectionViaRoundtrip_modal" onclick="FillData()">Is Connecting or Via or Roundtrip</a>
+                </div>
+            </div>
+
+            <div class="section-body">
+                <div class="row g-2">
+                    <div class="col-md-4">
+                        <label class="form-label">Airline Name</label>
+                        <div class="input-group">
+                            @Html.TextBoxFor(m => m.AirlineName, new { @class = "form-control w-75", @data_val = "true", @data_val_required = "Required" })
+                            @Html.TextBoxFor(m => m.FlightNumber, new { @class = "form-control w-25", @placeholder = "No.", @data_val = "true", @data_val_required = "Required" })
+                        </div>
+                        <input type="hidden" id="hdnAirlineIataCode" />
+                        @Html.HiddenFor(m => m.AirlineCode)
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">From Date</label>
+                        @Html.TextBoxFor(m => m.FromDate, new { @class = "form-control datetimepicker", @data_val = "true", @data_val_required = "Required" })
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">To Date </label>
+                        @Html.TextBoxFor(m => m.ToDate, new { @class = "form-control datetimepicker", @data_val = "true", @data_val_required = "Required" })
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label">Origin</label>
+                        @Html.TextBoxFor(m => m.Origin, new { @class = "form-control txtOrigin", @data_val = "true", @data_val_required = "Required" })
+                        @Html.HiddenFor(m => m.OriginCode)
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label">Departure</label>
+                        <div class="input-group">
+                            @Html.TextBoxFor(m => m.DepartureTime, new { type = "time", @class = "form-control", @data_val = "true", @data_val_required = "Required" })
+                            @Html.TextBoxFor(m => m.DepartureTerminal, new { @class = "form-control", @data_val = "true", @data_val_required = "Required", @placeholder = "Terminal" })
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label">Destination</label>
+                        @Html.TextBoxFor(m => m.Destination, new { @class = "form-control txtDestination", @data_val = "true", @data_val_required = "Required" })
+                        @Html.HiddenFor(m => m.DestinationCode)
+                    </div>
+                    <div class="col-md-3 mt-2">
+                        <label class="form-label">Arrival</label>
+                        <div class="input-group">
+                            @Html.TextBoxFor(m => m.ArrivalTime, new { type = "time", @class = "form-control", @data_val = "true", @data_val_required = "Required" })
+                            @Html.TextBoxFor(m => m.ArrivalTerminal, new { @class = "form-control", @data_val = "true", @data_val_required = "Required", @placeholder = "Terminal" })
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Flight Details -->
+        <div class="section-box">
+            <div class="section-header">
+                <span>Flight Details</span>
+                <button type="button" class="btn btn-sm btn-danger" onclick="$('#farerule_modal').modal('show');">Fare Rule</button>
+            </div>
+
+            <div class="section-body">
+                <div id="flightRows">
+                    <!-- Flight Row -->
+                    <div class="card flight-row">
+                        <div class="card-body">
+                            @for (int i = 0; i < Model.FlightDetails.Count; i++)
+                            {
+                                <div class="row g-2 align-items-end">
+                                    <div class="col-md-2">
+                                        <label class="form-label">Class</label>
+                                        @Html.DropDownListFor(m => m.FlightDetails[i].Class, DropdownLists.FlightClassTypes(), "-- Select --", new { @class = "form-control", @data_val = "true", @data_val_required = "Required" })
+                                    </div>
+                                    <div class="col-md-1">
+                                        <label class="form-label">RBD</label>
+                                        @Html.TextBoxFor(m => m.FlightDetails[i].RBD, new { @class = "form-control" })
+
+                                    </div>
+                                    <div class="col-md-1">
+                                        <label class="form-label">Seat</label>
+                                        @Html.TextBoxFor(m => m.FlightDetails[i].Seat, new { @class = "form-control", @data_val = "true", @data_val_required = "Required" })
+                                    </div>
+                                    <div class="col-md-2">
+                                        <label class="form-label">Adult Fare</label>
+                                        @Html.TextBoxFor(m => m.FlightDetails[i].AdultFare, new { @class = "form-control" })
+                                    </div>
+                                    <div class="col-md-1">
+                                        <label class="form-label">Brackup</label>
+                                        @Html.TextBoxFor(m => m.FlightDetails[i].AdultFareBrackup, new { @class = "form-control" })
+                                    </div>
+                                    <div class="col-md-2">
+                                        <label class="form-label">Child Fare</label>
+                                        @Html.TextBoxFor(m => m.FlightDetails[i].ChildFare, new { @class = "form-control" })
+                                    </div>
+                                    <div class="col-md-1">
+                                        <label class="form-label">Brackup</label>
+                                        @Html.TextBoxFor(m => m.FlightDetails[i].ChildFareBrackup, new { @class = "form-control" })
+                                    </div>
+                                    <div class="col-md-2">
+                                        <label class="form-label">Infant Fare</label>
+                                        @Html.TextBoxFor(m => m.FlightDetails[i].InfantFare, new { @class = "form-control" })
+                                    </div>
+                                    <div class="col-md-1">
+                                        <label class="form-label">Brackup</label>
+                                        @Html.TextBoxFor(m => m.FlightDetails[i].InfantFareBrackup, new { @class = "form-control" })
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="form-label">Baggage</label>
+                                        <div class="input-group">
+                                            <div class="input-group-text">
+                                                <input type="checkbox"
+                                                       class="baggage-checkbox"
+                                                       data-target="FlightDetails_@(i)__IsBaggageIncluded" />
+
+                                                @Html.HiddenFor(m => m.FlightDetails[i].IsBaggageIncluded)
+
+                                            </div>
+                                            @Html.TextBoxFor(m => m.FlightDetails[i].AdultBaggage, new { @class = "form-control", @placeholder = "Adult" })
+                                            @Html.TextBoxFor(m => m.FlightDetails[i].ChildBaggage, new { @class = "form-control", @placeholder = "Child" })
+                                            @Html.TextBoxFor(m => m.FlightDetails[i].InfantBaggage, new { @class = "form-control", @placeholder = "Infant" })
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <label class="form-label">Unit</label>
+                                        @Html.DropDownListFor(m => m.FlightDetails[i].UnitType, DropdownLists.UnitType(), "-- Select --", new { @class = "form-control" })
+                                    </div>
+                                    <div class="col-md-2">
+                                        <label class="form-label">Refund</label>
+                                        @Html.DropDownListFor(m => m.FlightDetails[i].IsRefundable, DropdownLists.YesNo(), "-- Select --", new { @class = "form-control", @data_val = "true", @data_val_required = "Required" })
+                                    </div>
+                                    <div class="col-md-2">
+                                        <label class="form-label">PNR</label>
+                                        @Html.TextBoxFor(m => m.FlightDetails[i].PNR, new { @class = "form-control", @data_val = "true" })
+                                    </div>
+
+                                    <!-- Action Buttons -->
+                                    <div class="col-md-1 text-center">
+                                        <button type="button" class="btn btn-danger btn-add" onclick="addRow()" style="display:none;">+</button>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+
+                </div>
+                <button type="button" class="btn btn-danger btn-sm" onclick="addRow()">+ Add Segment</button>
+            </div>
+
+        </div>
+
+        <!-- Contact + Fare -->
+        <div class="row">
+            <div class="col-md-12">
+                <div class="section-box">
+                    <div class="section-header">Contact Details</div>
+                    <div class="section-body">
+                        <div class="row g-2">
+                            <div class="col-md-6">
+                                <label class="form-label">Email ID</label>
+                                @Html.TextBoxFor(m => m.Email, new { @class = "form-control", @data_val = "true", @data_val_required = "Required" })
+
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Mobile No.</label>
+                                @Html.TextBoxFor(m => m.Mobile, new { @class = "form-control", @data_val = "true", @data_val_required = "Required" })
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Footer Actions -->
+        <div class="d-flex justify-content-between align-items-center mt-3">
+            <div></div>
+            <div>
+                <button class="btn btn-danger px-4">Preview</button>
+                <button class="btn btn-dark px-4 ms-2">Clear</button>
+            </div>
+            <div class="d-flex gap-2">
+                <div class="input-group">
+                    <input class="form-control" value="Stop Ticketing before" disabled>
+                    @Html.DropDownListFor(m => m.StopTicketingBefore, Enumerable.Range(0, 30).Select(i => new SelectListItem
+                    {
+                                Text = i + " Day(s) Before",
+                                Value = i.ToString()
+                    }), "-- Select --", new { @class = "form-select", @data_val = "true", @data_val_required = "Required" })
+
+                    @Html.TextBoxFor(m => m.StopTicketingTime, new { type = "time", @class = "form-control", @data_val = "true", @data_val_required = "Required" })
+                    <input class="form-control" value="from Departure" disabled>
+                </div>
+
+            </div>
+        </div>
+
+        <!--Fare Rules-->
+        <div class="modal fade" id="farerule_modal" role="dialog">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Fare Rule</h5>
+                        <button class="btn-close custom-btn-close border p-1 me-0 text-dark" data-bs-dismiss="modal"
+                                aria-label="Close">
+                            <i class="ti ti-x"></i>
+                        </button>
+                    </div>
+
+                    <div class="modal-body">
+                        @Html.TextAreaFor(m => m.FareRules, new { @class = "form-control h-100", @rows = "5", @cols = "5", @data_val = "true", @data_val_required = "Required", @placeholder = "Enter Fare rule" })
+
+                    </div>
+                    <div class="modal-footer">
+                        <div class="d-flex align-items-center justify-content-end m-0">
+                            <a href="#" class="btn btn-light me-2">Get Existing</a>
+                            <button type="button" data-bs-dismiss="modal" class="btn btn-primary">Submit</button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <!--Days of Operation-->
+        <div class="modal fade" id="daysoperation_modal" role="dialog">
+            <div class="modal-dialog modal-dialog-centered modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Days of Operation</h5>
+                        <button class="btn-close custom-btn-close border p-1 me-0 text-dark" data-bs-dismiss="modal"
+                                aria-label="Close">
+                            <i class="ti ti-x"></i>
+                        </button>
+                    </div>
+
+                    <div class="modal-body">
+                        @{
+                            var objWeekList = DropdownLists.WeekList();
+                        }
+                        @Html.HiddenFor(m => m.SelectedDays)
+                        <ul class="weeklist">
+                            <li>
+                                <input type="checkbox" id="chkAllWeeks" checked="" />
+                                <label for="chkAllWeeks">All</label>
+                            </li>
+                            @foreach (var item in objWeekList)
+                            {
+                                <li>
+                                    <input type="checkbox" id="@item.Value" class="days" value="@item.Value" checked="" />
+                                    <label for="@item.Value">@item.Text</label>
+                                </li>
+                            }
+                        </ul>
+                    </div>
+                    <div class="modal-footer">
+                        <div class="d-flex align-items-center justify-content-end m-0">
+                            <button type="button" data-bs-dismiss="modal" class="btn btn-primary">Ok</button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <!--Connection or via or Roundtrip-->
+        <div class="modal fade" id="connectionViaRoundtrip_modal" role="dialog">
+            <div class="modal-dialog modal-fullscreen h-75">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Connection or Via</h5>
+                        <button class="btn-close custom-btn-close border p-1 me-0 text-dark" data-bs-dismiss="modal"
+                                aria-label="Close">
+                            <i class="ti ti-x"></i>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <label class="form-label">Roundtrip / Via / Connecting</label>
+                                @Html.DropDownListFor(m => m.ConnectionTypes, DropdownLists.FlightViaConnectionTypes(), "-- Select --", new { @class = "form-control", @data_val = "true", @data_val_required = "Required" })
+                                @Html.ValidationMessageFor(model => model.ConnectionTypes, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label">Stops</label>
+                                @Html.DropDownListFor(m => m.FlightStops, Enumerable.Range(2, 4).Select(i => new SelectListItem
+                                {
+                 Text = i.ToString(),
+                                    Value = i.ToString()
+                                }), "-- Select --", new { @class = "form-select", @data_val = "true", @data_val_required = "Required" })
+                                @Html.ValidationMessageFor(model => model.FlightStops, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <table class="table table-warning mt-2">
+                            <thead>
+                                <tr>
+                                    <th>Operator</th>
+                                    <th>Flight</th>
+                                    <th>Flight No</th>
+                                    <th>Origin</th>
+                                    <th>Terminal</th>
+                                    <th>Dept. Time</th>
+                                    <th>Destination</th>
+                                    <th>Terminal</th>
+                                    <th>Arr. Time</th>
+                                    <th>Next Day</th>
+                                    <th>Dept on Next day</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @for (int i = 0; i < Model.flightConnections.Count; i++)
+                                {
+                                    <tr>
+                                        <td>
+                                            @Html.TextBoxFor(m => m.flightConnections[i].Operator, new { @class = "form-control" })
+                                        </td>
+                                        <td>
+                                            @Html.TextBoxFor(m => m.flightConnections[i].Flight, new { @class = "form-control" })
+                                        </td>
+                                        <td>
+                                            @Html.TextBoxFor(m => m.flightConnections[i].FlightNo, new { @class = "form-control" })
+                                        </td>
+                                        <td>
+                                            @Html.TextBoxFor(m => m.flightConnections[i].Origin, new { @class = "form-control txtOrigin" })
+                                            @Html.HiddenFor(m => m.flightConnections[i].OriginCode)
+                                        </td>
+                                        <td>
+                                            @Html.TextBoxFor(m => m.flightConnections[i].OriginTerminal, new { @class = "form-control" })
+                                        </td>
+                                        <td>
+                                            @Html.TextBoxFor(m => m.flightConnections[i].DepatureTime, new { @class = "form-control", type = "time" })
+                                        </td>
+                                        <td>
+                                            @Html.TextBoxFor(m => m.flightConnections[i].Destination, new { @class = "form-control txtDestination", @data_row = i })
+                                            @Html.HiddenFor(m => m.flightConnections[i].DestinationCode)
+                                        </td>
+                                        <td>
+                                            @Html.TextBoxFor(m => m.flightConnections[i].DestinationTerminal, new { @class = "form-control" })
+                                        </td>
+
+                                        <td>
+                                            @Html.TextBoxFor(m => m.flightConnections[i].ArrivalTime, new { @class = "form-control", type = "time" })
+                                        </td>
+                                        <td>
+                                            <input type="checkbox" />
+                                        </td>
+                                        <td>
+                                            <input type="checkbox" />
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="modal-footer">
+                        <div class="d-flex align-items-center justify-content-end m-0">
+                            <a href="#" class="btn btn-light me-2">Clear</a>
+                            <button type="button" class="btn btn-primary" onclick="CheckConnectionVia()">Submit</button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    }
+
+
+    <script>
+    $(document).ready(function () {
+        $('#SelectedDays').val(getCheckedValues());
+
+        var Airlineurl = '@Url.Action("AirlineSearch", "Json")';
+        var txtAirlineName = $("#AirlineName");
+        var hdnAirlineName = $("#AirlineCode");
+        fn_autocomplete(txtAirlineName, Airlineurl, hdnAirlineName);
+
+        var url = '@Url.Action("CityAirportSearch", "Json")';
+
+        // For connection/via roundtrip modal
+        $('.txtOrigin').each(function () {
+            var txtOriginConn = $(this);
+            var hdnOriginConn = txtOriginConn.siblings('input[type="hidden"]');
+            fn_autocomplete(txtOriginConn, url, hdnOriginConn);
+        });
+        $('.txtDestination').each(function () {
+            var txtDestinationConn = $(this);
+            var hdnDestinationConn = txtDestinationConn.siblings('input[type="hidden"]');
+            fn_autocomplete(txtDestinationConn, url, hdnDestinationConn);
+        });
+    });
+    function FillData() {
+        var txtOrigin = $("#Origin").val();
+        var hdnOriginValue = $("#OriginCode").val();
+        var txtDestination = $("#Destination").val();
+        var hdnDestinationValue = $("#DestinationCode").val();
+        $("#flightConnections_0__Origin").val(txtOrigin);
+        $("#flightConnections_0__OriginCode").val(hdnOriginValue);
+        $("#flightConnections_1__Destination").val(txtDestination);
+        $("#flightConnections_1__DestinationCode").val(hdnDestinationValue);
+    }
+
+    function addRow() {
+        const container = document.getElementById('flightRows');
+        const rows = container.getElementsByClassName('flight-row');
+        const index = rows.length;
+
+        const lastRow = rows[rows.length - 1];
+        const newRow = lastRow.cloneNode(true);
+
+        // Clear input values + update name attributes
+        newRow.querySelectorAll('input, select').forEach(el => {
+
+            // Clear value
+            if (el.type !== "hidden") {
+                el.value = '';
+            }
+            $(el).removeClass('input-validation-error');
+            // Handle inputs properly
+            if (el.type === "checkbox") {
+                el.checked = false;
+            }
+            else if (el.type !== "hidden") {
+                el.value = '';
+            }
+            // Update MVC-style IDs: FlightDetails_0__Prop → FlightDetails_1__Prop
+            if (el.id) {
+                el.id = el.id.replace(/_\d+__/, `_${index}__`);
+            }
+            // Update name index: FlightDetails[0].Class → FlightDetails[1].Class
+            if (el.name) {
+                el.name = el.name.replace(/\[\d+\]/, `[${index}]`);
+            }
+        });
+
+        // Change + button to remove
+        const btn = newRow.querySelector('.btn-add');
+        $(btn).show();
+        btn.classList.remove('btn-danger');
+        btn.classList.add('btn-outline-danger');
+        btn.innerText = '−';
+        btn.onclick = function () { removeRow(this); };
+
+        container.appendChild(newRow);
+        rebindValidation();
+    }
+    function removeRow(btn) {
+        const row = btn.closest('.flight-row');
+        row.remove();
+        reindexRows();
+    }
+    function reindexRows() {
+        const rows = document.querySelectorAll('#flightRows .flight-row');
+
+        rows.forEach((row, i) => {
+            row.querySelectorAll('input, select').forEach(el => {
+                if (el.name) {
+                    el.name = el.name.replace(/\[\d+\]/, `[${i}]`);
+                }
+            });
+        });
+    }
+    function rebindValidation() {
+        var form = $('form');
+
+        // Remove previous validator
+        form.removeData('validator');
+        form.removeData('unobtrusiveValidation');
+
+        // Re-parse the form
+        $.validator.unobtrusive.parse(form);
+    }
+    function getCheckedValues() {
+        var values = $('.days:checked').map(function () {
+            return this.value;
+        }).get().join(',');
+
+        return values;
+    }
+    function onChangeDestination(ele, rowno) {
+        if (rowno == 0) {
+            var destination = $(ele).val();
+            var destinationcode = $("#flightConnections_0__DestinationCode").val();
+            $("#flightConnections_1__Origin").val(destination);
+            $("#flightConnections_1__OriginCode").val(destinationcode);
+        }
+    }
+    function CheckConnectionVia() {
+        if (!$("#frmAddEditInventory").valid()) {
+            if ($("#ConnectionTypes").val() != "" && $("#FlightStops").val() != "") {
+                $("#connectionViaRoundtrip_modal").modal('hide');
+            }
+        } else {
+            $("#connectionViaRoundtrip_modal").modal('hide');
+        }
+    }
+    // ALL checkbox
+    $('#chkAllWeeks').change(function () {
+        $('.days').prop('checked', this.checked);
+        $('#SelectedDays').val(getCheckedValues());
+    });
+    $('.days').change(function () {
+        $('#SelectedDays').val(getCheckedValues());
+    });
+
+    $(document).on('change', '.baggage-checkbox', function () {
+        const hidden = $('#' + $(this).data('target'));
+        hidden.val(this.checked ? '1' : '0');
+    });
+
+
+        function fn_Success(d) {
+            if (d.status > 0) {
+                Swal.fire({
+                    title: "Successfully",
+                    text: d.message,
+                    icon: "success"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        location.reload();
+                    }
+                });
+            } else {
+                Swal.fire({
+                    title: "error",
+                    text: d.message,
+                    icon: "error"
+                });
+            }
+        }
+        function fn_Failure(d) {
+            Swal.fire({
+                title: "error",
+                text: d.message,
+                icon: "error"
+            });
+        }
+    </script>
+}
+
+
+
+
+@if (objUser.IsSupplier == null || objUser.IsSupplier == false)
+{
+    using (Ajax.BeginForm("UploadSupllierAgreement", "Agent", null, new AjaxOptions { HttpMethod = "POST", OnSuccess = "fn_Success", OnFailure = "fn_Failure", OnBegin = "", OnComplete = "" }, new { enctype = "multipart/form-data" }))
+    {
+        <div class="modal fade" id="supplier_agreement_modal" role="dialog">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Activate Supplier Profile – Agreement Submission</h5>
+
+                    </div>
+                    @if (objUser.IsSupplier == null)
+                    {
+                        <div class="modal-body">
+                            <img src="~/Content/Sample/Supplier-agreement.png" />
+                            <div class="input-group">
+                                <input type="file" id="fileAgreement" name="fileAgreement" class="form-control" data-val="true" data-val-required="Required">
+
+                                <label for="fileAgreement" class="btn btn-outline-primary">Upload File</label>
+                            </div>
+                            <span class="text-danger" data-valmsg-for="fileAgreement" data-valmsg-replace="true"></span>
+                        </div>
+
+                        <div class="modal-footer">
+                            <div class="d-flex align-items-center justify-content-between m-0">
+                                <div>
+                                    <a href="@RouteConfig.AgentDashboard.ToPrefixApplicationURL()" class="btn btn-sm btn-secondary me-2">Go To Dashboard</a>
+                                </div>
+                                <div>
+                                    <a href="~/Content/Sample/Supplier-agreement.pdf" target="_blank" class="btn btn-sm btn-light me-2">Download Agreement</a>
+                                </div>
+                                <div>
+                                    <button type="submit" class="btn btn-sm btn-primary">Activate Supllier Profile</button>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="modal-body p-0">
+                            @if (objUser.SupplierAgreement.Contains("pdf"))
+                            {
+                                <iframe frameborder="0" src="~/Uploads/@objUser.AspNetID/SupplierAgreements/@objUser.SupplierAgreement" width="100%" height="500px"></iframe>
+                            }
+                            else
+                            {
+                                <img src="~/Uploads/@objUser.AspNetID/SupplierAgreements/@objUser.SupplierAgreement" />
+                            }
+                        </div>
+
+                        <div class="modal-footer">
+                            @if (objUser.IsSupplier == false)
+                            {
+                                <label class="alert alert-primary w-100">@objUser.AgreementRemark</label>
+                            }
+                            else
+                            {
+                                <label class="alert alert-danger w-100">@objUser.AgreementRemark</label>
+                            }
+                            <a href="@RouteConfig.AgentDashboard.ToPrefixApplicationURL()" class="btn btn-sm btn-secondary me-2">Go To Dashboard</a>
+                        </div>
+                    }
+
+                </div>
+            </div>
+        </div>
+    }
+    <script>
+        $(document).ready(function () {
+            $('#supplier_agreement_modal').modal({ backdrop: 'static', keyboard: false });
+            $("#supplier_agreement_modal").modal('show');
+        });
+
+    </script>
+}

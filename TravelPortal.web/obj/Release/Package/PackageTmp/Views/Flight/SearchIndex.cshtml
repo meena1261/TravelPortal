@@ -1,0 +1,88 @@
+﻿@model SearchRequestDto
+@{
+    var result = ViewBag.flights as TravelPortal.web.Models.ViewModel.FlightResults;
+}
+
+
+
+<div class="pt-2 bg-gray">
+    <div class="container">
+
+        <!-- Flight Search -->
+        <div class="card">
+            <div class="card-body">
+                <div class="banner-form">
+                    @Html.Partial("FlightSearch", Model)
+                </div>
+            </div>
+        </div>
+
+        <!-- /Flight Search -->
+
+        @if (result != null && result.data != null && result.data.Count > 0)
+        {
+            <div class="row">
+                <div class="col-xl-3 col-lg-3 theiaStickySidebar">
+                    @Html.Partial("Filters")
+                </div>
+                <div class="col-xl-9 col-lg-9" id="renderflights">
+                    @Html.Partial("FlightSearchList")
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="error-img text-center">
+                <img src="~/Content/agent/img/bg/error-500.svg" alt="Img">
+            </div>
+            <div class="maintenance-update">
+                <div class="text-center mb-3">
+                    <h5 class="mb-1">Data not found !</h5>
+                    
+                </div>
+                <div class="d-flex align-items-center justify-content-center">
+                    <a href="@RouteConfig.AgentHome.ToPrefixApplicationURL()" class="btn btn-primary d-flex align-items-center justify-content-center"><i class="isax isax-arrow-left-2 me-2"></i>Back to Home</a>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+<script>
+    $(document).on("change", ".filter-item", function () {
+        applyFilters();
+    });
+
+    function applyFilters() {
+        var filter = {};
+
+        // checkbox filters
+        $(".filter-item:checked").each(function () {
+            var key = $(this).data("filter");
+            var val = $(this).val();
+            if (!filter[key])
+                filter[key] = [];
+            filter[key].push(val);
+        });
+
+        // price filter add karo
+        var minPrice = $("#txtMinPrice").val();
+        var maxPrice = $("#txtMaxPrice").val();
+        filter["price"] = {
+            min: minPrice,
+            max: maxPrice
+        };
+
+        $.ajax({
+            url: "@Url.Action("ApplyFilters", "Flight")",
+            type: "POST",
+            data: JSON.stringify({ filters: filter }),
+            contentType: "application/json",
+            success: function (res) {
+                $("#renderflights").html(res);
+            }
+        });
+    }
+
+</script>
+
+

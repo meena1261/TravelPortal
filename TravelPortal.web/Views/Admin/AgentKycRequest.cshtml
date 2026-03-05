@@ -1,0 +1,173 @@
+﻿@model SearchReportModel
+@{
+    dynamic objlist = ViewBag.list;
+}
+<div class="card">
+    <div class="card-header">
+        <form action="@Url.Action("AgentKycRequest","Admin")" method="post">
+            <div class="row">
+                <div class="col-md-2">
+                    <div class="mb-3">
+                        <label class="form-label">From Date</label>
+                        <div class="input-icon-start position-relative">
+                            @Html.TextBoxFor(m => m.fromDate, new { @class = "form-control flatpickr_date_input", @placeholder = "dd/mm/yyyy" })
+                            <span class="input-icon-left">
+                                <i class="ti ti-calendar"></i>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="mb-3">
+                        <label class="form-label">To Date</label>
+                        <div class="input-icon-start position-relative">
+                            @Html.TextBoxFor(m => m.toDate, new { @class = "form-control flatpickr_date_input", @placeholder = "dd/mm/yyyy" })
+                            <span class="input-icon-left">
+                                <i class="ti ti-calendar"></i>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <label class="form-label">UserId/Mobile</label>
+                    @Html.TextBoxFor(m => m.userId, new { @class = "form-control" })
+                </div>
+                <div class="col-md-2">
+                    <label class="form-label">Status</label>
+                    @Html.DropDownListFor(m => m.status, new List<SelectListItem>{
+                 new SelectListItem { Text = CommanString.Pending, Value = CommanString.Pending },
+                 new SelectListItem { Text = CommanString.Approved, Value = CommanString.Approved },
+                 new SelectListItem { Text = CommanString.Rejected, Value = CommanString.Rejected }
+                 }, "--Select--", new { @class = "form-control" })
+                </div>
+                <div class="col-md-2">
+                    <br />
+                    <button type="submit" class="btn btn-primary mt-2"><i class="fa fa-search"></i> Search</button>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table datatable">
+                <thead class="thead-light">
+                    <tr>
+                        <th>Status</th>
+                        <th>Name & UserId</th>
+                        <th>Agency Type</th>
+                        <th>Agency Name</th>
+                        <th>Pan Number</th>
+                        <th>Agency Address</th>
+                        <th>Request Date</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (objlist != null && objlist.Count > 0)
+                    {
+                        foreach (var item in objlist)
+                        {
+                            string status = item.Status;
+                            <tr>
+                                <td>
+                                    <label class="badge badge-@(status.Equals(CommanString.Approved)?"success":status.Equals(CommanString.Rejected)?"danger":"primary")">
+                                        @item.Status
+                                    </label>
+                                </td>
+                                <td>
+                                    <h6>@item.Name</h6>
+                                    <label>[@item.UserId]</label>
+                                </td>
+                                <td>@item.AgencyType</td>
+
+                                <td>@item.AgencyName </td>
+                                <td>@item.PanNumber </td>
+                                <td>@item.AgencyAddress </td>
+                                <td>@item.AddDate </td>
+                                <td>
+                                    <a data-bs-toggle="modal" data-bs-target="#confirmation-modal" class="btn btn-sm btn-success" href="javascript:void(0);" onclick="ConfirmationModel('Approved','@item.Usrno');">
+                                        Approve
+                                    </a>
+                                    <a data-bs-toggle="modal" data-bs-target="#confirmation-modal" class="btn btn-sm btn-danger" href="javascript:void(0);" onclick="ConfirmationModel('Rejected','@item.Usrno');">
+                                        Reject
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    }
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<!--Confirmation Modal-->
+<div class="modal fade" id="confirmation-modal">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="page-wrapper-new p-0">
+                @using (Ajax.BeginForm("AgentKycRequestAction", "Admin", null, new AjaxOptions { HttpMethod = "POST", OnBegin = "fnStartLoader", OnComplete = "fnStopLoader", OnSuccess = "fn_Success", OnFailure = "fn_Failure" }, new { enctype = "multipart/form-data" }))
+                {
+                    <input type="hidden" name="Id" id="hdnid" value="0" />
+                    <input type="hidden" name="Action" id="hdntype" value="" />
+                    <div class="p-5 px-3 text-center">
+                        <h4 class="fs-20 fw-bold mb-2 mt-1">
+                            Are you sure you want to <span id="spntxt">Approve</span> this ?
+                        </h4>
+                        <div id="divremark" style="display:none;">
+                            <textarea class="form-control" rows="5" placeholder="Enter same remark" id="reason" name="Reason" data-val="true" data-val-required="Required"></textarea>
+                        </div>
+                        <span class="field-validation-valid text-danger" data-valmsg-for="reason" data-valmsg-replace="true"></span>
+                        <div class="modal-footer-btn mt-3 d-flex justify-content-center">
+                            <button type="submit" class="btn me-2 btn-primary fs-13 fw-medium p-2 px-3">Yes, sure</button>
+                            <button type="button" class="btn me-2 btn-secondary fs-13 fw-medium p-2 px-3 shadow-none" data-bs-dismiss="modal">Cancel</button>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+<!--End Confirmation Modal-->
+
+<script>
+    function ConfirmationModel(txt,id) {
+        $("#hdnid").val(id);
+        $("#spntxt").text(txt);
+        $("#hdntype").val(txt);
+        if (txt == 'Rejected') {
+            $("#divremark").show();
+        } else {
+            $("#divremark").hide();
+        }
+    }
+    function fn_Success(d) {
+        if (d.status > 0) {
+            $.toast({
+                heading: 'Success',
+                text: d.message,
+                position: 'top-right',
+                showHideTransition: 'fade',
+                icon: 'success'
+            });
+            location.reload();
+        } else {
+            $.toast({
+                heading: 'Message',
+                text: d.message,
+                position: 'top-right',
+                showHideTransition: 'fade',
+                icon: 'error'
+            });
+        }
+    }
+    function fn_Failure(d) {
+        $.toast({
+            heading: 'Message',
+            text: 'failed',
+            position: 'top-right',
+            showHideTransition: 'fade',
+            icon: 'error'
+        });
+    }
+</script>
